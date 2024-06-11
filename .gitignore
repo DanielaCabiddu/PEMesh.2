@@ -39,4 +39,5 @@ external/triangle/build
 
 build-*
 src/build/*
+external/triangle/build
 *.txt.user
