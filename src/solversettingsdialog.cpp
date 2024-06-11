@@ -48,14 +48,8 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
         matlab_exe_name = "matlab";
     #endif
 
-    ui->matlab_folder->setText(QDir::homePath().append("/Matlab_R2019a/bin/")); //Daniela
-    ui->solver_script->setText(QDir::homePath().append("/Devel/src/CHANGE/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
-
-//    ui->matlab_folder->setText(QDir::homePath().append("/Matlab_R2019b/bin/")); //Tommmy-Ubuntu
-//    ui->solver_directory->setText(QDir::homePath().append("/vem_benchmark_2d/matlab/Scripts/"));
-
-//    ui->matlab_folder->setText("/Applications/MATLAB_R2019b.app/bin/"); //Tommy-Mac
-//    ui->solver_directory->setText(QDir::homePath().append("/vem_benchmark_2d/matlab/Scripts/"));
+    ui->matlab_folder->setText(QDir::homePath().append("/matlab/bin/"));
+    ui->solver_script->setText(QDir::homePath().append("/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
 
     ui->matlab_folder_error->hide();
     ui->solver_folder_error->hide();

@@ -126,6 +126,7 @@ void SolverWidget::on_run_btn_clicked()
         const std::string out_filepath = out_folder + path_sep.toStdString() + out_filename;
 
         const unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
+        const unsigned int solution_order = static_cast<uint>(ui->solver_order_cb->value());
 
         const std::string matlab_folder = dialog->get_matlab_folder();
         const std::string matlab_exe = matlab_folder + QString(QDir::separator()).toStdString() + dialog->get_matlab_exe_name();
@@ -138,7 +139,7 @@ void SolverWidget::on_run_btn_clicked()
         std::string solver_script_name = solver_script_path.substr(solver_script_path.find_last_of(QDir::separator().unicode())+1);
         solver_script_name = solver_script_name.substr(0, solver_script_name.find_last_of("."));
         const std::string matlab_script = solver_script_name + std::string(" ('")
-                                            + in_folder + "','" + out_filepath + "'," + std::to_string(solution_id) +");exit;";
+                                            + in_folder + "','" + out_filepath + "'," + std::to_string(solution_id) + "," + std::to_string(solution_order) +");exit;";
 
         std::cout << "RUNNING : " << matlab_script << std::endl;
 

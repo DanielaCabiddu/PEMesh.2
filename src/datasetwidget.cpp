@@ -1379,12 +1379,12 @@ void DatasetWidget::on_aggregate_btn_clicked()
         ui->log_label->append(("Aggregating Triangles on Mesh " + std::to_string(count_mesh) + " ...").c_str());
         aggregate_triangles(*m, value, aggregation_type);
 
-        std::string filename = m->mesh_data().filename.substr(m->mesh_data().filename.find_last_of("/")+1);
+        // std::string filename = m->mesh_data().filename.substr(m->mesh_data().filename.find_last_of("/")+1);
 
-        filename = "/home/danielacabiddu/Downloads/5k_polygons_canvas_aggregated_2/" + filename;
-        m->save(filename.c_str());
+        // filename = "/home/danielacabiddu/Downloads/5k_polygons_canvas_aggregated_2/" + filename;
+        // m->save(filename.c_str());
 
-        std::cout << "saved " << filename << std::endl;
+        // std::cout << "saved " << filename << std::endl;
 
         ui->log_label->append("DONE");
 

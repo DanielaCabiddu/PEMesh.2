@@ -45,5 +45,7 @@ int main(int argc, char *argv[])
     w.setWindowTitle("PEMesh");
     w.show();
 
+    std::locale::global(std::locale("C"));
+
     return a.exec();
 }

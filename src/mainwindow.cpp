@@ -909,7 +909,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         for (uint vid=0; vid < dataset.get_parametric_mesh(i)->num_verts(); vid++ )
         {
             dataset.get_parametric_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf[vid]);
-            std::cout << dataset.get_parametric_mesh(i)->vert(vid) <<  " -- " << sf[vid] << std::endl;
+            // std::cout << dataset.get_parametric_mesh(i)->vert(vid) <<  " -- " << sf[vid] << std::endl;
         }
 
         in.close();
@@ -964,7 +964,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         for (uint vid=0; vid < ui->solverResultsWidget->get_gt_mesh(i)->num_verts(); vid++ )
         {
             ui->solverResultsWidget->get_gt_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf[vid]);
-            std::cout << ui->solverResultsWidget->get_gt_mesh(i)->vert(vid) <<  " -- " << sf[vid] << std::endl;
+            // std::cout << ui->solverResultsWidget->get_gt_mesh(i)->vert(vid) <<  " -- " << sf[vid] << std::endl;
         }
 
         in.close();
@@ -983,6 +983,10 @@ void MainWindow::on_reset_btn_clicked()
     delete ui->graphicMeshMetricWidget;
     delete ui->solverWidget;
     delete ui->solverResultsWidget;
+
+    metrics.clear();
+    dataset.clean();
+    folder = "";
 
     ui->datasetWidget = new DatasetWidget(this);
     ui->datasetWidget->set_dataset(&dataset);
@@ -1006,18 +1010,15 @@ void MainWindow::on_reset_btn_clicked()
     connect(ui->metricsWidget, SIGNAL (sort_geometric_qualities(const uint)), this, SLOT(show_sorted_mesh_metrics(const uint)));
     connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_mesh_metrics()));
     connect(ui->solverWidget, SIGNAL (solver_completed (const uint, const std::string, const std::string)), this, SLOT (show_solver_results (const uint, const std::string, const std::string)));
-
     connect(ui->datasetWidget, SIGNAL (saved_in(const std::string)), this, SLOT (update_solver_input_folder (const std::string)));
 
-    ui->tab_widgets->setCurrentIndex(ui->tab_widgets->count()-1);
+    connect(ui->scatterPlotsGPWidget, SIGNAL(compute_GP_scatterplots()), this, SLOT(compute_GP_scatterplots()));
+
+    ui->tab_widgets->setCurrentIndex(0);
 
     for (int i=1; i < ui->tab_widgets->count()-1; i++)
         ui->tab_widgets->setTabEnabled(i, false);
 
-    metrics.clear();
-    dataset.clean();
-
-    folder = "";
 }
 
 void MainWindow::on_tab_widgets_currentChanged(int index)
