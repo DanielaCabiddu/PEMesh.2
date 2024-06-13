@@ -62,22 +62,18 @@ public slots:
 
     void show_mesh (int i);
 
-    void show_ic ();
-    void show_cc ();
-    void show_cr ();
-    void show_ar ();
-    void show_ke ();
+    void show_inr ();
+    void show_our ();
+    void show_cir ();
+    void show_krr ();
     void show_kar ();
-    void show_par ();
-    void show_ma ();
-    void show_se ();
-    void show_er ();
-    void show_mpd ();
-    void show_ns ();
-    void show_mxa ();
-    void show_sr ();
+    void show_apr ();
+    void show_mia ();
+    void show_maa ();
+    void show_anr ();
     void show_vem ();
-    void show_vema ();
+    void show_jac ();
+    void show_fro ();
 
 
     void show_min ();

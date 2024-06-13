@@ -42,45 +42,36 @@ MeshMetricsGraphicWidget::MeshMetricsGraphicWidget(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->mesh_metrics_slider, SIGNAL(valueChanged(int)), this, SLOT(show_mesh(int)));
-    connect(ui->ic_rb, SIGNAL(clicked()), this, SLOT(show_ic()));
-    connect(ui->cc_rb, SIGNAL(clicked()), this, SLOT(show_cc()));
-    connect(ui->cr_rb, SIGNAL(clicked()), this, SLOT(show_cr()));
-    connect(ui->ar_rb, SIGNAL(clicked()), this, SLOT(show_ar()));
-    connect(ui->ke_rb, SIGNAL(clicked()), this, SLOT(show_ke()));
+    connect(ui->inr_rb, SIGNAL(clicked()), this, SLOT(show_inr()));
+    connect(ui->our_rb, SIGNAL(clicked()), this, SLOT(show_our()));
+    connect(ui->cir_rb, SIGNAL(clicked()), this, SLOT(show_cir()));
+    connect(ui->krr_rb, SIGNAL(clicked()), this, SLOT(show_krr()));
     connect(ui->kar_rb, SIGNAL(clicked()), this, SLOT(show_kar()));
-    connect(ui->par_rb, SIGNAL(clicked()), this, SLOT(show_par()));
-    connect(ui->ma_rb, SIGNAL(clicked()), this, SLOT(show_ma()));
-    connect(ui->se_rb, SIGNAL(clicked()), this, SLOT(show_se()));
-    connect(ui->er_rb, SIGNAL(clicked()), this, SLOT(show_er()));
-    connect(ui->mpd_rb, SIGNAL(clicked()), this, SLOT(show_mpd()));
-    connect(ui->ns_rb, SIGNAL(clicked()), this, SLOT(show_ns()));
-    connect(ui->mxa_rb, SIGNAL(clicked()), this, SLOT(show_mxa()));
-    connect(ui->sr_rb, SIGNAL(clicked()), this, SLOT(show_sr()));
+    connect(ui->apr_rb, SIGNAL(clicked()), this, SLOT(show_apr()));
+    connect(ui->mia_rb, SIGNAL(clicked()), this, SLOT(show_mia()));
+    connect(ui->maa_rb, SIGNAL(clicked()), this, SLOT(show_maa()));
+    connect(ui->anr_rb, SIGNAL(clicked()), this, SLOT(show_anr()));
     connect(ui->vem_rb, SIGNAL(clicked()), this, SLOT(show_vem()));
-    connect(ui->vema_rb, SIGNAL(clicked()), this, SLOT(show_vema()));
+    connect(ui->jac_rb, SIGNAL(clicked()), this, SLOT(show_jac()));
+    connect(ui->fro_rb, SIGNAL(clicked()), this, SLOT(show_fro()));
 
     connect(ui->min_rb, SIGNAL(clicked()), this, SLOT(show_min()));
     connect(ui->max_rb, SIGNAL(clicked()), this, SLOT(show_max()));
     connect(ui->avg_rb, SIGNAL(clicked()), this, SLOT(show_avg()));
     connect(ui->poly_rb, SIGNAL(clicked()), this, SLOT(show_poly()));
 
-    ui->ic_rb->setText((metrics_acronym.at(0) + " - " + metrics_names.at(0)).c_str());
-    ui->cc_rb->setText((metrics_acronym.at(1) + " - " + metrics_names.at(1)).c_str());
-    ui->cr_rb->setText((metrics_acronym.at(2) + " - " + metrics_names.at(2)).c_str());
-    ui->ar_rb->setText((metrics_acronym.at(3) + " - " + metrics_names.at(3)).c_str());
-    ui->ke_rb->setText((metrics_acronym.at(4) + " - " + metrics_names.at(4)).c_str());
-    ui->kar_rb->setText((metrics_acronym.at(5) + " - " + metrics_names.at(5)).c_str());
-    ui->par_rb->setText((metrics_acronym.at(6) + " - " + metrics_names.at(6)).c_str());
-    ui->ma_rb->setText((metrics_acronym.at(7) + " - " + metrics_names.at(7)).c_str());
-    ui->se_rb->setText((metrics_acronym.at(8) + " - " + metrics_names.at(8)).c_str());
-    ui->er_rb->setText((metrics_acronym.at(9) + " - " + metrics_names.at(9)).c_str());
-    ui->mpd_rb->setText((metrics_acronym.at(10) + " - " + metrics_names.at(10)).c_str());
-    ui->ns_rb->setText((metrics_acronym.at(11) + " - " + metrics_names.at(11)).c_str());
-    ui->mxa_rb->setText((metrics_acronym.at(12) + " - " + metrics_names.at(12)).c_str());
-    ui->sr_rb->setText((metrics_acronym.at(13) + " - " + metrics_names.at(13)).c_str());
-    ui->vem_rb->setText((metrics_acronym.at(14) + " - " + metrics_names.at(14)).c_str());
-    ui->vema_rb->setText((metrics_acronym.at(15) + " - " + metrics_names.at(15)).c_str());
-
+    ui->inr_rb->setText((metrics_acronym.at(0)  + " - " + metrics_names.at(0)).c_str());
+    ui->our_rb->setText((metrics_acronym.at(1)  + " - " + metrics_names.at(1)).c_str());
+    ui->cir_rb->setText((metrics_acronym.at(2)  + " - " + metrics_names.at(2)).c_str());
+    ui->krr_rb->setText((metrics_acronym.at(3)  + " - " + metrics_names.at(3)).c_str());
+    ui->kar_rb->setText((metrics_acronym.at(4)  + " - " + metrics_names.at(4)).c_str());
+    ui->apr_rb->setText((metrics_acronym.at(5)  + " - " + metrics_names.at(5)).c_str());
+    ui->mia_rb->setText((metrics_acronym.at(6)  + " - " + metrics_names.at(6)).c_str());
+    ui->maa_rb->setText((metrics_acronym.at(7)  + " - " + metrics_names.at(7)).c_str());
+    ui->anr_rb->setText((metrics_acronym.at(8)  + " - " + metrics_names.at(8)).c_str());
+    ui->vem_rb->setText((metrics_acronym.at(9)  + " - " + metrics_names.at(9)).c_str());
+    ui->jac_rb->setText((metrics_acronym.at(10) + " - " + metrics_names.at(10)).c_str());
+    ui->fro_rb->setText((metrics_acronym.at(11) + " - " + metrics_names.at(11)).c_str());
 }
 
 MeshMetricsGraphicWidget::~MeshMetricsGraphicWidget()
@@ -148,90 +139,44 @@ void MeshMetricsGraphicWidget::set_max_color(const uint i)
     mesh_with_metrics.at(0)->poly_data(i).color = cinolib::Color::BLUE();
 }
 
-void MeshMetricsGraphicWidget::show_ic()
-{
-    mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
-
-    std::string message = "";
-
-    uint id_min = metrics->at(curr_mesh_id).IC_min_id;
-    uint id_max = metrics->at(curr_mesh_id).IC_max_id;
-
-    if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_min_color(id_min);
-        message += "<br><font color=\"green\">IC MIN : " + std::to_string(metrics->at(curr_mesh_id).IC_min) + "</font>";
-    }
-
-    if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_max_color(id_max);
-        message += "<br><font color=\"blue\">IC MAX : " + std::to_string(metrics->at(curr_mesh_id).IC_max) + "</font>";
-    }
-
-    if (ui->avg_rb->isChecked())
-    {
-        message += "<br>IC AVG : " + std::to_string(metrics->at(curr_mesh_id).IC_avg);
-    }
-
-    if (ui->poly_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).IC_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).IC_poly_max_id;
-
-        set_min_color(id_min);
-        set_max_color(id_max);
-
-        message += "<br><font color=\"green\">IC POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).IC_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">IC POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).IC_poly_max) + "</font>";
-        message += "<br>IC POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).IC_poly_avg);
-    }
-
-
-    d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
-
-    ui->info_text->setHtml(message.c_str());
-}
-
-void MeshMetricsGraphicWidget::show_cc()
+void MeshMetricsGraphicWidget::show_inr()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
 
-    uint id_min = metrics->at(curr_mesh_id).CC_min_id;
-    uint id_max = metrics->at(curr_mesh_id).CC_max_id;
+    uint id_min = metrics->at(curr_mesh_id).INR_min_id;
+    uint id_max = metrics->at(curr_mesh_id).INR_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">CC MIN : " + std::to_string(metrics->at(curr_mesh_id).CC_min) + "</font>";
+        message += "<br><font color=\"green\">INR MIN : " + std::to_string(metrics->at(curr_mesh_id).INR_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">CC MAX : " + std::to_string(metrics->at(curr_mesh_id).CC_max) + "</font>";
+        message += "<br><font color=\"blue\">INR MAX : " + std::to_string(metrics->at(curr_mesh_id).INR_max) + "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>CC AVG : " + std::to_string(metrics->at(curr_mesh_id).CC_avg);
+        message += "<br>INR AVG : " + std::to_string(metrics->at(curr_mesh_id).INR_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).CC_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).CC_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).INR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).INR_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br><font color=\"green\">CC POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).CC_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">CC POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).CC_poly_max) + "</font>";
-        message += "<br>CC POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).CC_poly_avg);
+        message += "<br><font color=\"green\">INR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).INR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">INR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).INR_poly_max) + "</font>";
+        message += "<br>INR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).INR_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -240,43 +185,43 @@ void MeshMetricsGraphicWidget::show_cc()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_cr()
+void MeshMetricsGraphicWidget::show_our()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
-    uint id_min = metrics->at(curr_mesh_id).CR_min_id;
-    uint id_max = metrics->at(curr_mesh_id).CR_max_id;
+    uint id_min = metrics->at(curr_mesh_id).OUR_min_id;
+    uint id_max = metrics->at(curr_mesh_id).OUR_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">CR MIN : " + std::to_string(metrics->at(curr_mesh_id).CR_min) + "</font>";
+        message += "<br><font color=\"green\">OUR MIN : " + std::to_string(metrics->at(curr_mesh_id).OUR_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">CR MAX : " + std::to_string(metrics->at(curr_mesh_id).CR_max) + "</font>";
+        message += "<br><font color=\"blue\">OUR MAX : " + std::to_string(metrics->at(curr_mesh_id).OUR_max) + "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>CR AVG : " + std::to_string(metrics->at(curr_mesh_id).CR_avg);
+        message += "<br>OUR AVG : " + std::to_string(metrics->at(curr_mesh_id).OUR_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).CR_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).CR_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).OUR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).OUR_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br><font color=\"green\">CR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).CR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">CR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).CR_poly_max) + "</font>";
-        message += "<br>CR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).CR_poly_avg);
+        message += "<br><font color=\"green\">OUR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).OUR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">OUR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).OUR_poly_max) + "</font>";
+        message += "<br>OUR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).OUR_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -285,43 +230,43 @@ void MeshMetricsGraphicWidget::show_cr()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_ar ()
+void MeshMetricsGraphicWidget::show_cir ()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
-    uint id_min = metrics->at(curr_mesh_id).AR_min_id;
-    uint id_max = metrics->at(curr_mesh_id).AR_max_id;
+    uint id_min = metrics->at(curr_mesh_id).CIR_min_id;
+    uint id_max = metrics->at(curr_mesh_id).CIR_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">AR MIN : " + std::to_string(metrics->at(curr_mesh_id).AR_min) + "</font>";
+        message += "<br><font color=\"green\">CIR MIN : " + std::to_string(metrics->at(curr_mesh_id).CIR_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">AR MAX : " + std::to_string(metrics->at(curr_mesh_id).AR_max)+ "</font>";
+        message += "<br><font color=\"blue\">CIR MAX : " + std::to_string(metrics->at(curr_mesh_id).CIR_max)+ "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>AR AVG : " + std::to_string(metrics->at(curr_mesh_id).AR_avg);
+        message += "<br>CIR AVG : " + std::to_string(metrics->at(curr_mesh_id).CIR_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).AR_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).AR_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).CIR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).CIR_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br><font color=\"green\">AR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).AR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">AR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).AR_poly_max) + "</font>";
-        message += "<br>AR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).AR_poly_avg);
+        message += "<br><font color=\"green\">CIR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).CIR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">CIR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).CIR_poly_max) + "</font>";
+        message += "<br>CIR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).CIR_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -330,43 +275,43 @@ void MeshMetricsGraphicWidget::show_ar ()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_ke ()
+void MeshMetricsGraphicWidget::show_krr ()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
-    uint id_min = metrics->at(curr_mesh_id).KE_min_id;
-    uint id_max = metrics->at(curr_mesh_id).KE_max_id;
+    uint id_min = metrics->at(curr_mesh_id).KRR_min_id;
+    uint id_max = metrics->at(curr_mesh_id).KRR_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">KE MIN : " + std::to_string(metrics->at(curr_mesh_id).KE_min) + "</font>";
+        message += "<br><font color=\"green\">KRR MIN : " + std::to_string(metrics->at(curr_mesh_id).KRR_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">KE MAX : " + std::to_string(metrics->at(curr_mesh_id).KE_max) + "</font>";
+        message += "<br><font color=\"blue\">KRR MAX : " + std::to_string(metrics->at(curr_mesh_id).KRR_max) + "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>KE AVG : " + std::to_string(metrics->at(curr_mesh_id).KE_avg);
+        message += "<br>KRR AVG : " + std::to_string(metrics->at(curr_mesh_id).KRR_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).KE_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).KE_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).KRR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).KRR_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br><font color=\"green\">KE POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).KE_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">KE POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).KE_poly_max) + "</font>";
-        message += "<br>KE POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).KE_poly_avg);
+        message += "<br><font color=\"green\">KRR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).KRR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">KRR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).KRR_poly_max) + "</font>";
+        message += "<br>KRR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).KRR_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -420,7 +365,7 @@ void MeshMetricsGraphicWidget::show_kar ()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_par ()
+void MeshMetricsGraphicWidget::show_apr ()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
@@ -432,18 +377,18 @@ void MeshMetricsGraphicWidget::show_par ()
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">PAR MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_min) + "</font>";
+        message += "<br><font color=\"green\">APR MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">PAR MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_max) + "</font>";
+        message += "<br><font color=\"blue\">APR MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_max) + "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>PAR AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_avg);
+        message += "<br>APR AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_avg);
     }
 
     if (ui->poly_rb->isChecked())
@@ -454,9 +399,9 @@ void MeshMetricsGraphicWidget::show_par ()
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br><font color=\"green\">PAR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">PAR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_max) + "</font>";
-        message += "<br>PAR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_avg);
+        message += "<br><font color=\"green\">APR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">APR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_max) + "</font>";
+        message += "<br>APR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -465,43 +410,43 @@ void MeshMetricsGraphicWidget::show_par ()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_ma ()
+void MeshMetricsGraphicWidget::show_mia ()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
-    uint id_min = metrics->at(curr_mesh_id).MA_min_id;
-    uint id_max = metrics->at(curr_mesh_id).MA_max_id;
+    uint id_min = metrics->at(curr_mesh_id).MIA_min_id;
+    uint id_max = metrics->at(curr_mesh_id).MIA_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">MA MIN : " + std::to_string(metrics->at(curr_mesh_id).MA_min) + "</font>";
+        message += "<br><font color=\"green\">MIA MIN : " + std::to_string(metrics->at(curr_mesh_id).MIA_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">MA MAX : " + std::to_string(metrics->at(curr_mesh_id).MA_max) + "</font>";
+        message += "<br><font color=\"blue\">MIA MAX : " + std::to_string(metrics->at(curr_mesh_id).MIA_max) + "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>MA AVG : " + std::to_string(metrics->at(curr_mesh_id).MA_avg);
+        message += "<br>MIA AVG : " + std::to_string(metrics->at(curr_mesh_id).MIA_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).MA_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).MA_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).MIA_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).MIA_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br><font color=\"green\">MA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MA_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">MA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MA_poly_max) + "</font>";
-        message += "<br>MA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MA_poly_avg);
+        message += "<br><font color=\"green\">MIA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MIA_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">MIA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MIA_poly_max) + "</font>";
+        message += "<br>MIA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MIA_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -510,43 +455,43 @@ void MeshMetricsGraphicWidget::show_ma ()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_se ()
+void MeshMetricsGraphicWidget::show_maa ()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
-    uint id_min = metrics->at(curr_mesh_id).SE_min_id;
-    uint id_max = metrics->at(curr_mesh_id).SE_max_id;
+    uint id_min = metrics->at(curr_mesh_id).MAA_min_id;
+    uint id_max = metrics->at(curr_mesh_id).MAA_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">SE MIN : " + std::to_string(metrics->at(curr_mesh_id).SE_min) + "</font>";
+        message += "<br><font color=\"green\">MAA MIN : " + std::to_string(metrics->at(curr_mesh_id).MAA_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">SE MAX : " + std::to_string(metrics->at(curr_mesh_id).SE_max) + "</font>";
+        message += "<br><font color=\"blue\">MAA MAX : " + std::to_string(metrics->at(curr_mesh_id).MAA_max) + "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>SE AVG : " + std::to_string(metrics->at(curr_mesh_id).SE_avg);
+        message += "<br>MAA AVG : " + std::to_string(metrics->at(curr_mesh_id).MAA_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).SE_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).SE_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).MAA_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).MAA_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br>SE POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).SE_poly_min);
-        message += "<br>SE POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).SE_poly_max);
-        message += "<br>SE POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).SE_poly_avg);
+        message += "<br>MAA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MAA_poly_min);
+        message += "<br>MAA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MAA_poly_max);
+        message += "<br>MAA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MAA_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -555,223 +500,43 @@ void MeshMetricsGraphicWidget::show_se ()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_er ()
+void MeshMetricsGraphicWidget::show_anr ()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
-    uint id_min = metrics->at(curr_mesh_id).ER_min_id;
-    uint id_max = metrics->at(curr_mesh_id).ER_max_id;
+    uint id_min = metrics->at(curr_mesh_id).ANR_min_id;
+    uint id_max = metrics->at(curr_mesh_id).ANR_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">ER MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_min) + "</font>";
+        message += "<br><font color=\"green\">ANR MIN : " + std::to_string(metrics->at(curr_mesh_id).ANR_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">ER MAX : " + std::to_string(metrics->at(curr_mesh_id).ER_max) + "</font>";
+        message += "<br><font color=\"blue\">ANR MAX : " + std::to_string(metrics->at(curr_mesh_id).ANR_max) + "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>ER AVG : " + std::to_string(metrics->at(curr_mesh_id).ER_avg);
+        message += "<br>ANR AVG : " + std::to_string(metrics->at(curr_mesh_id).ANR_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).ER_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).ER_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).ANR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).ANR_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br>ER POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_poly_min);
-        message += "<br>ER POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).ER_poly_max);
-        message += "<br>ER POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).ER_poly_avg);
-    }
-
-    d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
-
-    ui->info_text->setHtml(message.c_str());
-}
-
-void MeshMetricsGraphicWidget::show_mpd ()
-{
-    mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
-
-    std::string message = "";
-
-    uint id_min = metrics->at(curr_mesh_id).MPD_min_id;
-    uint id_max = metrics->at(curr_mesh_id).MPD_max_id;
-
-    if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_min_color(id_min);
-        message += "<br><font color=\"green\">MPD MIN : " + std::to_string(metrics->at(curr_mesh_id).MPD_min) + "</font>";
-    }
-
-    if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_max_color(id_max);
-        message += "<br><font color=\"blue\">MPD MAX : " + std::to_string(metrics->at(curr_mesh_id).MPD_max) + "</font>";
-    }
-
-    if (ui->avg_rb->isChecked())
-    {
-        message += "<br>MDP AVG : " + std::to_string(metrics->at(curr_mesh_id).MPD_avg);
-    }
-
-    if (ui->poly_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).MPD_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).MPD_poly_max_id;
-
-        set_min_color(id_min);
-        set_max_color(id_max);
-
-        message += "<br>MPD POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MPD_poly_min);
-        message += "<br>MPD POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MPD_poly_max);
-        message += "<br>MPD POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MPD_poly_avg);
-    }
-
-    d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
-
-    ui->info_text->setHtml(message.c_str());
-}
-
-void MeshMetricsGraphicWidget::show_ns ()
-{
-    mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
-
-    std::string message = "";
-
-    uint id_min = metrics->at(curr_mesh_id).NS_min_id;
-    uint id_max = metrics->at(curr_mesh_id).NS_max_id;
-
-    if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_min_color(id_min);
-        message += "<br><font color=\"green\">AR MIN : " + std::to_string(metrics->at(curr_mesh_id).NS_min) + "</font>";
-    }
-
-    if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_max_color(id_max);
-        message += "<br><font color=\"blue\">AR MAX : " + std::to_string(metrics->at(curr_mesh_id).NS_max)+ "</font>";
-    }
-
-    if (ui->avg_rb->isChecked())
-    {
-        message += "<br>AR AVG : " + std::to_string(metrics->at(curr_mesh_id).NS_avg);
-    }
-
-    if (ui->poly_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).NS_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).NS_poly_max_id;
-
-        set_min_color(id_min);
-        set_max_color(id_max);
-
-        message += "<br><font color=\"green\">NS POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).NS_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">NS POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).NS_poly_max) + "</font>";
-        message += "<br>NS POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).NS_poly_avg);
-    }
-
-    d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
-
-    ui->info_text->setHtml(message.c_str());
-}
-
-void MeshMetricsGraphicWidget::show_mxa ()
-{
-    mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
-
-    std::string message = "";
-
-    uint id_min = metrics->at(curr_mesh_id).MXA_min_id;
-    uint id_max = metrics->at(curr_mesh_id).MXA_max_id;
-
-    if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_min_color(id_min);
-        message += "<br><font color=\"green\">MXA MIN : " + std::to_string(metrics->at(curr_mesh_id).MXA_min) + "</font>";
-    }
-
-    if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_max_color(id_max);
-        message += "<br><font color=\"blue\">MXA MAX : " + std::to_string(metrics->at(curr_mesh_id).MXA_max)+ "</font>";
-    }
-
-    if (ui->avg_rb->isChecked())
-    {
-        message += "<br>MXA AVG : " + std::to_string(metrics->at(curr_mesh_id).MXA_avg);
-    }
-
-    if (ui->poly_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).MXA_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).MXA_poly_max_id;
-
-        set_min_color(id_min);
-        set_max_color(id_max);
-
-        message += "<br><font color=\"green\">MXA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MXA_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">MXA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MXA_poly_max) + "</font>";
-        message += "<br>MXA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MXA_poly_avg);
-    }
-
-    d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
-
-    ui->info_text->setHtml(message.c_str());
-}
-
-void MeshMetricsGraphicWidget::show_sr ()
-{
-    mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
-
-    std::string message = "";
-
-    uint id_min = metrics->at(curr_mesh_id).SR_min_id;
-    uint id_max = metrics->at(curr_mesh_id).SR_max_id;
-
-    if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_min_color(id_min);
-        message += "<br><font color=\"green\">SR MIN : " + std::to_string(metrics->at(curr_mesh_id).SR_min) + "</font>";
-    }
-
-    if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
-    {
-        set_max_color(id_max);
-        message += "<br><font color=\"blue\">SR MAX : " + std::to_string(metrics->at(curr_mesh_id).SR_max)+ "</font>";
-    }
-
-    if (ui->avg_rb->isChecked())
-    {
-        message += "<br>SR AVG : " + std::to_string(metrics->at(curr_mesh_id).SR_avg);
-    }
-
-    if (ui->poly_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).SR_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).SR_poly_max_id;
-
-        set_min_color(id_min);
-        set_max_color(id_max);
-
-        message += "<br><font color=\"green\">SR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).SR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">SR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).SR_poly_max) + "</font>";
-        message += "<br>SR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).SR_poly_avg);
+        message += "<br>ANR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).ANR_poly_min);
+        message += "<br>ANR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).ANR_poly_max);
+        message += "<br>ANR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).ANR_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -825,45 +590,88 @@ void MeshMetricsGraphicWidget::show_vem ()
     ui->info_text->setHtml(message.c_str());
 }
 
-void MeshMetricsGraphicWidget::show_vema ()
+void MeshMetricsGraphicWidget::show_jac ()
 {
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
 
-    uint id_min = metrics->at(curr_mesh_id).VEMA_min_id;
-    uint id_max = metrics->at(curr_mesh_id).VEMA_max_id;
+    uint id_min = metrics->at(curr_mesh_id).JAC_min_id;
+    uint id_max = metrics->at(curr_mesh_id).JAC_max_id;
 
     if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_min_color(id_min);
-        message += "<br><font color=\"green\">VEMA MIN : " + std::to_string(metrics->at(curr_mesh_id).VEMA_min) + "</font>";
+        message += "<br><font color=\"green\">JAC MIN : " + std::to_string(metrics->at(curr_mesh_id).JAC_min) + "</font>";
     }
 
     if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
     {
         set_max_color(id_max);
-        message += "<br><font color=\"blue\">VEMA MAX : " + std::to_string(metrics->at(curr_mesh_id).VEMA_max)+ "</font>";
+        message += "<br><font color=\"blue\">JAC MAX : " + std::to_string(metrics->at(curr_mesh_id).JAC_max)+ "</font>";
     }
 
     if (ui->avg_rb->isChecked())
     {
-        message += "<br>VEMA SUM : " + std::to_string(metrics->at(curr_mesh_id).VEMA_sum);
+        message += "<br>JAC AVG : " + std::to_string(metrics->at(curr_mesh_id).JAC_avg);
     }
 
     if (ui->poly_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).VEMA_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).VEMA_poly_max_id;
+        id_min = metrics->at(curr_mesh_id).JAC_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).JAC_poly_max_id;
 
         set_min_color(id_min);
         set_max_color(id_max);
 
-        message += "<br><font color=\"green\">VEMA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).VEMA_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">VEMA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).VEMA_poly_max) + "</font>";
+        message += "<br><font color=\"green\">JAC POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).JAC_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">JAC POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).JAC_poly_max) + "</font>";
+        message += "<br>JAC POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).JAC_poly_avg);
+    }
 
-        double VEMA = sqrt(metrics->at(curr_mesh_id).VEMA_sum + metrics->at(curr_mesh_id).VEMA_poly_sum);
-        message += "<br>VEMA : " + std::to_string(VEMA);
+    d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
+    ui->mesh_metrics_canvas->updateGL();
+
+    ui->info_text->setHtml(message.c_str());
+}
+
+void MeshMetricsGraphicWidget::show_fro ()
+{
+    mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
+
+    std::string message = "";
+
+    uint id_min = metrics->at(curr_mesh_id).FRO_min_id;
+    uint id_max = metrics->at(curr_mesh_id).FRO_max_id;
+
+    if (ui->min_rb->isChecked() || ui->avg_rb->isChecked())
+    {
+        set_min_color(id_min);
+        message += "<br><font color=\"green\">FRO MIN : " + std::to_string(metrics->at(curr_mesh_id).FRO_min) + "</font>";
+    }
+
+    if (ui->max_rb->isChecked() || ui->avg_rb->isChecked())
+    {
+        set_max_color(id_max);
+        message += "<br><font color=\"blue\">FRO MAX : " + std::to_string(metrics->at(curr_mesh_id).FRO_max)+ "</font>";
+    }
+
+    if (ui->avg_rb->isChecked())
+    {
+        message += "<br>FRO AVG : " + std::to_string(metrics->at(curr_mesh_id).FRO_avg);
+    }
+
+    if (ui->poly_rb->isChecked())
+    {
+        id_min = metrics->at(curr_mesh_id).FRO_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).FRO_poly_max_id;
+
+        set_min_color(id_min);
+        set_max_color(id_max);
+
+        message += "<br><font color=\"green\">FRO POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).FRO_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">FRO POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).FRO_poly_max) + "</font>";
+        message += "<br>FRO POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).FRO_poly_avg);
     }
 
     d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
@@ -880,34 +688,28 @@ void MeshMetricsGraphicWidget::show_min()
     uint id;
     std::string message = "";
 
-    if (ui->ic_rb->isChecked())
+    if (ui->inr_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).IC_min_id;
-        message = "IC MIN : " + std::to_string(metrics->at(curr_mesh_id).IC_min);
+        id = metrics->at(curr_mesh_id).INR_min_id;
+        message = "IR MIN : " + std::to_string(metrics->at(curr_mesh_id).INR_min);
     }
     else
-    if (ui->cc_rb->isChecked())
+    if (ui->our_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).CC_min_id;
-        message = "CC MIN : " + std::to_string(metrics->at(curr_mesh_id).CC_min);
+        id = metrics->at(curr_mesh_id).OUR_min_id;
+        message = "OR MIN : " + std::to_string(metrics->at(curr_mesh_id).OUR_min);
     }
     else
-    if (ui->cr_rb->isChecked())
+    if (ui->cir_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).CR_min_id;
-        message = "CR MIN : " + std::to_string(metrics->at(curr_mesh_id).CR_min);
+        id = metrics->at(curr_mesh_id).OUR_min_id;
+        message = "CR MIN : " + std::to_string(metrics->at(curr_mesh_id).OUR_min);
     }
     else
-    if (ui->ar_rb->isChecked())
+    if (ui->krr_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).AR_min_id;
-        message = "AR MIN : " + std::to_string(metrics->at(curr_mesh_id).AR_min);
-    }
-    else
-    if (ui->ke_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).KE_min_id;
-        message = "KE MIN : " + std::to_string(metrics->at(curr_mesh_id).KE_min);
+        id = metrics->at(curr_mesh_id).KRR_min_id;
+        message = "KRR MIN : " + std::to_string(metrics->at(curr_mesh_id).KRR_min);
     }
     else
     if (ui->kar_rb->isChecked())
@@ -916,52 +718,28 @@ void MeshMetricsGraphicWidget::show_min()
         message = "KAR MIN : " + std::to_string(metrics->at(curr_mesh_id).KAR_min);
     }
     else
-    if (ui->par_rb->isChecked())
+    if (ui->apr_rb->isChecked())
     {
         id = metrics->at(curr_mesh_id).APR_min_id;
-        message = "PAR MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_min);
+        message = "APR MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_min);
     }
     else
-    if (ui->ma_rb->isChecked())
+    if (ui->mia_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).MA_min_id;
-        message = "MA MIN : " + std::to_string(metrics->at(curr_mesh_id).MA_min);
+        id = metrics->at(curr_mesh_id).MIA_min_id;
+        message = "MIA MIN : " + std::to_string(metrics->at(curr_mesh_id).MIA_min);
     }
     else
-    if (ui->se_rb->isChecked())
+    if (ui->maa_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).SE_min_id;
-        message = "SE MIN : " + std::to_string(metrics->at(curr_mesh_id).SE_min);
+        id = metrics->at(curr_mesh_id).MAA_min_id;
+        message = "MAA MIN : " + std::to_string(metrics->at(curr_mesh_id).MAA_min);
     }
     else
-    if (ui->er_rb->isChecked())
+    if (ui->anr_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).ER_min_id;
-        message = "ER MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_min);
-    }
-    else
-    if (ui->mpd_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).MPD_min_id;
-        message = "MPD MIN : " + std::to_string(metrics->at(curr_mesh_id).MPD_min);
-    }
-    else
-    if (ui->ns_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).NS_min_id;
-        message = "NS MIN : " + std::to_string(metrics->at(curr_mesh_id).NS_min);
-    }
-    else
-    if (ui->mxa_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).MXA_min_id;
-        message = "MXA MIN : " + std::to_string(metrics->at(curr_mesh_id).MXA_min);
-    }
-    else
-    if (ui->sr_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).SR_min_id;
-        message = "SR MIN : " + std::to_string(metrics->at(curr_mesh_id).SR_min);
+        id = metrics->at(curr_mesh_id).CIR_min_id;
+        message = "AR MIN : " + std::to_string(metrics->at(curr_mesh_id).CIR_min);
     }
     else
     if (ui->vem_rb->isChecked())
@@ -970,10 +748,16 @@ void MeshMetricsGraphicWidget::show_min()
         message = "VEM MIN : " + std::to_string(metrics->at(curr_mesh_id).VEM_min);
     }
     else
-    if (ui->vema_rb->isChecked())
+    if (ui->jac_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).VEMA_min_id;
-        message = "VEMA MIN : " + std::to_string(metrics->at(curr_mesh_id).VEMA_min);
+        id = metrics->at(curr_mesh_id).JAC_min_id;
+        message = "JAC MIN : " + std::to_string(metrics->at(curr_mesh_id).JAC_min);
+    }
+    else
+    if (ui->fro_rb->isChecked())
+    {
+        id = metrics->at(curr_mesh_id).FRO_min_id;
+        message = "FRO MIN : " + std::to_string(metrics->at(curr_mesh_id).FRO_min);
     }
     else
     {
@@ -997,34 +781,28 @@ void MeshMetricsGraphicWidget::show_max()
     uint id;
     std::string message = "";
 
-    if (ui->ic_rb->isChecked())
+    if (ui->inr_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).IC_max_id;
-        message = "IC MAX : " + std::to_string(metrics->at(curr_mesh_id).IC_max);
+        id = metrics->at(curr_mesh_id).INR_max_id;
+        message = "IR MAX : " + std::to_string(metrics->at(curr_mesh_id).INR_max);
     }
     else
-    if (ui->cc_rb->isChecked())
+    if (ui->our_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).CC_max_id;
-        message = "CC MAX : " + std::to_string(metrics->at(curr_mesh_id).CC_max);
+        id = metrics->at(curr_mesh_id).OUR_max_id;
+        message = "OR MAX : " + std::to_string(metrics->at(curr_mesh_id).OUR_max);
     }
     else
-    if (ui->cr_rb->isChecked())
+    if (ui->cir_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).CR_max_id;
-        message = "CR MAX : " + std::to_string(metrics->at(curr_mesh_id).CR_max);
+        id = metrics->at(curr_mesh_id).OUR_max_id;
+        message = "CR MAX : " + std::to_string(metrics->at(curr_mesh_id).OUR_max);
     }
     else
-    if (ui->ar_rb->isChecked())
+    if (ui->krr_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).AR_max_id;
-        message = "AR MAX : " + std::to_string(metrics->at(curr_mesh_id).AR_max);
-    }
-    else
-    if (ui->ke_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).KE_max_id;
-        message = "KE MAX : " + std::to_string(metrics->at(curr_mesh_id).KE_max);
+        id = metrics->at(curr_mesh_id).KRR_max_id;
+        message = "KRR MAX : " + std::to_string(metrics->at(curr_mesh_id).KRR_max);
     }
     else
     if (ui->kar_rb->isChecked())
@@ -1033,52 +811,28 @@ void MeshMetricsGraphicWidget::show_max()
         message = "KAR MAX : " + std::to_string(metrics->at(curr_mesh_id).KAR_max);
     }
     else
-    if (ui->par_rb->isChecked())
+    if (ui->apr_rb->isChecked())
     {
         id = metrics->at(curr_mesh_id).APR_max_id;
-        message = "PAR MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_max);
+        message = "APR MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_max);
     }
     else
-    if (ui->ma_rb->isChecked())
+    if (ui->mia_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).MA_max_id;
-        message = "MA MAX : " + std::to_string(metrics->at(curr_mesh_id).MA_max);
+        id = metrics->at(curr_mesh_id).MIA_max_id;
+        message = "MIA MAX : " + std::to_string(metrics->at(curr_mesh_id).MIA_max);
     }
     else
-    if (ui->se_rb->isChecked())
+    if (ui->maa_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).SE_max_id;
-        message = "SE MAX : " + std::to_string(metrics->at(curr_mesh_id).SE_max);
+        id = metrics->at(curr_mesh_id).MAA_max_id;
+        message = "MAA MAX : " + std::to_string(metrics->at(curr_mesh_id).MAA_max);
     }
     else
-    if (ui->er_rb->isChecked())
+    if (ui->anr_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).ER_max_id;
-        message = "ER MAX : " + std::to_string(metrics->at(curr_mesh_id).ER_max);
-    }
-    else
-    if (ui->mpd_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).MPD_max_id;
-        message = "MPD MAX : " + std::to_string(metrics->at(curr_mesh_id).MPD_max);
-    }
-    else
-    if (ui->ns_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).NS_max_id;
-        message = "NS MAX : " + std::to_string(metrics->at(curr_mesh_id).NS_max);
-    }
-    else
-    if (ui->mxa_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).MXA_max_id;
-        message = "MXA MAX : " + std::to_string(metrics->at(curr_mesh_id).MXA_max);
-    }
-    else
-    if (ui->sr_rb->isChecked())
-    {
-        id = metrics->at(curr_mesh_id).SR_max_id;
-        message = "SR MAX : " + std::to_string(metrics->at(curr_mesh_id).SR_max);
+        id = metrics->at(curr_mesh_id).CIR_max_id;
+        message = "AR MAX : " + std::to_string(metrics->at(curr_mesh_id).CIR_max);
     }
     else
     if (ui->vem_rb->isChecked())
@@ -1087,10 +841,16 @@ void MeshMetricsGraphicWidget::show_max()
         message = "VEM MAX : " + std::to_string(metrics->at(curr_mesh_id).VEM_max);
     }
     else
-    if (ui->vema_rb->isChecked())
+    if (ui->jac_rb->isChecked())
     {
-        id = metrics->at(curr_mesh_id).VEMA_max_id;
-        message = "VEMA MAX : " + std::to_string(metrics->at(curr_mesh_id).VEMA_max);
+        id = metrics->at(curr_mesh_id).JAC_max_id;
+        message = "JAC MAX : " + std::to_string(metrics->at(curr_mesh_id).JAC_max);
+    }
+    else
+    if (ui->fro_rb->isChecked())
+    {
+        id = metrics->at(curr_mesh_id).FRO_max_id;
+        message = "FRO MAX : " + std::to_string(metrics->at(curr_mesh_id).FRO_max);
     }
     else
     {
@@ -1114,49 +874,40 @@ void MeshMetricsGraphicWidget::show_avg()
     uint id_min, id_max;
     std::string message = "";
 
-    if (ui->ic_rb->isChecked())
+    if (ui->inr_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).IC_min_id;
-        id_max = metrics->at(curr_mesh_id).IC_max_id;
-        message += "<br><font color=\"green\">IC MIN : " + std::to_string(metrics->at(curr_mesh_id).IC_min) + "</font>";
-        message += "<br><font color=\"blue\">IC MAX : " + std::to_string(metrics->at(curr_mesh_id).IC_max) + "</font>";
-        message += "<br>IC AVG : " + std::to_string(metrics->at(curr_mesh_id).IC_avg);
+        id_min = metrics->at(curr_mesh_id).INR_min_id;
+        id_max = metrics->at(curr_mesh_id).INR_max_id;
+        message += "<br><font color=\"green\">IR MIN : " + std::to_string(metrics->at(curr_mesh_id).INR_min) + "</font>";
+        message += "<br><font color=\"blue\">IR MAX : " + std::to_string(metrics->at(curr_mesh_id).INR_max) + "</font>";
+        message += "<br>IR AVG : " + std::to_string(metrics->at(curr_mesh_id).INR_avg);
     }
     else
-    if (ui->cc_rb->isChecked())
+    if (ui->our_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).CC_min_id;
-        id_max = metrics->at(curr_mesh_id).CC_max_id;
-        message += "<br><font color=\"green\">CC MIN : " + std::to_string(metrics->at(curr_mesh_id).CC_min) + "</font>";
-        message += "<br><font color=\"blue\">CC MAX : " + std::to_string(metrics->at(curr_mesh_id).CC_max) + "</font>";
-        message += "<br>CC AVG : " + std::to_string(metrics->at(curr_mesh_id).CC_avg);
+        id_min = metrics->at(curr_mesh_id).OUR_min_id;
+        id_max = metrics->at(curr_mesh_id).OUR_max_id;
+        message += "<br><font color=\"green\">OR MIN : " + std::to_string(metrics->at(curr_mesh_id).OUR_min) + "</font>";
+        message += "<br><font color=\"blue\">OR MAX : " + std::to_string(metrics->at(curr_mesh_id).OUR_max) + "</font>";
+        message += "<br>OR AVG : " + std::to_string(metrics->at(curr_mesh_id).OUR_avg);
     }
     else
-    if (ui->cr_rb->isChecked())
+    if (ui->cir_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).CR_min_id;
-        id_max = metrics->at(curr_mesh_id).CR_max_id;
-        message += "<br><font color=\"green\">CR MIN : " + std::to_string(metrics->at(curr_mesh_id).CR_min) + "</font>";
-        message += "<br><font color=\"blue\">CR MAX : " + std::to_string(metrics->at(curr_mesh_id).CR_max) + "</font>";
-        message += "<br>CR AVG : " + std::to_string(metrics->at(curr_mesh_id).CR_avg);
+        id_min = metrics->at(curr_mesh_id).CIR_min_id;
+        id_max = metrics->at(curr_mesh_id).CIR_max_id;
+        message += "<br><font color=\"green\">CR MIN : " + std::to_string(metrics->at(curr_mesh_id).CIR_min) + "</font>";
+        message += "<br><font color=\"blue\">CR MAX : " + std::to_string(metrics->at(curr_mesh_id).CIR_max) + "</font>";
+        message += "<br>CR AVG : " + std::to_string(metrics->at(curr_mesh_id).CIR_avg);
     }
     else
-    if (ui->ar_rb->isChecked())
+    if (ui->krr_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).AR_min_id;
-        id_max = metrics->at(curr_mesh_id).AR_max_id;
-        message += "<br><font color=\"green\">AR MIN : " + std::to_string(metrics->at(curr_mesh_id).AR_min) + "</font>";
-        message += "<br><font color=\"blue\">AR MAX : " + std::to_string(metrics->at(curr_mesh_id).AR_max) + "</font>";
-        message += "<br>AR AVG : " + std::to_string(metrics->at(curr_mesh_id).AR_avg);
-    }
-    else
-    if (ui->ke_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).KE_min_id;
-        id_max = metrics->at(curr_mesh_id).KE_max_id;
-        message += "<br><font color=\"green\">KE MIN : " + std::to_string(metrics->at(curr_mesh_id).KE_min) + "</font>";
-        message += "<br><font color=\"blue\">KE MAX : " + std::to_string(metrics->at(curr_mesh_id).KE_max) + "</font>";
-        message += "<br>KE AVG : " + std::to_string(metrics->at(curr_mesh_id).KE_avg);
+        id_min = metrics->at(curr_mesh_id).KRR_min_id;
+        id_max = metrics->at(curr_mesh_id).KRR_max_id;
+        message += "<br><font color=\"green\">KRR MIN : " + std::to_string(metrics->at(curr_mesh_id).KRR_min) + "</font>";
+        message += "<br><font color=\"blue\">KRR MAX : " + std::to_string(metrics->at(curr_mesh_id).KRR_max) + "</font>";
+        message += "<br>KRR AVG : " + std::to_string(metrics->at(curr_mesh_id).KRR_avg);
     }
     else
     if (ui->kar_rb->isChecked())
@@ -1168,76 +919,40 @@ void MeshMetricsGraphicWidget::show_avg()
         message += "<br>KAR AVG : " + std::to_string(metrics->at(curr_mesh_id).KAR_avg);
     }
     else
-    if (ui->par_rb->isChecked())
+    if (ui->apr_rb->isChecked())
     {
         id_min = metrics->at(curr_mesh_id).APR_min_id;
         id_max = metrics->at(curr_mesh_id).APR_max_id;
-        message += "<br><font color=\"green\">PAR MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_min) + "</font>";
-        message += "<br><font color=\"blue\">PAR MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_max) + "</font>";
-        message += "<br>PAR AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_avg);
+        message += "<br><font color=\"green\">APR MIN : " + std::to_string(metrics->at(curr_mesh_id).APR_min) + "</font>";
+        message += "<br><font color=\"blue\">APR MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_max) + "</font>";
+        message += "<br>APR AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_avg);
     }
     else
-    if (ui->ma_rb->isChecked())
+    if (ui->mia_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).MA_min_id;
-        id_max = metrics->at(curr_mesh_id).MA_max_id;
-        message += "<br><font color=\"green\">MA MIN : " + std::to_string(metrics->at(curr_mesh_id).MA_min) + "</font>";
-        message += "<br><font color=\"blue\">MA MAX : " + std::to_string(metrics->at(curr_mesh_id).MA_max) + "</font>";
-        message += "<br>MA AVG : " + std::to_string(metrics->at(curr_mesh_id).MA_avg);
+        id_min = metrics->at(curr_mesh_id).MIA_min_id;
+        id_max = metrics->at(curr_mesh_id).MIA_max_id;
+        message += "<br><font color=\"green\">MIA MIN : " + std::to_string(metrics->at(curr_mesh_id).MIA_min) + "</font>";
+        message += "<br><font color=\"blue\">MIA MAX : " + std::to_string(metrics->at(curr_mesh_id).MIA_max) + "</font>";
+        message += "<br>MIA AVG : " + std::to_string(metrics->at(curr_mesh_id).MIA_avg);
     }
     else
-    if (ui->se_rb->isChecked())
+    if (ui->maa_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).SE_min_id;
-        id_max = metrics->at(curr_mesh_id).SE_max_id;
-        message += "<br><font color=\"green\">SE MIN : " + std::to_string(metrics->at(curr_mesh_id).SE_min) + "</font>";
-        message += "<br><font color=\"blue\">SE MAX : " + std::to_string(metrics->at(curr_mesh_id).SE_max) + "</font>";
-        message += "<br>SE AVG : " + std::to_string(metrics->at(curr_mesh_id).SE_avg);
+        id_min = metrics->at(curr_mesh_id).MAA_min_id;
+        id_max = metrics->at(curr_mesh_id).MAA_max_id;
+        message += "<br><font color=\"green\">MAA MIN : " + std::to_string(metrics->at(curr_mesh_id).MAA_min) + "</font>";
+        message += "<br><font color=\"blue\">MAA MAX : " + std::to_string(metrics->at(curr_mesh_id).MAA_max) + "</font>";
+        message += "<br>MAA AVG : " + std::to_string(metrics->at(curr_mesh_id).MAA_avg);
     }
     else
-    if (ui->er_rb->isChecked())
+    if (ui->anr_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).ER_min_id;
-        id_max = metrics->at(curr_mesh_id).ER_max_id;
-        message += "<br><font color=\"green\">ER MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_min) + "</font>";
-        message += "<br><font color=\"blue\">ER MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_max) + "</font>";
-        message += "<br>ER MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_avg);
-    }
-    else
-    if (ui->mpd_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).MPD_min_id;
-        id_max = metrics->at(curr_mesh_id).MPD_max_id;
-        message += "<br><font color=\"green\">MPD MIN : " + std::to_string(metrics->at(curr_mesh_id).MPD_min) + "</font>";
-        message += "<br><font color=\"blue\">MPD MAX : " + std::to_string(metrics->at(curr_mesh_id).MPD_max) + "</font>";
-        message += "<br>MPD AVG : " + std::to_string(metrics->at(curr_mesh_id).MPD_avg);
-    }
-    else
-    if (ui->ns_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).NS_min_id;
-        id_max = metrics->at(curr_mesh_id).NS_max_id;
-        message += "<br><font color=\"green\">NS MIN : " + std::to_string(metrics->at(curr_mesh_id).NS_min) + "</font>";
-        message += "<br><font color=\"blue\">NS MAX : " + std::to_string(metrics->at(curr_mesh_id).NS_max) + "</font>";
-        message += "<br>NS AVG : " + std::to_string(metrics->at(curr_mesh_id).NS_avg);
-    }
-    else
-    if (ui->mxa_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).MXA_min_id;
-        id_max = metrics->at(curr_mesh_id).MXA_max_id;
-        message += "<br><font color=\"green\">MXA MIN : " + std::to_string(metrics->at(curr_mesh_id).MXA_min) + "</font>";
-        message += "<br><font color=\"blue\">MXA MAX : " + std::to_string(metrics->at(curr_mesh_id).MXA_max) + "</font>";
-        message += "<br>MXA AVG : " + std::to_string(metrics->at(curr_mesh_id).MXA_avg);
-    }
-    else
-    if (ui->sr_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).SR_min_id;
-        id_max = metrics->at(curr_mesh_id).SR_max_id;
-        message += "<br><font color=\"green\">SR MIN : " + std::to_string(metrics->at(curr_mesh_id).SR_min) + "</font>";
-        message += "<br><font color=\"blue\">SR MAX : " + std::to_string(metrics->at(curr_mesh_id).SR_max) + "</font>";
-        message += "<br>SR AVG : " + std::to_string(metrics->at(curr_mesh_id).SR_avg);
+        id_min = metrics->at(curr_mesh_id).ANR_min_id;
+        id_max = metrics->at(curr_mesh_id).ANR_max_id;
+        message += "<br><font color=\"green\">ANR MIN : " + std::to_string(metrics->at(curr_mesh_id).ANR_min) + "</font>";
+        message += "<br><font color=\"blue\">ANR MAX : " + std::to_string(metrics->at(curr_mesh_id).ANR_max) + "</font>";
+        message += "<br>ANR AVG : " + std::to_string(metrics->at(curr_mesh_id).ANR_avg);
     }
     else
     if (ui->vem_rb->isChecked())
@@ -1249,15 +964,22 @@ void MeshMetricsGraphicWidget::show_avg()
         message += "<br>VEM AVG : " + std::to_string(metrics->at(curr_mesh_id).VEM_avg);
     }
     else
-    if (ui->vema_rb->isChecked())
+    if (ui->jac_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).VEMA_min_id;
-        id_max = metrics->at(curr_mesh_id).VEMA_max_id;
-        message += "<br><font color=\"green\">VEMA MIN : " + std::to_string(metrics->at(curr_mesh_id).VEMA_min) + "</font>";
-        message += "<br><font color=\"blue\">VEMA MAX : " + std::to_string(metrics->at(curr_mesh_id).VEMA_max) + "</font>";
-
-        double VEMA = sqrt(metrics->at(curr_mesh_id).VEMA_sum + metrics->at(curr_mesh_id).VEMA_poly_sum);
-        message += "<br>VEMA : " + std::to_string(VEMA);
+        id_min = metrics->at(curr_mesh_id).JAC_min_id;
+        id_max = metrics->at(curr_mesh_id).JAC_max_id;
+        message += "<br><font color=\"green\">JAC MIN : " + std::to_string(metrics->at(curr_mesh_id).JAC_min) + "</font>";
+        message += "<br><font color=\"blue\">JAC MAX : " + std::to_string(metrics->at(curr_mesh_id).JAC_max) + "</font>";
+        message += "<br>JAC AVG : " + std::to_string(metrics->at(curr_mesh_id).JAC_avg);
+    }
+    else
+    if (ui->fro_rb->isChecked())
+    {
+        id_min = metrics->at(curr_mesh_id).FRO_min_id;
+        id_max = metrics->at(curr_mesh_id).FRO_max_id;
+        message += "<br><font color=\"green\">FRO MIN : " + std::to_string(metrics->at(curr_mesh_id).FRO_min) + "</font>";
+        message += "<br><font color=\"blue\">FRO MAX : " + std::to_string(metrics->at(curr_mesh_id).FRO_max) + "</font>";
+        message += "<br>FRO AVG : " + std::to_string(metrics->at(curr_mesh_id).FRO_avg);
     }
     else
     {
@@ -1280,49 +1002,40 @@ void MeshMetricsGraphicWidget::show_poly()
     uint id_min, id_max;
     std::string message = "";
 
-    if (ui->ic_rb->isChecked())
+    if (ui->inr_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).IC_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).IC_poly_max_id;
-        message += "<br><font color=\"green\">IC POLY MIN: " + std::to_string(metrics->at(curr_mesh_id).IC_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">IC POLY MAX: " + std::to_string(metrics->at(curr_mesh_id).IC_poly_max) + "</font>";
-        message += "<br>IC POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).IC_poly_avg);
+        id_min = metrics->at(curr_mesh_id).INR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).INR_poly_max_id;
+        message += "<br><font color=\"green\">IR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).INR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">IR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).INR_poly_max) + "</font>";
+        message += "<br>IR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).INR_poly_avg);
     }
     else
-    if (ui->cc_rb->isChecked())
+    if (ui->our_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).CC_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).CC_poly_max_id;
-        message += "<br><font color=\"green\">CC POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).CC_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">CC POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).CC_poly_max) + "</font>";
-        message += "<br>CC POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).CC_poly_avg);
+        id_min = metrics->at(curr_mesh_id).OUR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).OUR_poly_max_id;
+        message += "<br><font color=\"green\">OR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).OUR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">OR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).OUR_poly_max) + "</font>";
+        message += "<br>OR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).OUR_poly_avg);
     }
     else
-    if (ui->cr_rb->isChecked())
+    if (ui->cir_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).CR_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).CR_poly_max_id;
-        message += "<br><font color=\"green\">CR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).CR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">CR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).CR_poly_max) + "</font>";
-        message += "<br>CR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).CR_poly_avg);
+        id_min = metrics->at(curr_mesh_id).CIR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).CIR_poly_max_id;
+        message += "<br><font color=\"green\">CR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).CIR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">CR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).CIR_poly_max) + "</font>";
+        message += "<br>CR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).CIR_poly_avg);
     }
     else
-    if (ui->ar_rb->isChecked())
+    if (ui->krr_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).AR_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).AR_poly_max_id;
-        message += "<br><font color=\"green\">AR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).AR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">AR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).AR_poly_max) + "</font>";
-        message += "<br>AR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).AR_poly_avg);
-    }
-    else
-    if (ui->ke_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).KE_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).KE_poly_max_id;
-        message += "<br><font color=\"green\">KE POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).KE_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">KE POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).KE_poly_max) + "</font>";
-        message += "<br>KE POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).KE_poly_avg);
+        id_min = metrics->at(curr_mesh_id).KRR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).KRR_poly_max_id;
+        message += "<br><font color=\"green\">KRR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).KRR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">KRR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).KRR_poly_max) + "</font>";
+        message += "<br>KRR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).KRR_poly_avg);
     }
     else
     if (ui->kar_rb->isChecked())
@@ -1334,76 +1047,40 @@ void MeshMetricsGraphicWidget::show_poly()
         message += "<br>KAR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).KAR_poly_avg);
     }
     else
-    if (ui->par_rb->isChecked())
+    if (ui->apr_rb->isChecked())
     {
         id_min = metrics->at(curr_mesh_id).APR_poly_min_id;
         id_max = metrics->at(curr_mesh_id).APR_poly_max_id;
-        message += "<br><font color=\"green\">PAR POLY MIN: " + std::to_string(metrics->at(curr_mesh_id).APR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">PAR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_max) + "</font>";
-        message += "<br>PAR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_avg);
+        message += "<br><font color=\"green\">APR POLY MIN: " + std::to_string(metrics->at(curr_mesh_id).APR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">APR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_max) + "</font>";
+        message += "<br>APR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).APR_poly_avg);
     }
     else
-    if (ui->ma_rb->isChecked())
+    if (ui->mia_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).MA_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).MA_poly_max_id;
-        message += "<br><font color=\"green\">MA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MA_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">MA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MA_poly_max) + "</font>";
-        message += "<br>MA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MA_poly_avg);
+        id_min = metrics->at(curr_mesh_id).MIA_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).MIA_poly_max_id;
+        message += "<br><font color=\"green\">MIA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MIA_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">MIA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MIA_poly_max) + "</font>";
+        message += "<br>MIA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MIA_poly_avg);
     }
     else
-    if (ui->se_rb->isChecked())
+    if (ui->maa_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).SE_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).SE_poly_max_id;
-        message += "<br><font color=\"green\">SE POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).SE_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">SE POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).SE_poly_max) + "</font>";
-        message += "<br>SE POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).SE_poly_avg);
+        id_min = metrics->at(curr_mesh_id).MAA_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).MAA_poly_max_id;
+        message += "<br><font color=\"green\">MAA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MAA_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">MAA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MAA_poly_max) + "</font>";
+        message += "<br>MAA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MAA_poly_avg);
     }
     else
-    if (ui->er_rb->isChecked())
+    if (ui->anr_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).ER_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).ER_poly_max_id;
-        message += "<br><font color=\"green\">ER POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">ER POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_poly_max) + "</font>";
-        message += "<br>ER POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).ER_poly_avg);
-    }
-    else
-    if (ui->mpd_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).MPD_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).MPD_poly_max_id;
-        message += "<br><font color=\"green\">MPD POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MPD_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">MPD POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MPD_poly_max) + "</font>";
-        message += "<br>MPD POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MPD_poly_avg);
-    }
-    else
-    if (ui->ns_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).NS_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).NS_poly_max_id;
-        message += "<br><font color=\"green\">NS POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).NS_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">NS POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).NS_poly_max) + "</font>";
-        message += "<br>NS POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).NS_poly_avg);
-    }
-    else
-    if (ui->mxa_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).MXA_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).MXA_poly_max_id;
-        message += "<br><font color=\"green\">MXA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).MXA_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">MXA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).MXA_poly_max) + "</font>";
-        message += "<br>MXA POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).MXA_poly_avg);
-    }
-    else
-    if (ui->sr_rb->isChecked())
-    {
-        id_min = metrics->at(curr_mesh_id).SR_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).SR_poly_max_id;
-        message += "<br><font color=\"green\">SR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).SR_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">SR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).SR_poly_max) + "</font>";
-        message += "<br>SR AVG : " + std::to_string(metrics->at(curr_mesh_id).SR_poly_avg);
+        id_min = metrics->at(curr_mesh_id).ANR_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).ANR_poly_max_id;
+        message += "<br><font color=\"green\">ANR POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).ANR_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">ANR POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).ANR_poly_max) + "</font>";
+        message += "<br>ANR POLY AVG : " + std::to_string(metrics->at(curr_mesh_id).ANR_poly_avg);
     }
     else
     if (ui->vem_rb->isChecked())
@@ -1415,15 +1092,22 @@ void MeshMetricsGraphicWidget::show_poly()
         message += "<br>VEM AVG : " + std::to_string(metrics->at(curr_mesh_id).VEM_poly_avg);
     }
     else
-    if (ui->vema_rb->isChecked())
+    if (ui->jac_rb->isChecked())
     {
-        id_min = metrics->at(curr_mesh_id).VEMA_poly_min_id;
-        id_max = metrics->at(curr_mesh_id).VEMA_poly_max_id;
-        message += "<br><font color=\"green\">VEMA POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).VEMA_poly_min) + "</font>";
-        message += "<br><font color=\"blue\">VEMA POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).VEMA_poly_max) + "</font>";
-
-        double VEMA = sqrt(metrics->at(curr_mesh_id).VEMA_sum + metrics->at(curr_mesh_id).VEMA_poly_sum);
-        message += "<br>VEMA : " + std::to_string(VEMA);
+        id_min = metrics->at(curr_mesh_id).JAC_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).JAC_poly_max_id;
+        message += "<br><font color=\"green\">JAC POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).JAC_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">JAC POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).JAC_poly_max) + "</font>";
+        message += "<br>JAC AVG : " + std::to_string(metrics->at(curr_mesh_id).JAC_poly_avg);
+    }
+    else
+    if (ui->fro_rb->isChecked())
+    {
+        id_min = metrics->at(curr_mesh_id).FRO_poly_min_id;
+        id_max = metrics->at(curr_mesh_id).FRO_poly_max_id;
+        message += "<br><font color=\"green\">FRO POLY MIN : " + std::to_string(metrics->at(curr_mesh_id).FRO_poly_min) + "</font>";
+        message += "<br><font color=\"blue\">FRO POLY MAX : " + std::to_string(metrics->at(curr_mesh_id).FRO_poly_max) + "</font>";
+        message += "<br>FRO AVG : " + std::to_string(metrics->at(curr_mesh_id).FRO_poly_avg);
     }
     else
     {

@@ -134,35 +134,30 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
                 for (uint m=class_chages.at(cc); m < class_chages.at(cc+1); m++)
                 {
                     double x, y;
-                    double min_IC = std::min(metrics.at(m).IC_min,
-                                             metrics.at(m).IC_poly_min);
 
-                    if (metrics.at(m).IC_min_id == UINT_MAX) min_IC = metrics.at(m).IC_poly_min;
-                    else if (metrics.at(m).IC_poly_min_id == UINT_MAX) min_IC = metrics.at(m).IC_min;
+                    double min_INR = std::min(metrics.at(m).INR_min,
+                                             metrics.at(m).INR_poly_min);
 
-                    double min_CC = std::min(metrics.at(m).CC_min,
-                                             metrics.at(m).CC_poly_min);
+                    if (metrics.at(m).INR_min_id == UINT_MAX) min_INR = metrics.at(m).INR_poly_min;
+                    else if (metrics.at(m).INR_poly_min_id == UINT_MAX) min_INR = metrics.at(m).INR_min;
 
-                    if (metrics.at(m).CC_min_id == UINT_MAX) min_CC = metrics.at(m).CC_poly_min;
-                    else if (metrics.at(m).CC_poly_min_id == UINT_MAX) min_CC = metrics.at(m).CC_min;
+                    double min_OUR = std::min(metrics.at(m).OUR_min,
+                                             metrics.at(m).OUR_poly_min);
 
-                    double min_CR = std::min(metrics.at(m).CR_min,
-                                             metrics.at(m).CR_poly_min);
+                    if (metrics.at(m).OUR_min_id == UINT_MAX) min_OUR = metrics.at(m).OUR_poly_min;
+                    else if (metrics.at(m).OUR_poly_min_id == UINT_MAX) min_OUR = metrics.at(m).OUR_min;
 
-                    if (metrics.at(m).CR_min_id == UINT_MAX) min_CR = metrics.at(m).CR_poly_min;
-                    else if (metrics.at(m).CR_poly_min_id == UINT_MAX) min_CR = metrics.at(m).CR_min;
+                    double min_CIR = std::min(metrics.at(m).CIR_min,
+                                             metrics.at(m).CIR_poly_min);
 
-                    double min_AR = std::min(metrics.at(m).AR_min,
-                                             metrics.at(m).AR_poly_min);
+                    if (metrics.at(m).CIR_min_id == UINT_MAX) min_CIR = metrics.at(m).CIR_poly_min;
+                    else if (metrics.at(m).CIR_poly_min_id == UINT_MAX) min_CIR = metrics.at(m).CIR_min;
 
-                    if (metrics.at(m).AR_min_id == UINT_MAX) min_AR = metrics.at(m).AR_poly_min;
-                    else if (metrics.at(m).AR_poly_min_id == UINT_MAX) min_AR = metrics.at(m).AR_min;
+                    double min_KRR = std::min(metrics.at(m).KRR_min,
+                                             metrics.at(m).KRR_poly_min);
 
-                    double min_KE = std::min(metrics.at(m).KE_min,
-                                             metrics.at(m).KE_poly_min);
-
-                    if (metrics.at(m).KE_min_id == UINT_MAX) min_KE = metrics.at(m).KE_poly_min;
-                    else if (metrics.at(m).KE_poly_min_id == UINT_MAX) min_KE = metrics.at(m).KE_min;
+                    if (metrics.at(m).KRR_min_id == UINT_MAX) min_KRR = metrics.at(m).KRR_poly_min;
+                    else if (metrics.at(m).KRR_poly_min_id == UINT_MAX) min_KRR = metrics.at(m).KRR_min;
 
                     double min_KAR = std::min(metrics.at(m).KAR_min,
                                               metrics.at(m).KAR_poly_min);
@@ -176,75 +171,55 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
                     if (metrics.at(m).APR_min_id == UINT_MAX) min_APR = metrics.at(m).APR_poly_min;
                     else if (metrics.at(m).APR_poly_min_id == UINT_MAX) min_APR = metrics.at(m).APR_min;
 
-                    double min_MA = std::min(metrics.at(m).MA_min,
-                                             metrics.at(m).MA_poly_min);
+                    double min_MIA = std::min(metrics.at(m).MIA_min,
+                                             metrics.at(m).MIA_poly_min);
 
-                    if (metrics.at(m).MA_min_id == UINT_MAX) min_MA = metrics.at(m).MA_poly_min;
-                    else if (metrics.at(m).MA_poly_min_id == UINT_MAX) min_MA = metrics.at(m).MA_min;
+                    if (metrics.at(m).MIA_min_id == UINT_MAX) min_MIA = metrics.at(m).MIA_poly_min;
+                    else if (metrics.at(m).MIA_poly_min_id == UINT_MAX) min_MIA = metrics.at(m).MIA_min;
 
-                    double min_SE = std::min(metrics.at(m).SE_min,
-                                             metrics.at(m).SE_poly_min);
+                    double min_MAA = std::min(metrics.at(m).MAA_min,
+                                             metrics.at(m).MAA_poly_min);
 
-                    if (metrics.at(m).SE_min_id == UINT_MAX) min_SE = metrics.at(m).SE_poly_min;
-                    else if (metrics.at(m).SE_poly_min_id == UINT_MAX) min_SE = metrics.at(m).SE_min;
+                    if (metrics.at(m).MAA_min_id == UINT_MAX) min_MAA = metrics.at(m).MAA_poly_min;
+                    else if (metrics.at(m).MAA_poly_min_id == UINT_MAX) min_MAA = metrics.at(m).MAA_min;
 
-                    double min_ER = std::min(metrics.at(m).ER_min,
-                                             metrics.at(m).ER_poly_min);
+                    double min_ANR = std::min(metrics.at(m).ANR_min,
+                                             metrics.at(m).ANR_poly_min);
 
-                    if (metrics.at(m).ER_min_id == UINT_MAX) min_ER = metrics.at(m).ER_poly_min;
-                    else if (metrics.at(m).ER_poly_min_id == UINT_MAX) min_ER = metrics.at(m).ER_min;
+                    if (metrics.at(m).ANR_min_id == UINT_MAX) min_ANR = metrics.at(m).ANR_poly_min;
+                    else if (metrics.at(m).ANR_poly_min_id == UINT_MAX) min_ANR = metrics.at(m).ANR_min;
 
-                    double min_MPD = std::min(metrics.at(m).MPD_min,
-                                             metrics.at(m).MPD_poly_min);
+                    double min_VEM = std::min(metrics.at(m).VEM_min,
+                                              metrics.at(m).VEM_poly_min);
 
-                    if (metrics.at(m).MPD_min_id == UINT_MAX) min_MPD = metrics.at(m).MPD_poly_min;
-                    else if (metrics.at(m).MPD_poly_min_id == UINT_MAX) min_MPD = metrics.at(m).MPD_min;
+                    if (metrics.at(m).VEM_min_id == UINT_MAX) min_VEM = metrics.at(m).VEM_poly_min;
+                    else if (metrics.at(m).VEM_poly_min_id == UINT_MAX) min_VEM = metrics.at(m).VEM_min;
 
-                    double min_NS = std::min(metrics.at(m).NS_min,
-                                             metrics.at(m).NS_poly_min);
+                    double min_JAC = std::min(metrics.at(m).JAC_min,
+                                              metrics.at(m).JAC_poly_min);
 
-                    if (metrics.at(m).NS_min_id == UINT_MAX) min_NS = metrics.at(m).NS_poly_min;
-                    else if (metrics.at(m).NS_poly_min_id == UINT_MAX) min_NS = metrics.at(m).NS_min;
+                    if (metrics.at(m).JAC_min_id == UINT_MAX) min_JAC = metrics.at(m).JAC_poly_min;
+                    else if (metrics.at(m).JAC_poly_min_id == UINT_MAX) min_JAC = metrics.at(m).JAC_min;
 
-                    double min_MXA = std::min(metrics.at(m).MXA_min,
-                                              metrics.at(m).MXA_poly_min);
+                    double min_FRO = std::min(metrics.at(m).FRO_min,
+                                              metrics.at(m).FRO_poly_min);
 
-                    if (metrics.at(m).MXA_min_id == UINT_MAX) min_MXA = metrics.at(m).MXA_poly_min;
-                    else if (metrics.at(m).MXA_poly_min_id == UINT_MAX) min_MXA = metrics.at(m).MXA_min;
-
-                    double min_SR = std::min(metrics.at(m).SR_min,
-                                             metrics.at(m).SR_poly_min);
-                    min_SR = log(min_SR);
-
-                    if (metrics.at(m).SR_min_id == UINT_MAX) min_SR = metrics.at(m).SR_poly_min;
-                    else if (metrics.at(m).SR_poly_min_id == UINT_MAX) min_SR = metrics.at(m).SR_min;
-
-                    double max_VEM = std::max(metrics.at(m).VEM_max, metrics.at(m).VEM_poly_max);
-                    max_VEM = log(max_VEM);
-
-                    if (metrics.at(m).VEM_max_id == UINT_MAX) max_VEM = metrics.at(m).VEM_poly_max;
-                    else if (metrics.at(m).VEM_poly_max_id == UINT_MAX) max_VEM = metrics.at(m).VEM_max;
-
-                    double sum_VEMA = sqrt(metrics.at(m).VEMA_sum + metrics.at(m).VEMA_poly_sum);
-                    sum_VEMA = log(sum_VEMA);
+                    if (metrics.at(m).FRO_min_id == UINT_MAX) min_FRO = metrics.at(m).FRO_poly_min;
+                    else if (metrics.at(m).FRO_poly_min_id == UINT_MAX) min_FRO = metrics.at(m).FRO_min;
 
                     switch (cbID2metricsID.at(i)) {
-                        case 0: x = min_IC; break;
-                        case 1: x = min_CC; break;
-                        case 2: x = min_CR; break;
-                        case 3: x = min_AR; break;
-                        case 4: x = min_KE; break;
-                        case 5: x = min_KAR; break;
-                        case 6: x = min_APR; break;
-                        case 7: x = min_MA; break;
-                        case 8: x = min_SE; break;
-                        case 9: x = min_ER; break;
-                        case 10: x = min_MPD; break;
-                        case 11: x = min_NS; break;
-                        case 12: x = min_MXA; break;
-                        case 13: x = min_SR; break;
-                        case 14: x = max_VEM; break;
-                        case 15: x = sum_VEMA; break;
+                        case 0: x = min_INR; break;
+                        case 1: x = min_OUR; break;
+                        case 2: x = min_CIR; break;
+                        case 3: x = min_KRR; break;
+                        case 4: x = min_KAR; break;
+                        case 5: x = min_APR; break;
+                        case 6: x = min_MIA; break;
+                        case 7: x = min_MAA; break;
+                        case 8: x = min_ANR; break;
+                        case 9: x = min_VEM; break;
+                        case 10: x = min_JAC; break;
+                        case 11: x = min_FRO; break;
                     default: x = DBL_MAX;
                     }
 

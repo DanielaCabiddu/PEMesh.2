@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>808</width>
-    <height>782</height>
+    <height>816</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,9 +49,9 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QRadioButton" name="ic_rb">
+          <widget class="QRadioButton" name="inr_rb">
            <property name="text">
-            <string>IC - Inscribed Circle Radius</string>
+            <string>INR - Inradius Ratio</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -59,107 +59,79 @@
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="cc_rb">
+          <widget class="QRadioButton" name="our_rb">
            <property name="text">
-            <string>CC - Curcumscribed Circle Radius</string>
+            <string>OUR - Outradius Ratio</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="cr_rb">
+          <widget class="QRadioButton" name="cir_rb">
            <property name="text">
-            <string>CR - IC/CC Ratio</string>
+            <string>CIR - Circle Ratio</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="ar_rb">
+          <widget class="QRadioButton" name="krr_rb">
            <property name="text">
-            <string>AR - Area</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="ke_rb">
-           <property name="text">
-            <string>KE - Kernel Area</string>
+            <string>KRR - Kernel Radius Ratio</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QRadioButton" name="kar_rb">
            <property name="text">
-            <string>KAR - KE/AR Ratio</string>
+            <string>KAR - Kernel Area Ratio</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="par_rb">
+          <widget class="QRadioButton" name="apr_rb">
            <property name="text">
             <string>APR - Area/Perimeter Ratio</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="ma_rb">
+          <widget class="QRadioButton" name="mia_rb">
            <property name="text">
-            <string>MA - Minimum Angle</string>
+            <string>MIA - Minimum Angle</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="se_rb">
+          <widget class="QRadioButton" name="maa_rb">
            <property name="text">
-            <string>SE - Shortest Edge</string>
+            <string>MAA - Maximum Angle</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="er_rb">
+          <widget class="QRadioButton" name="anr_rb">
            <property name="text">
-            <string>ER - Edge Ratio </string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="mpd_rb">
-           <property name="text">
-            <string>MPD - Minimum Point Distance</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="ns_rb">
-           <property name="text">
-            <string>NS - # Edges</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="mxa_rb">
-           <property name="text">
-            <string>MXA - Maximum Angle</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="sr_rb">
-           <property name="text">
-            <string>SR - Shape Regularity</string>
+            <string>ANR - Angle Ratio</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QRadioButton" name="vem_rb">
            <property name="text">
-            <string>VEM - Virtual Elements Metric</string>
+            <string>VEM - VEM Indicator</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="vema_rb">
+          <widget class="QRadioButton" name="jac_rb">
            <property name="text">
-            <string>VEMA - Virtual Elements Area Metric</string>
+            <string>JAC - Weighted Jacobian</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="fro_rb">
+           <property name="text">
+            <string>FRO - Frobenius Ratio</string>
            </property>
           </widget>
          </item>

@@ -42,57 +42,45 @@
 
 const std::vector<std::string> metrics_names =
 {
-    "Inscribed Circle",
-    "Circumscribed Circle",
+    "Inradius Ratio",
+    "Outradius Ratio",
     "Circle Ratio",
-    "Area",
-    "Kernel",
+    "Kernel Radius Ratio",
     "Kernel Area Ratio",
     "Area Perimeter Ratio",
     "Minimum Angle",
-    "Shortest Edge",
-    "Edge Ratio",
-    "Minimum Point to Point Distance",
-    "Number of Edges",
     "Maximum Angle",
-    "Shape Regularity",
-    "Virtual Elements Max",
-    "Virtual Elements Area"
+    "Angle Ratio",
+    "VEM Indicator",
+    "Scaled Jacobian",
+    "Frobenius Ratio"
 };
 
 const std::vector<std::string> metrics_acronym =
 {
-    "IC",
-    "CC",
-    "CR",
-    "AR",
-    "KE",
+    "INR",
+    "OUR",
+    "CIR",
+    "KRR",
     "KAR",
-    "PAR",
-    "MA",
-    "SE",
-    "ER",
-    "MPD",
-    "NS",
-    "MXA",
-    "SR",
+    "APR",
+    "MIA",
+    "MAA",
+    "ANR",
     "VEM",
-    "VEMA"
+    "JAC",
+    "FRO"
 };
 
 const std::vector<bool> metrics_scale_dependent =
 {
-    true,
-    true,
-    false,
-    true,
-    true,
     false,
     false,
     false,
-    true,
     false,
-    true,
+    false,
+    false,
+    false,
     false,
     false,
     false,
@@ -102,22 +90,18 @@ const std::vector<bool> metrics_scale_dependent =
 
 const std::vector<std::pair<double, double>> metrics_ranges
 {
-    std::pair<double, double> (0, cinolib::max_double),
-    std::pair<double, double> (0, cinolib::max_double),
     std::pair<double, double> (0, 1),
-    std::pair<double, double> (0, cinolib::max_double),
-    std::pair<double, double> (0, cinolib::max_double),
     std::pair<double, double> (0, 1),
-    std::pair<double, double> (0, cinolib::max_double),
-    std::pair<double, double> (0, M_PI),
-    std::pair<double, double> (0, cinolib::max_double),
     std::pair<double, double> (0, 1),
-    std::pair<double, double> (0, cinolib::max_double),
-    std::pair<double, double> (0, cinolib::max_double),
-    std::pair<double, double> (0, M_PI),
     std::pair<double, double> (0, 1),
-    std::pair<double, double> (1, cinolib::max_double),
-    std::pair<double, double> (1, cinolib::max_double)
+    std::pair<double, double> (0, 1),
+    std::pair<double, double> (0, 1),
+    std::pair<double, double> (0, 1),
+    std::pair<double, double> (0, 1),
+    std::pair<double, double> (0, 1),
+    std::pair<double, double> (0, 1),
+    std::pair<double, double> (0, 1),
+    std::pair<double, double> (0, 1)
 };
 
 inline
