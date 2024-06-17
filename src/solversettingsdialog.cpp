@@ -48,8 +48,13 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
         matlab_exe_name = "matlab";
     #endif
 
-    ui->matlab_folder->setText(QDir::homePath().append("/matlab/bin/"));
-    ui->solver_script->setText(QDir::homePath().append("/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
+    #ifdef __APPLE__
+        ui->matlab_folder->setText("/Applications/MATLAB_R2023b.app/bin/");
+        ui->solver_script->setText(QDir::homePath().append("/QT-Projects/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
+    #else
+        ui->matlab_folder->setText(QDir::homePath().append("/matlab/bin/"));
+        ui->solver_script->setText(QDir::homePath().append("/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
+    #endif
 
     ui->matlab_folder_error->hide();
     ui->solver_folder_error->hide();

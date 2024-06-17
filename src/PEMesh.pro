@@ -4,17 +4,17 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl charts
+QT += core gui opengl charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = PEMesh
 TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
-QMAKE_CXXFLAGS += -Wno-deprecated-declarations# gluQuadric gluSphere and gluCylinde are deprecated in macOS 10.9
+QMAKE_CXXFLAGS += -Wno-deprecated-declarations # gluQuadric gluSphere and gluCylinde are deprecated in macOS 10.9
 CONFIG += sdk_no_version_check
 
-QMAKE_CXXFLAGS += -fopenmp
-LIBS += -fopenmp
+linux { QMAKE_CXXFLAGS += -fopenmp
+        LIBS += -fopenmp }
 
 VEM_BENCHMARK_DIR = meshes
 
@@ -24,16 +24,17 @@ INCLUDEPATH += ../external/cinolib/include
 INCLUDEPATH += ../external/cinolib/external/eigen
 
 DEFINES     += CINOLIB_USES_BOOST
+macos { INCLUDEPATH += /Users/tommy/QT-projects/libs/boost }
 
 DEFINES     += CINOLIB_USES_TRIANGLE
-INCLUDEPATH += ../external/triangle     # Ubuntu path
+INCLUDEPATH += ../external/triangle
 LIBS         += -L$$PWD/../external/triangle/build -ltriangle
 
 #INCLUDEPATH += meshes
 
 #DEFINES += DEVELOP_MODE
 
-CONFIG += c++11
+CONFIG += c++14
 
 SOURCES += \
         $${VEM_BENCHMARK_DIR}/abstract_vem_element.cpp \
