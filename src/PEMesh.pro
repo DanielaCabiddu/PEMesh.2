@@ -41,7 +41,6 @@ SOURCES += \
         $${VEM_BENCHMARK_DIR}/mesh_metrics.cpp \
         $${VEM_BENCHMARK_DIR}/mirroring.cpp \
         $${VEM_BENCHMARK_DIR}/vem_elements.cpp \
-        addpointsdialog.cpp \
         addpolygondialog.cpp \
         aggregatedialog.cpp \
         customizedchartview.cpp \
@@ -66,7 +65,6 @@ HEADERS += \
         $${VEM_BENCHMARK_DIR}/mirroring.h \
         $${VEM_BENCHMARK_DIR}/non_uniform_scaling_01.h \
         $${VEM_BENCHMARK_DIR}/vem_elements.h \
-        addpointsdialog.h \
         addpolygondialog.h \
         aggregatedialog.h \
         customizedchartview.h \
@@ -87,7 +85,6 @@ HEADERS += \
         sortgeometricqualitiesdialog.h
 
 FORMS += \
-        addpointsdialog.ui \
         addpolygondialog.ui \
         aggregatedialog.ui \
         datasetwidget.ui \

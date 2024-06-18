@@ -58,6 +58,7 @@ typedef struct
     uint   INR_max_id = UINT_MAX;
     uint   INR_poly_min_id = UINT_MAX;
     uint   INR_poly_max_id = UINT_MAX;
+    std::vector<double> INR_all;
 
     // OUR - Outradius/Diameter Ratio - Range: [0,1] - high is good - scale INdependent
     double OUR_min    = 0.0;
@@ -72,6 +73,7 @@ typedef struct
     uint   OUR_max_id = UINT_MAX;
     uint   OUR_poly_min_id = UINT_MAX;
     uint   OUR_poly_max_id = UINT_MAX;
+    std::vector<double> OUR_all;
 
     // CIR - Circle Ratio - Range: [0,1] - high is good - scale INdependent
     double CIR_min    = 0.0;
@@ -86,6 +88,7 @@ typedef struct
     uint   CIR_max_id = UINT_MAX;
     uint   CIR_poly_min_id = UINT_MAX;
     uint   CIR_poly_max_id = UINT_MAX;
+    std::vector<double> CIR_all;
 
     // KRR - Kernel Radius Ratio - Range: [0,1] - high is good - scale INdependent
     double KRR_min    = 0.0;
@@ -100,6 +103,7 @@ typedef struct
     uint   KRR_max_id = UINT_MAX;
     uint   KRR_poly_min_id = UINT_MAX;
     uint   KRR_poly_max_id = UINT_MAX;
+    std::vector<double> KRR_all;
 
     // KAR - Kernel Area Ratio - Range: [0,1] - high is good - scale INdependent
     double KAR_min    = 0.0;
@@ -114,6 +118,7 @@ typedef struct
     uint   KAR_max_id = UINT_MAX;
     uint   KAR_poly_min_id = UINT_MAX;
     uint   KAR_poly_max_id = UINT_MAX;
+    std::vector<double> KAR_all;
 
     // APR - Area/Perimeter Ratio - Range: [0,1] - high is good - scale INdependent
     double APR_min    = 0.0;
@@ -128,6 +133,7 @@ typedef struct
     uint   APR_max_id = UINT_MAX;
     uint   APR_poly_min_id = UINT_MAX;
     uint   APR_poly_max_id = UINT_MAX;
+    std::vector<double> APR_all;
 
     // MIA - Minimum Angle - Range: [0,1] - high is good - scale INdependent
     double MIA_min    = 0.0;
@@ -142,6 +148,7 @@ typedef struct
     uint   MIA_max_id = UINT_MAX;
     uint   MIA_poly_min_id = UINT_MAX;
     uint   MIA_poly_max_id = UINT_MAX;
+    std::vector<double> MIA_all;
 
     // MAA - Maximum Angle - Range: [0,1] - high is good - scale INdependent
     double MAA_min    = 0.0;
@@ -156,6 +163,7 @@ typedef struct
     uint   MAA_max_id = UINT_MAX;
     uint   MAA_poly_min_id = UINT_MAX;
     uint   MAA_poly_max_id = UINT_MAX;
+    std::vector<double> MAA_all;
 
     // ANR - Angle Ratio - Range: [0,1] - high is good - scale INdependent
     double ANR_min    = 0.0;
@@ -170,6 +178,7 @@ typedef struct
     uint   ANR_max_id = UINT_MAX;
     uint   ANR_poly_min_id = UINT_MAX;
     uint   ANR_poly_max_id = UINT_MAX;
+    std::vector<double> ANR_all;
 
     // VEM - VEM Indicator - Range: [0,1] - high is good - scale INdependent
     double VEM_min       = 0.0;
@@ -184,6 +193,7 @@ typedef struct
     uint   VEM_max_id    = UINT_MAX;
     uint   VEM_poly_min_id = UINT_MAX;
     uint   VEM_poly_max_id = UINT_MAX;
+    std::vector<double> VEM_all;
 
     // JAC - JAC Indicator - Range: [0,1] - high is good - scale INdependent
     double JAC_min       = 0.0;
@@ -198,6 +208,7 @@ typedef struct
     uint   JAC_max_id    = UINT_MAX;
     uint   JAC_poly_min_id = UINT_MAX;
     uint   JAC_poly_max_id = UINT_MAX;
+    std::vector<double> JAC_all;
 
     // FRO - Frobenius Ratio - Range: [0,1] - high is good - scale INdependent
     double FRO_min       = 0.0;
@@ -212,6 +223,7 @@ typedef struct
     uint   FRO_max_id    = UINT_MAX;
     uint   FRO_poly_min_id = UINT_MAX;
     uint   FRO_poly_max_id = UINT_MAX;
+    std::vector<double> FRO_all;
 }
 MeshMetrics;
 
@@ -222,6 +234,8 @@ void get_min_max_avg(std::vector<std::pair<T,uint>> & list,
                      double                         & avg,
                      uint                           & min_id,
                      uint                           & max_id);
+
+void get_all(std::vector<std::pair<double,uint>> & list_triangles, std::vector<std::pair<double,uint>> & list_polys, std::vector<double> & values);
 
 void save_to_file(const char *filename, const MeshMetrics & metrics);
 

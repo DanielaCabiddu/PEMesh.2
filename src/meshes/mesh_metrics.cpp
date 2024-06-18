@@ -80,6 +80,16 @@ void get_global_avg_norm (const std::vector<std::pair<T,uint>> & list1,
 
 }
 
+void get_all(std::vector<std::pair<double,uint>> & list_triangles, std::vector<std::pair<double,uint>> & list_polys, std::vector<double> & values) {
+    values.resize(list_triangles.size() + list_polys.size());
+    for(auto i : list_triangles) {
+        values.at(i.second) = i.first;
+    }
+    for(auto i : list_polys) {
+        values.at(i.second) = i.first;
+    }
+}
+
 template<typename T>
 void get_sum(std::vector<std::pair<T,uint>> & list, double & sum)
 {
@@ -427,4 +437,17 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
     get_global_avg_norm(VEM, VEM_poly, metrics.VEM_global_avg, metrics.VEM_global_norm);
     get_global_avg_norm(JAC, JAC_poly, metrics.JAC_global_avg, metrics.JAC_global_norm);
     get_global_avg_norm(FRO, FRO_poly, metrics.FRO_global_avg, metrics.FRO_global_norm);
+
+    get_all(INR, INR_poly, metrics.INR_all);
+    get_all(OUR, OUR_poly, metrics.OUR_all);
+    get_all(CIR, CIR_poly, metrics.CIR_all);
+    get_all(KRR, KRR_poly, metrics.KRR_all);
+    get_all(KAR, KAR_poly, metrics.KAR_all);
+    get_all(APR, APR_poly, metrics.APR_all);
+    get_all(MIA, MIA_poly, metrics.MIA_all);
+    get_all(MAA, MAA_poly, metrics.MAA_all);
+    get_all(ANR, ANR_poly, metrics.ANR_all);
+    get_all(VEM, VEM_poly, metrics.VEM_all);
+    get_all(JAC, JAC_poly, metrics.JAC_all);
+    get_all(FRO, FRO_poly, metrics.FRO_all);
 }

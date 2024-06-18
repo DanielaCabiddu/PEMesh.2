@@ -80,6 +80,7 @@ public slots:
     void show_max ();
     void show_avg ();
     void show_poly ();
+    void show_all ();
 
 private slots:
     void on_mesh_metrics_slider_valueChanged(int value);
@@ -98,6 +99,7 @@ private:
 
     void set_min_color (const uint i);
     void set_max_color (const uint i);
+    void set_all_color(const double min, const double max, const std::vector<double> all);
 
 };
 

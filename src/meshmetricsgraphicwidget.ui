@@ -182,6 +182,13 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QRadioButton" name="all_rb">
+           <property name="text">
+            <string>All</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
