@@ -44,6 +44,7 @@
 #include <aggregatedialog.h>
 #include <solversettingsdialog.h>
 #include <sortgeometricqualitiesdialog.h>
+#include <optimizedialog.h>
 
 #include <QFileDialog>
 #include <QFormLayout>
@@ -116,6 +117,8 @@ DatasetWidget::DatasetWidget(QWidget *parent) :
 
     ui->polygon_list->horizontalHeader()->setStretchLastSection(true);
     ui->polygon_list->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ui->aggregate_btn->setVisible(false);
 }
 
 DatasetWidget::~DatasetWidget()
@@ -1681,3 +1684,10 @@ void DatasetWidget::on_highlight_polys_cb_stateChanged(int checked)
 
     ui->canvas->updateGL();
 }
+
+void DatasetWidget::on_optimize_btn_clicked()
+{
+    OptimizeDialog *dialog = new OptimizeDialog();
+
+}
+

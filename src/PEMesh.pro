@@ -52,6 +52,7 @@ SOURCES += \
         mainwindow.cpp \
         meshmetricsgraphicwidget.cpp \
         meshmetricswidget.cpp \
+        optimizedialog.cpp \
         parametricdatasetsettingsdialog.cpp \
         scatterplotmarkersettingwidget.cpp \
         solverresultswidget.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
         mainwindow.h \
         meshmetricsgraphicwidget.h \
         meshmetricswidget.h \
+        optimizedialog.h \
         parametricdatasetsettingsdialog.h \
         quality_metrics.h \
         scatterplotmarkersettingwidget.h \
@@ -93,6 +95,7 @@ FORMS += \
         mainwindow.ui \
         meshmetricsgraphicwidget.ui \
         meshmetricswidget.ui \
+        optimizedialog.ui \
         parametricdatasetsettingsdialog.ui \
         scatterplotmarkersettingwidget.ui \
         solverresultswidget.ui \

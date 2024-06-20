@@ -108,7 +108,9 @@ private slots:
 
   void on_highlight_polys_cb_stateChanged(int checked);
 
-Q_SIGNALS:
+  void on_optimize_btn_clicked();
+
+  Q_SIGNALS:
 
   void computed_mesh_metrics();
   void computed_parametric_dataset();

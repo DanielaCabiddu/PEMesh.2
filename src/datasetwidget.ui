@@ -146,62 +146,6 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="10" column="0">
-           <widget class="QPushButton" name="geom_qualities_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string> Geometric Qualities</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/geometry_icon.png</normaloff>:/icons/img/geometry_icon.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QPushButton" name="aggregate_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string> Aggregate Triangles</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/aggregate.png</normaloff>:/icons/img/aggregate.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QPushButton" name="mirroring_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string> Mirroring</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/mirroring.png</normaloff>:/icons/img/mirroring.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QPushButton" name="generate_dataset_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string> Generate Dataset</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/slider.png</normaloff>:/icons/img/slider.png</iconset>
-            </property>
-           </widget>
-          </item>
           <item row="5" column="0">
            <widget class="QPushButton" name="add_btn">
             <property name="text">
@@ -250,6 +194,52 @@
             </layout>
            </widget>
           </item>
+          <item row="13" column="0">
+           <widget class="QGroupBox" name="groupBox_3">
+            <property name="title">
+             <string>Visualization Options</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="show_coords_cb">
+               <property name="text">
+                <string>Show Coordinate Markers</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="highlight_polys_cb">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Highlight Non-Triangle Polygons</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QPushButton" name="mirroring_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Mirroring</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/mirroring.png</normaloff>:/icons/img/mirroring.png</iconset>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0">
            <widget class="QTableWidget" name="polygon_list">
             <property name="sizePolicy">
@@ -280,7 +270,35 @@
             </column>
            </widget>
           </item>
-          <item row="12" column="0">
+          <item row="8" column="0">
+           <widget class="QPushButton" name="aggregate_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Aggregate Triangles</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/aggregate.png</normaloff>:/icons/img/aggregate.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QPushButton" name="generate_dataset_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Generate Dataset</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/slider.png</normaloff>:/icons/img/slider.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="0">
            <widget class="QGroupBox" name="groupBox">
             <property name="title">
              <string>Save Options</string>
@@ -317,36 +335,28 @@
             </layout>
            </widget>
           </item>
-          <item row="11" column="0">
-           <widget class="QGroupBox" name="groupBox_3">
-            <property name="title">
-             <string>Visualization Options</string>
+          <item row="12" column="0">
+           <widget class="QPushButton" name="geom_qualities_btn">
+            <property name="enabled">
+             <bool>false</bool>
             </property>
-            <layout class="QGridLayout" name="gridLayout_3">
-             <item row="1" column="0">
-              <widget class="QCheckBox" name="show_coords_cb">
-               <property name="text">
-                <string>Show Coordinate Markers</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QCheckBox" name="highlight_polys_cb">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Highlight Non-Triangle Polygons</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <property name="text">
+             <string> Geometric Qualities</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/geometry_icon.png</normaloff>:/icons/img/geometry_icon.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QPushButton" name="optimize_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Optimize Mesh</string>
+            </property>
            </widget>
           </item>
          </layout>
