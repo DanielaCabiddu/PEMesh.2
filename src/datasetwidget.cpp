@@ -755,6 +755,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
         ui->generate_dataset_btn->setEnabled(false);
 
         ui->geom_qualities_btn->setEnabled(true);
+        ui->optimize_btn->setEnabled(true);
         ui->save_btn->setEnabled(true);
 
         ui->load_polys_btn->setEnabled(false);
@@ -1298,6 +1299,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
     ui->generate_dataset_btn->setEnabled(false);
 
     ui->geom_qualities_btn->setEnabled(true);
+    ui->optimize_btn->setEnabled(true);
 
     ui->canvas->callback_mouse_press =
             [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
@@ -1687,7 +1689,82 @@ void DatasetWidget::on_highlight_polys_cb_stateChanged(int checked)
 
 void DatasetWidget::on_optimize_btn_clicked()
 {
-    OptimizeDialog *dialog = new OptimizeDialog();
+    ui->optimize_btn->setEnabled(false);
 
+    OptimizeDialog *dialog = new OptimizeDialog();
+    int indicator;
+    bool node_weights, arc_weights;
+    double parameter;
+    if (dialog->exec() == 1)
+    {
+        indicator = dialog->get_indicator();
+        switch (dialog->get_weights()) {
+        case 0:
+            node_weights = true;
+            arc_weights = true;
+            break;
+        case 1:
+            node_weights = true;
+            arc_weights = false;
+            break;
+        case 2:
+            node_weights = false;
+            arc_weights = true;
+            break;
+        case 3:
+            node_weights = false;
+            arc_weights = false;
+            break;
+        default:
+            break;
+        }
+        parameter = dialog->get_parameter();
+    }
+    delete dialog;
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    uint index=0;
+    for (cinolib::DrawablePolygonmesh<> *mesh : dataset->get_parametric_meshes())
+    {
+        std::string message = "Optimizing mesh " + std::to_string(index) + ": " +
+                              std::to_string(mesh->num_verts()) + "V|" +
+                              std::to_string(mesh->num_polys()) + "P" ;
+        ui->log_label->append(message.c_str());
+
+        message = "--> Metis Labelling, required: " +
+                  std::to_string((uint)(mesh->num_polys() * parameter / 100.));
+        int n_labels = 1; // = metis_wrap_dual(mesh, indicator, parameter, node_weights, arc_weights);
+        message += ", found: " + std::to_string(n_labels);
+        ui->log_label->append(message.c_str());
+
+        DrawablePolygonmesh<> *mesh_old = mesh;
+        // mesh_agglomerate_wrt_labels(mesh);
+        message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh->num_polys());
+        ui->log_label->append(message.c_str());
+
+        // hierarchy agglomeration_hierarchy;
+        // agglomeration_hierarchy.compute(mesh_old, mesh);
+        // assert(agglomeration_hierarchy.check(mesh_old, mesh) && "ERROR: hierarchy check failed");
+        std::string output_h  = "_hierarchy.txt";
+        // agglomeration_hierarchy.print(output_h);
+        message = "Computed Hierarchy";
+        ui->log_label->append(message.c_str());
+
+        message = "Optimization done: " +
+                  std::to_string(mesh_old->num_verts() - mesh->num_verts()) + " removed verts, " +
+                  std::to_string(mesh_old->num_polys() - mesh->num_polys()) + " merged polys.\n" ;
+        ui->log_label->append(message.c_str());
+
+        mesh->updateGL();
+
+        index++;
+    }
+
+    ui->canvas->updateGL();
+
+    QApplication::restoreOverrideCursor();
+
+    ui->optimize_btn->setEnabled(true);
 }
 

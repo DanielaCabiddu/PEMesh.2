@@ -244,158 +244,18 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
     std::vector<std::pair<double,uint>> JAC_poly;
     std::vector<std::pair<double,uint>> FRO_poly;
 
-    for(uint pid=0; pid<m.num_polys(); ++pid)
-    {
-        //std::cout << "[pid " << pid << "] " << std::endl;
-
-        std::vector<vec3d> points = m.poly_verts(pid);
-        bool is_triangle = (points.size() == 3);
-        double TOLL = 1e-6;
-
-        std::vector<double> e;
-        for(uint eid : m.adj_p2e(pid)) { e.push_back(m.edge_length(eid)); }
-        double min_edge = *std::min_element(e.begin(), e.end());
-
-        vec3d  dummy;
-        double inradius, outradius;
-        polygon_maximum_inscribed_circle(points, dummy, inradius);
-        smallest_enclosing_disk(points, dummy, outradius);
-        assert(inradius < outradius && outradius > 0.);
-        double diameter = DBL_MIN;
-        for(uint i=0; i<points.size()-1; ++i) {
-            for(uint j=i+1; j<points.size(); ++j) {
-                diameter = std::max(diameter, points.at(i).dist(points.at(j)));
-            }
-        }
-        assert(diameter > 0.);
-        double inr = (2. * inradius) / diameter;
-        double our = diameter / (2. * outradius);
-        double cir = inradius / outradius;
-
-        std::vector<vec3d> kernel_verts;
-        double kernel_area = polygon_kernel(points, kernel_verts);
-        double kernel_inradius = 0.;
-        if (!kernel_verts.empty()) { polygon_maximum_inscribed_circle(kernel_verts, dummy, kernel_inradius); }
-        double area = m.poly_area(pid);
-        assert(area > 0.);
-        double perimeter  = std::accumulate(e.begin(), e.end(), 0.);
-        assert(perimeter > 0.);
-        double krr = kernel_inradius / outradius;
-        double kar = kernel_area / area;
-        if (0 < kernel_area - area && kernel_area - area < TOLL) { kar = 1.; }
-        double apr = sqrt(area) / perimeter;
-
-        std::vector<double> angles;
-        for(uint vid : m.adj_p2v(pid)) { angles.push_back(m.poly_angle_at_vert(pid, vid, RAD)); }
-        double mia = *std::min_element(angles.begin(), angles.end()) / (2. * M_PI);
-        double maa = *std::max_element(angles.begin(), angles.end()) / (2. * M_PI);
-        assert(mia <= maa && maa != 0.);
-        double anr = mia / maa;
-
-        double rho1 = kernel_area / area;
-        double rho2 = std::min(sqrt(area), min_edge) / diameter;
-        double rho3 = 3. / points.size();
-        double rho4 = DBL_MAX;
-        std::vector<std::vector<vec3d>> tau;
-        std::vector<vec3d> tau_i = {points.front()};
-        for (uint i = 0; i < points.size(); ++i) {
-            vec3d p0 = points.at(i);
-            vec3d p1 = points.at((i + 1) % points.size());
-            vec3d p2 = points.at((i + 2) % points.size());
-            while (points_are_colinear_3d(p0, p1, p2)) {
-                tau_i.push_back(p1);
-                i++;
-                p1 = points.at((i + 1) % points.size());
-                p2 = points.at((i + 2) % points.size());
-            }
-            tau_i.push_back(p1);
-            tau.push_back(tau_i);
-            tau_i = {p1};
-        }
-        for (const std::vector<vec3d> &tau_i : tau) {
-            double min_ei = DBL_MAX;
-            double max_ei = DBL_MIN;
-            for (uint vid = 0; vid < tau_i.size() - 1; vid++) {
-                double t = tau_i.at(vid).dist(tau_i.at(vid + 1));
-                min_ei = std::min(min_ei, t);
-                max_ei = std::max(max_ei, t);
-            }
-            assert(max_ei > 0.);
-            rho4 = std::min(rho4, min_ei / max_ei);
-        }
-        double vem = sqrt((rho1 * rho2 + rho1 * rho3 + rho1 * rho4) / 3.);
-
-        double jac = DBL_MAX;
-        double fro = DBL_MAX;
-        std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
-        for (uint i = 0; i < points_2d.size(); ++i) {
-            vec2d p0 = points_2d.at(i);
-            vec2d p1 = points_2d.at((i + 1) % points_2d.size());
-            vec2d p2 = points_2d.at((i + 2) % points_2d.size());
-
-            vec2d L0 = p1 - p0;
-            vec2d L1 = p2 - p0;
-
-            mat<2,2,double> A;
-            A.set_col(0, L0);
-            A.set_col(1, L1);
-            double J = A.det();
-            double lambda = L0.norm() * L1.norm();
-            jac = std::min(jac, J / lambda);
-
-            mat<2,2,double> inv_A = A.inverse();
-            mat<2,2,double> tsp_A = A.transpose();
-            mat<2,2,double> tsp_inv_A = inv_A.transpose();
-
-            double k = sqrt((tsp_A * A).trace() * (tsp_inv_A * inv_A).trace());
-            fro = std::min(fro, 2. / k);
-        }
-        if (jac < 0.) jac = 0.;
-
-        assert(0. <= inr && inr <= 1. + TOLL);
-        assert(0. <= our && our <= 1. + TOLL);
-        assert(0. <= cir && cir <= 1. + TOLL);
-        assert(0. <= krr && krr <= 1. + TOLL);
-        assert(0. <= kar && kar <= 1. + TOLL);
-        assert(0. <= apr && apr <= 1. + TOLL);
-        assert(0. <= mia && mia <= 1. + TOLL);
-        assert(0. <= maa && maa <= 1. + TOLL);
-        assert(0. <= anr && anr <= 1. + TOLL);
-        assert(0. <= vem && vem <= 1. + TOLL);
-        assert(0. <= jac && jac <= 1. + TOLL);
-        assert(0. <= fro && fro <= 1. + TOLL);
-
-        if (is_triangle)
-        {
-            INR.push_back(std::make_pair(inr,pid));
-            OUR.push_back(std::make_pair(our,pid));
-            CIR.push_back(std::make_pair(cir,pid));
-            KRR.push_back(std::make_pair(krr,pid));
-            KAR.push_back(std::make_pair(kar,pid));
-            APR.push_back(std::make_pair(apr,pid));
-            MIA.push_back(std::make_pair(mia,pid));
-            MAA.push_back(std::make_pair(maa,pid));
-            ANR.push_back(std::make_pair(anr,pid));
-            VEM.push_back(std::make_pair(vem,pid));
-            JAC.push_back(std::make_pair(jac,pid));
-            FRO.push_back(std::make_pair(fro,pid));
-        }
-        else
-        {
-            INR_poly.push_back(std::make_pair(inr,pid));
-            OUR_poly.push_back(std::make_pair(our,pid));
-            CIR_poly.push_back(std::make_pair(cir,pid));
-            KRR_poly.push_back(std::make_pair(krr,pid));
-            KAR_poly.push_back(std::make_pair(kar,pid));
-            APR_poly.push_back(std::make_pair(apr,pid));
-            MIA_poly.push_back(std::make_pair(mia,pid));
-            MAA_poly.push_back(std::make_pair(maa,pid));
-            ANR_poly.push_back(std::make_pair(anr,pid));
-            VEM_poly.push_back(std::make_pair(vem,pid));
-            JAC_poly.push_back(std::make_pair(jac,pid));
-            FRO_poly.push_back(std::make_pair(fro,pid));
-        }
-    }
+    compute_metric_INR(m, INR, INR_poly);
+    compute_metric_OUR(m, OUR, OUR_poly);
+    compute_metric_CIR(m, CIR, CIR_poly);
+    compute_metric_KRR(m, KRR, KRR_poly);
+    compute_metric_KAR(m, KAR, KAR_poly);
+    compute_metric_APR(m, APR, APR_poly);
+    compute_metric_MIA(m, MIA, MIA_poly);
+    compute_metric_MAA(m, MAA, MAA_poly);
+    compute_metric_ANR(m, ANR, ANR_poly);
+    compute_metric_VEM(m, VEM, VEM_poly);
+    compute_metric_JAC(m, JAC, JAC_poly);
+    compute_metric_FRO(m, FRO, FRO_poly);
 
     //std::cout << "[getting min max avg] " << std::endl;
 
@@ -450,4 +310,376 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
     get_all(VEM, VEM_poly, metrics.VEM_all);
     get_all(JAC, JAC_poly, metrics.JAC_all);
     get_all(FRO, FRO_poly, metrics.FRO_all);
+}
+
+void compute_metric_INR(const Polygonmesh<> &m,     std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        vec3d  dummy;
+        double inradius;
+        polygon_maximum_inscribed_circle(points, dummy, inradius);
+
+        double diameter = DBL_MIN;
+        for(uint i=0; i<points.size()-1; ++i) {
+            for(uint j=i+1; j<points.size(); ++j) {
+                diameter = std::max(diameter, points.at(i).dist(points.at(j)));
+            }
+        }
+        assert(diameter > 0.);
+
+        double value = (2. * inradius) / diameter;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_OUR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        vec3d  dummy;
+        double outradius;
+        smallest_enclosing_disk(points, dummy, outradius);
+
+        double diameter = DBL_MIN;
+        for(uint i=0; i<points.size()-1; ++i) {
+            for(uint j=i+1; j<points.size(); ++j) {
+                diameter = std::max(diameter, points.at(i).dist(points.at(j)));
+            }
+        }
+        assert(diameter > 0.);
+
+        double value = diameter / (2. * outradius);
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_CIR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        vec3d  dummy;
+        double inradius, outradius;
+        polygon_maximum_inscribed_circle(points, dummy, inradius);
+        smallest_enclosing_disk(points, dummy, outradius);
+        assert(inradius < outradius && outradius > 0.);
+
+        double value = inradius / outradius;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_KRR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        vec3d  dummy;
+        double outradius;
+        smallest_enclosing_disk(points, dummy, outradius);
+
+        std::vector<vec3d> kernel_verts;
+        double kernel_inradius = 0.;
+        if (!kernel_verts.empty()) { polygon_maximum_inscribed_circle(kernel_verts, dummy, kernel_inradius); }
+
+        double value = kernel_inradius / outradius;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_KAR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        std::vector<vec3d> kernel_verts;
+        double kernel_area = polygon_kernel(points, kernel_verts);
+        assert(kernel_area > 0.);
+
+        double area = m.poly_area(pid);
+        assert(area > 0.);
+
+        double value = kernel_area / area;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_APR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        double area = m.poly_area(pid);
+        assert(area > 0.);
+
+        std::vector<double> e;
+        for(uint eid : m.adj_p2e(pid)) { e.push_back(m.edge_length(eid)); }
+        double perimeter  = std::accumulate(e.begin(), e.end(), 0.);
+        assert(perimeter > 0.);
+
+        double value = sqrt(area) / perimeter;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_MIA(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        std::vector<double> angles;
+        for(uint vid : m.adj_p2v(pid)) { angles.push_back(m.poly_angle_at_vert(pid, vid, RAD)); }
+
+        double value = *std::min_element(angles.begin(), angles.end()) / (2. * M_PI);
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_MAA(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        std::vector<double> angles;
+        for(uint vid : m.adj_p2v(pid)) { angles.push_back(m.poly_angle_at_vert(pid, vid, RAD)); }
+
+        double value = *std::max_element(angles.begin(), angles.end()) / (2. * M_PI);
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_ANR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        std::vector<double> angles;
+        for(uint vid : m.adj_p2v(pid)) { angles.push_back(m.poly_angle_at_vert(pid, vid, RAD)); }
+
+        double mia = *std::min_element(angles.begin(), angles.end()) / (2. * M_PI);
+        double maa = *std::max_element(angles.begin(), angles.end()) / (2. * M_PI);
+        assert(mia <= maa && maa != 0.);
+
+        double value = mia / maa;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_VEM(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        std::vector<vec3d> kernel_verts;
+        double kernel_area = polygon_kernel(points, kernel_verts);
+        assert(kernel_area > 0.);
+        double area = m.poly_area(pid);
+        assert(area > 0.);
+        double rho1 = kernel_area / area;
+
+        std::vector<double> e;
+        for(uint eid : m.adj_p2e(pid)) { e.push_back(m.edge_length(eid)); }
+        double min_edge = *std::min_element(e.begin(), e.end());
+        double diameter = DBL_MIN;
+        for(uint i=0; i<points.size()-1; ++i) {
+            for(uint j=i+1; j<points.size(); ++j) {
+                diameter = std::max(diameter, points.at(i).dist(points.at(j)));
+            }
+        }
+        assert(diameter > 0.);
+        double rho2 = std::min(sqrt(area), min_edge) / diameter;
+
+        double rho3 = 3. / points.size();
+
+        double rho4 = DBL_MAX;
+        std::vector<std::vector<vec3d>> tau;
+        std::vector<vec3d> tau_i = {points.front()};
+        for (uint i = 0; i < points.size(); ++i) {
+            vec3d p0 = points.at(i);
+            vec3d p1 = points.at((i + 1) % points.size());
+            vec3d p2 = points.at((i + 2) % points.size());
+            while (points_are_colinear_3d(p0, p1, p2)) {
+                tau_i.push_back(p1);
+                i++;
+                p1 = points.at((i + 1) % points.size());
+                p2 = points.at((i + 2) % points.size());
+            }
+            tau_i.push_back(p1);
+            tau.push_back(tau_i);
+            tau_i = {p1};
+        }
+        for (const std::vector<vec3d> &tau_i : tau) {
+            double min_ei = DBL_MAX;
+            double max_ei = DBL_MIN;
+            for (uint vid = 0; vid < tau_i.size() - 1; vid++) {
+                double t = tau_i.at(vid).dist(tau_i.at(vid + 1));
+                min_ei = std::min(min_ei, t);
+                max_ei = std::max(max_ei, t);
+            }
+            assert(max_ei > 0.);
+            rho4 = std::min(rho4, min_ei / max_ei);
+        }
+
+        double value = sqrt((rho1 * rho2 + rho1 * rho3 + rho1 * rho4) / 3.);
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_JAC(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        double jac = DBL_MAX;
+        std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+        for (uint i = 0; i < points_2d.size(); ++i) {
+            vec2d p0 = points_2d.at(i);
+            vec2d p1 = points_2d.at((i + 1) % points_2d.size());
+            vec2d p2 = points_2d.at((i + 2) % points_2d.size());
+
+            vec2d L0 = p1 - p0;
+            vec2d L1 = p2 - p0;
+
+            mat<2,2,double> A;
+            A.set_col(0, L0);
+            A.set_col(1, L1);
+            double J = A.det();
+            double lambda = L0.norm() * L1.norm();
+            jac = std::min(jac, J / lambda);
+        }
+
+        double value = jac >= 0. ? jac : 0.;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
+}
+
+void compute_metric_FRO(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY)
+{
+    for(uint pid=0; pid<m.num_polys(); ++pid)
+    {
+        std::vector<vec3d> points = m.poly_verts(pid);
+        bool is_triangle = (points.size() == 3);
+        double TOLL = 1e-6;
+
+        double fro = DBL_MAX;
+        std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+        for (uint i = 0; i < points_2d.size(); ++i) {
+            vec2d p0 = points_2d.at(i);
+            vec2d p1 = points_2d.at((i + 1) % points_2d.size());
+            vec2d p2 = points_2d.at((i + 2) % points_2d.size());
+
+            vec2d L0 = p1 - p0;
+            vec2d L1 = p2 - p0;
+
+            mat<2,2,double> A;
+            A.set_col(0, L0);
+            A.set_col(1, L1);
+
+            mat<2,2,double> inv_A = A.inverse();
+            mat<2,2,double> tsp_A = A.transpose();
+            mat<2,2,double> tsp_inv_A = inv_A.transpose();
+
+            double k = sqrt((tsp_A * A).trace() * (tsp_inv_A * inv_A).trace());
+            fro = std::min(fro, 2. / k);
+        }
+
+        double value = fro;
+        assert(0. <= value && value <= 1. + TOLL);
+
+        if (is_triangle)
+            TRI.push_back(std::make_pair(value,pid));
+        else
+            POLY.push_back(std::make_pair(value,pid));
+    }
 }

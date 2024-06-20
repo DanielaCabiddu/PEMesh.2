@@ -15,8 +15,15 @@ public:
     explicit OptimizeDialog(QWidget *parent = nullptr);
     ~OptimizeDialog();
 
+    int get_indicator () const;
+    int get_weights () const;
+    double get_parameter () const;
+
 private:
     Ui::OptimizeDialog *ui;
+
+    std::vector<uint> cbID2metricsID;
+
 };
 
 #endif // OPTIMIZEDIALOG_H
