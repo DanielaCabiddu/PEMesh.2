@@ -43,3 +43,4 @@ external/triangle/build
 *.txt.user
 /external
 .DS_Store
+/external
