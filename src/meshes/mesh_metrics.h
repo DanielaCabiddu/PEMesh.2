@@ -241,17 +241,17 @@ void save_to_file(const char *filename, const MeshMetrics & metrics);
 
 void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics);
 
-void compute_metric_INR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_OUR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_CIR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_KRR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_KAR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_APR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_MIA(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_MAA(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_ANR(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_VEM(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_JAC(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
-void compute_metric_FRO(const Polygonmesh<> &m, std::vector<std::pair<double,uint>> &TRI, std::vector<std::pair<double,uint>> &POLY);
+inline double compute_metric_INR(const std::vector<vec3d> &points);
+inline double compute_metric_OUR(const std::vector<vec3d> &points);
+inline double compute_metric_CIR(const std::vector<vec3d> &points);
+inline double compute_metric_KRR(const std::vector<vec3d> &points);
+inline double compute_metric_KAR(const std::vector<vec3d> &points);
+inline double compute_metric_APR(const std::vector<vec3d> &points);
+inline double compute_metric_MIA(const std::vector<vec3d> &points);
+inline double compute_metric_MAA(const std::vector<vec3d> &points);
+inline double compute_metric_ANR(const std::vector<vec3d> &points);
+inline double compute_metric_VEM(const std::vector<vec3d> &points);
+inline double compute_metric_JAC(const std::vector<vec3d> &points);
+inline double compute_metric_FRO(const std::vector<vec3d> &points);
 
 #endif

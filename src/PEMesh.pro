@@ -28,7 +28,12 @@ macos { INCLUDEPATH += /Users/tommy/QT-projects/libs/boost }
 
 DEFINES     += CINOLIB_USES_TRIANGLE
 INCLUDEPATH += ../external/triangle
-LIBS         += -L$$PWD/../external/triangle/build -ltriangle
+LIBS        += -L$$PWD/../external/triangle/build -ltriangle
+
+DEFINES     += CINOLIB_USES_METIS
+INCLUDEPATH += /home/tommaso/local/include/
+LIBS        += -L/home/tommaso/local/lib -lmetis
+LIBS        += -L/home/tommaso/local/lib -lGKlib
 
 #INCLUDEPATH += meshes
 
@@ -52,6 +57,13 @@ SOURCES += \
         mainwindow.cpp \
         meshmetricsgraphicwidget.cpp \
         meshmetricswidget.cpp \
+        optimization/GraphUtilities.cpp \
+        optimization/MetisUtilities.cpp \
+        optimization/hierarchy.cpp \
+        optimization/mesh_agglomeration.cpp \
+        optimization/mesh_check.cpp \
+        optimization/metis_wrap.cpp \
+        optimization/sum_polys.cpp \
         optimizedialog.cpp \
         parametricdatasetsettingsdialog.cpp \
         scatterplotmarkersettingwidget.cpp \
@@ -77,6 +89,15 @@ HEADERS += \
         mainwindow.h \
         meshmetricsgraphicwidget.h \
         meshmetricswidget.h \
+        optimization/GraphUtilities.hpp \
+        optimization/MetisUtilities.hpp \
+        optimization/extended_predicates.h \
+        optimization/global_variables.h \
+        optimization/hierarchy.h \
+        optimization/mesh_agglomeration.h \
+        optimization/mesh_check.h \
+        optimization/metis_wrap.h \
+        optimization/sum_polys.h \
         optimizedialog.h \
         parametricdatasetsettingsdialog.h \
         quality_metrics.h \

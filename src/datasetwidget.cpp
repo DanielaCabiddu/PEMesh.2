@@ -34,6 +34,9 @@
 #include "ui_datasetwidget.h"
 
 #include "meshes/mirroring.h"
+#include "optimization/mesh_agglomeration.h"
+#include "optimization/metis_wrap.h"
+#include "optimization/hierarchy.h"
 
 #include <cinolib/sampling.h>
 #include <cinolib/triangle_wrap.h>
@@ -1632,7 +1635,7 @@ void DatasetWidget::on_mirroring_btn_clicked()
 
     for (cinolib::DrawablePolygonmesh<> *mesh : dataset->get_parametric_meshes())
     {
-        std::string message = "Mirriring mesh " + std::to_string(index) + ": " +
+        std::string message = "Mirroring mesh " + std::to_string(index) + ": " +
                                                   std::to_string(mesh->num_verts()) + "V|" +
                                                   std::to_string(mesh->num_polys()) + "P" ;
         ui->log_label->append(message.c_str());
@@ -1692,28 +1695,44 @@ void DatasetWidget::on_optimize_btn_clicked()
     ui->optimize_btn->setEnabled(false);
 
     OptimizeDialog *dialog = new OptimizeDialog();
-    int indicator;
+    double (*indicator)(const std::vector<vec3d>&);
     bool node_weights, arc_weights;
     double parameter;
+
     if (dialog->exec() == 1)
     {
-        indicator = dialog->get_indicator();
+        switch (dialog->get_indicator()) {
+        case 0 : { indicator = compute_metric_INR; break; }
+        case 1 : { indicator = compute_metric_OUR; break; }
+        case 2 : { indicator = compute_metric_CIR; break; }
+        case 3 : { indicator = compute_metric_KRR; break; }
+        case 4 : { indicator = compute_metric_KAR; break; }
+        case 5 : { indicator = compute_metric_APR; break; }
+        case 6 : { indicator = compute_metric_MIA; break; }
+        case 7 : { indicator = compute_metric_MAA; break; }
+        case 8 : { indicator = compute_metric_ANR; break; }
+        case 9 : { indicator = compute_metric_VEM; break; }
+        case 10: { indicator = compute_metric_JAC; break; }
+        case 11: { indicator = compute_metric_FRO; break; }
+        default: break;
+        }
+
         switch (dialog->get_weights()) {
         case 0:
             node_weights = true;
-            arc_weights = true;
+            arc_weights  = true;
             break;
         case 1:
             node_weights = true;
-            arc_weights = false;
+            arc_weights  = false;
             break;
         case 2:
             node_weights = false;
-            arc_weights = true;
+            arc_weights  = true;
             break;
         case 3:
             node_weights = false;
-            arc_weights = false;
+            arc_weights  = false;
             break;
         default:
             break;
@@ -1725,35 +1744,34 @@ void DatasetWidget::on_optimize_btn_clicked()
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
     uint index=0;
-    for (cinolib::DrawablePolygonmesh<> *mesh : dataset->get_parametric_meshes())
+    for (DrawablePolygonmesh<> *mesh : dataset->get_parametric_meshes())
     {
         std::string message = "Optimizing mesh " + std::to_string(index) + ": " +
                               std::to_string(mesh->num_verts()) + "V|" +
                               std::to_string(mesh->num_polys()) + "P" ;
         ui->log_label->append(message.c_str());
 
-        message = "--> Metis Labelling, required: " +
-                  std::to_string((uint)(mesh->num_polys() * parameter / 100.));
-        int n_labels = 1; // = metis_wrap_dual(mesh, indicator, parameter, node_weights, arc_weights);
+        message = "--> Metis Labelling, required: " + std::to_string((uint)(mesh->num_polys() * parameter / 100.));
+        int n_labels = metis_wrap_dual(*mesh, parameter, indicator, node_weights, arc_weights);
         message += ", found: " + std::to_string(n_labels);
         ui->log_label->append(message.c_str());
 
-        DrawablePolygonmesh<> *mesh_old = mesh;
-        // mesh_agglomerate_wrt_labels(mesh);
+        DrawablePolygonmesh<> *m_old = mesh;
+        mesh_agglomerate_wrt_labels(*mesh);
         message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh->num_polys());
         ui->log_label->append(message.c_str());
 
-        // hierarchy agglomeration_hierarchy;
-        // agglomeration_hierarchy.compute(mesh_old, mesh);
-        // assert(agglomeration_hierarchy.check(mesh_old, mesh) && "ERROR: hierarchy check failed");
+        Hierarchy agglomeration_hierarchy;
+        agglomeration_hierarchy.compute(*m_old, *mesh);
+        assert(agglomeration_hierarchy.check(*m_old, *mesh) && "ERROR: hierarchy check failed");
         std::string output_h  = "_hierarchy.txt";
-        // agglomeration_hierarchy.print(output_h);
+        agglomeration_hierarchy.print(output_h);
         message = "Computed Hierarchy";
         ui->log_label->append(message.c_str());
 
         message = "Optimization done: " +
-                  std::to_string(mesh_old->num_verts() - mesh->num_verts()) + " removed verts, " +
-                  std::to_string(mesh_old->num_polys() - mesh->num_polys()) + " merged polys.\n" ;
+                  std::to_string(m_old->num_verts() - mesh->num_verts()) + " removed verts, " +
+                  std::to_string(m_old->num_polys() - mesh->num_polys()) + " merged polys.\n" ;
         ui->log_label->append(message.c_str());
 
         mesh->updateGL();
