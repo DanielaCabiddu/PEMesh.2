@@ -37,7 +37,7 @@
 
 #include <QFileDialog>
 #include <QPixmap>
-#include <QScatterSeries>
+#include <QtCharts/QScatterSeries>
 #include <QToolTip>
 #include <QtCharts/QLogValueAxis>
 

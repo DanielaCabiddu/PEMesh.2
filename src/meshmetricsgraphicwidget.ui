@@ -222,15 +222,15 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
-    <widget class="cinolib::GLcanvas" name="mesh_metrics_canvas" native="true"/>
+    <widget class="genericVTKwidget" name="mesh_metrics_canvas" native="true"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>cinolib::GLcanvas</class>
+   <class>genericVTKwidget</class>
    <extends>QWidget</extends>
-   <header>cinolib/gui/qt/glcanvas.h</header>
+   <header>genericvtkwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

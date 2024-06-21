@@ -39,7 +39,6 @@
 
 #include <QtCharts/QCategoryAxis>
 #include <QtCharts/QChartView>
-QT_CHARTS_USE_NAMESPACE
 
 #include "customizedchartview.h"
 
@@ -69,7 +68,7 @@ public:
 
     void clean_canvas ();
 
-    cinolib::DrawablePolygonmesh<> * get_gt_mesh (const uint i);
+    cinolib::Polygonmesh<> * get_gt_mesh (const uint i);
 
 public slots:
 
@@ -114,11 +113,11 @@ private:
     std::vector<std::string> chart_views_names;
     std::vector<QGraphicsLineItem *> track_lines;
 
-    std::vector<cinolib::DrawablePolygonmesh<> *> results;
-    std::vector<cinolib::DrawablePolygonmesh<> *> groundtruth;
+    std::vector<cinolib::Polygonmesh<> *> results;
+    std::vector<cinolib::Polygonmesh<> *> groundtruth;
 
     bool update_scene = true;
-    uint curr_mesh_id = max_uint;
+    uint curr_mesh_id = cinolib::max_uint;
 
     void change_series_color (const uint series_id);
 

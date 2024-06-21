@@ -35,8 +35,6 @@
 
 #include <cinolib/meshes/polygonmesh.h>
 
-using namespace cinolib;
-
 // This is an abstract class that defines a parametric VEM element.
 // Istances of it should implement the deform() method, defining a
 // controlled deformation of the element aimed to emphasize (or reduce)
@@ -55,17 +53,17 @@ class AbstractVEMelement
         // (or reduce) the extent of a certain quality metric, such as isotropy,
         // angles, number of edges, edge lengths, etc.
         //
-        virtual Polygonmesh<> deform(float t) const = 0; // t \in [0,1]
+        virtual cinolib::Polygonmesh<> deform(float t) const = 0; // t \in [0,1]
 
         //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
         // create a square canvas around the abstract element
         // default triangle parameter: min angle 20 deg
-        Polygonmesh<> deform_with_canvas(float t, const std::string flags="cq20.0a") const;
+        cinolib::Polygonmesh<> deform_with_canvas(float t, const std::string flags="cq20.0a") const;
 
         //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-        Polygonmesh<> base_elem;
+        cinolib::Polygonmesh<> base_elem;
 };
 
 #endif // ABSTRACT_VEM_ELEMENT_H

@@ -76,8 +76,8 @@ void SolverWidget::update()
 
 void SolverWidget::clean_canvas()
 {
-    for (DrawablePolygonmesh<> * p : drawable_polys)
-        ui->canvas->pop(p);
+    // for (DrawablePolygonmesh<> * p : drawable_polys)
+    //     ui->canvas->pop(p);
 
     drawable_polys.clear();
 }
@@ -86,11 +86,11 @@ void SolverWidget::show_parametric_mesh(int index)
 {
     clean_canvas();
 
-    cinolib::DrawablePolygonmesh<> *p = dataset->get_parametric_mesh(static_cast<uint>(index));
+    cinolib::Polygonmesh<> *p = dataset->get_parametric_mesh(static_cast<uint>(index));
 
-    dataset->get_parametric_mesh(static_cast<uint>(index))->updateGL();
-    ui->canvas->push_obj(p, update_scene);
-    ui->canvas->updateGL();
+    // dataset->get_parametric_mesh(static_cast<uint>(index))->updateGL();
+    // ui->canvas->push_obj(p, update_scene);
+    // ui->canvas->updateGL();
 
     drawable_polys.push_back(p);
 

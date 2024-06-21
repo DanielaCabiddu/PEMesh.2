@@ -50,7 +50,7 @@ void Dataset::save_on_disk(const std::string directory)
     {
         unsigned int index = 0;
 
-        for (const Polygonmesh<> *polymesh : parametric_meshes)
+        for (const cinolib::Polygonmesh<> *polymesh : parametric_meshes)
         {
             std::string filename;
 
@@ -88,7 +88,7 @@ void Dataset::save_on_disk(const std::string directory)
 
 void Dataset::clean()
 {
-    for (cinolib::DrawablePolygonmesh<> *p : parametric_meshes)
+    for (cinolib::Polygonmesh<> *p : parametric_meshes)
         delete p;
 
     parametric_meshes.clear();
@@ -96,7 +96,7 @@ void Dataset::clean()
     parametric_meshes_t.clear();
 }
 
-void Dataset::add_parametric_mesh (DrawablePolygonmesh<> *m, const double t, const uint class_id)
+void Dataset::add_parametric_mesh (cinolib::Polygonmesh<> *m, const double t, const uint class_id)
 {
     parametric_meshes.push_back(m);
     parametric_meshes_t.push_back(t);

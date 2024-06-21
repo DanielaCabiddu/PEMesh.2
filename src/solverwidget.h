@@ -74,14 +74,14 @@ private:
     Ui::SolverWidget *ui;
 
     Dataset *dataset = nullptr;
-    uint curr_mesh_id = max_uint;
+    uint curr_mesh_id = cinolib::max_uint;
 
     std::string input_folder ;
     std::string output_folder;
 
     bool update_scene = true;
 
-    std::vector<cinolib::DrawablePolygonmesh<> *> drawable_polys;
+    std::vector<cinolib::Polygonmesh<> *> drawable_polys;
 
     QProcess *process = nullptr;
 };

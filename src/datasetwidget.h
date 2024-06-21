@@ -35,23 +35,23 @@
 
 #include "dataset.h"
 
+#include "meshes/abstract_vem_element.h"
 #include "meshes/mesh_metrics.h"
-#include "meshes/vem_elements.h"
 
-#include <cinolib/gui/qt/glcanvas.h>
 #include <cinolib/meshes/meshes.h>
 
 #include <QDoubleSpinBox>
+#include <QPushButton>
 #include <QWidget>
 
-typedef struct
+struct SelectedPolyData
 {
     uint class_type = UINT_MAX;
     std::string class_name = "";
     std::string filename = "";
     cinolib::Polygonmesh<> *mesh = nullptr;
 
-} SelectedPolyData;
+};
 
 namespace Ui {
 class DatasetWidget;
@@ -129,8 +129,8 @@ private:
     std::vector<double> elems_scale_factors;
     std::vector<double> elems_rotation_angles;
 
-    std::vector<DrawablePolygonmesh<> *> drawable_polys;
-    std::vector<Marker *> markers;
+    std::vector<cinolib::Polygonmesh<> *> drawable_polys;
+    // std::vector<cinolib::Marker *> markers;
 
     std::vector<QPushButton *> plus_buttons;
     std::vector<QPushButton *> minus_buttons;
@@ -154,7 +154,7 @@ private:
 
     void clean_canvas ();
 
-    void add_polygon (cinolib::GLcanvas *canvas, QMouseEvent *event) ;
+    void add_polygon (/*cinolib::GLcanvas *canvas, */QMouseEvent *event) ;
     void add_polygon (const SelectedPolyData selected_poly, const cinolib::vec2d &pos = cinolib::vec2d(0.5, 0.5), const bool scale_to_fit = true);
 
     const SelectedPolyData ask_polygon_class() const ;
@@ -164,12 +164,12 @@ private:
                       const double rotation_angle,
                       const double scale_factor) ;
 
-    Polygonmesh<> deform_with_canvas(const std::vector<cinolib::DrawablePolygonmesh<> *> &elems_polys, const std::string triangle_flags);
+    cinolib::Polygonmesh<> deform_with_canvas(const std::vector<cinolib::Polygonmesh<> *> &elems_polys, const std::string triangle_flags);
 
-    void polygon_zoom_in (DrawablePolygonmesh<> *m);
-    void polygon_zoom_out (DrawablePolygonmesh<> *m);
+    void polygon_zoom_in (cinolib::Polygonmesh<> *m);
+    void polygon_zoom_out (cinolib::Polygonmesh<> *m);
 
-    void aggregate_triangles (Polygonmesh<> &m, const double value_bound, const int flag);
+    void aggregate_triangles (cinolib::Polygonmesh<> &m, const double value_bound, const int flag);
 };
 
 #endif // DATASETWIDGET_H

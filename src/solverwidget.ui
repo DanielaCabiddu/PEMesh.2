@@ -21,7 +21,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="cinolib::GLcanvas" name="canvas" native="true"/>
+    <widget class="QWidget" name="canvas" native="true"/>
    </item>
    <item row="0" column="2">
     <widget class="QFrame" name="frame_2">
@@ -144,7 +144,7 @@
             <string> Run Solver</string>
            </property>
            <property name="icon">
-            <iconset resource="images.qrc">
+            <iconset>
              <normaloff>:/icons/img/run_icon.png</normaloff>:/icons/img/run_icon.png</iconset>
            </property>
           </widget>
@@ -180,16 +180,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>cinolib::GLcanvas</class>
-   <extends>QWidget</extends>
-   <header>cinolib/gui/qt/glcanvas.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

@@ -42,17 +42,15 @@ AbstractVEMelement::AbstractVEMelement()
 
 cinolib::Polygonmesh<> AbstractVEMelement::deform_with_canvas(float t, const std::string flags) const
 {
-    using namespace cinolib;
-
-    Polygonmesh<> m = deform(t);
+    cinolib::Polygonmesh<> m = deform(t);
 
     // dump the geometry of the element
     //
-    std::vector<vec2d> verts_in;
+    std::vector<cinolib::vec2d> verts_in;
     std::vector<uint>  segs;
     for(uint vid=0; vid<m.num_verts(); ++vid)
     {
-        verts_in.push_back(vec2d(m.vert(vid).x(), m.vert(vid).y()));
+        verts_in.push_back(cinolib::vec2d(m.vert(vid).x(), m.vert(vid).y()));
     }
     for(uint eid=0; eid<m.num_edges(); ++eid)
     {
@@ -62,31 +60,31 @@ cinolib::Polygonmesh<> AbstractVEMelement::deform_with_canvas(float t, const std
 
     // create a quad around the base element bounding box
     //
-    vec2d  bot_l = vec2d(m.bbox().min.x(), m.bbox().min.y());
-    vec2d  top_r = vec2d(m.bbox().max.x(), m.bbox().max.y());
+    cinolib::vec2d  bot_l = cinolib::vec2d(m.bbox().min.x(), m.bbox().min.y());
+    cinolib::vec2d  top_r = cinolib::vec2d(m.bbox().max.x(), m.bbox().max.y());
     double delta = m.bbox().diag();
-    verts_in.push_back(vec2d(bot_l.x() - delta, bot_l.y() - delta));
-    verts_in.push_back(vec2d(top_r.x() + delta, bot_l.y() - delta));
-    verts_in.push_back(vec2d(top_r.x() + delta, top_r.y() + delta));
-    verts_in.push_back(vec2d(bot_l.x() - delta, top_r.y() + delta));
+    verts_in.push_back(cinolib::vec2d(bot_l.x() - delta, bot_l.y() - delta));
+    verts_in.push_back(cinolib::vec2d(top_r.x() + delta, bot_l.y() - delta));
+    verts_in.push_back(cinolib::vec2d(top_r.x() + delta, top_r.y() + delta));
+    verts_in.push_back(cinolib::vec2d(bot_l.x() - delta, top_r.y() + delta));
 
     // create a hole in correspondence of the deformed element
     // (I'm taking as hole seed the centroid of one of the
     // triangles in the triangulation of the poligon)
     //
-    std::vector<vec2d> holes;
+    std::vector<cinolib::vec2d> holes;
     std::vector<uint>  tmp = m.poly_tessellation(0);
-    vec3d sum =(m.vert(tmp.at(0)) + m.vert(tmp.at(1)) + m.vert(tmp.at(2)));
-    vec2d hole = vec2d(sum.x(), sum.y())/3.0;
+    cinolib::vec3d sum =(m.vert(tmp.at(0)) + m.vert(tmp.at(1)) + m.vert(tmp.at(2)));
+    cinolib::vec2d hole = cinolib::vec2d(sum.x(), sum.y())/3.0;
     holes.push_back(hole);
 
-    std::vector<vec3d> verts_out;
+    std::vector<cinolib::vec3d> verts_out;
     std::vector<uint> tris;
     //std::string flags("cq20.0a");
     std::string t_flags = flags + std::to_string(delta*delta*0.25); // bound max area with PEM element bbox area
     triangle_wrap(verts_in, segs, holes, 0, t_flags.c_str(), verts_out, tris);
 
-    Polygonmesh<> m_with_canvas(verts_out, polys_from_serialized_vids(tris,3));
+    cinolib::Polygonmesh<> m_with_canvas(verts_out, cinolib::polys_from_serialized_vids(tris,3));
 
     // walk along boundary to fill holes with PEM elements
     uint start_v = 0;
@@ -101,7 +99,7 @@ cinolib::Polygonmesh<> AbstractVEMelement::deform_with_canvas(float t, const std
         for(uint eid : m_with_canvas.adj_v2e(curr_v))
         {
             if (found || !m_with_canvas.edge_is_boundary(eid)) continue;
-            if(DOES_NOT_CONTAIN(visited,eid))
+            if(cinolib::DOES_NOT_CONTAIN(visited,eid))
             {
                 visited.insert(eid);
                 assert(found==false);
@@ -114,7 +112,7 @@ cinolib::Polygonmesh<> AbstractVEMelement::deform_with_canvas(float t, const std
     }
     while(curr_v!=start_v);
     uint pid = m_with_canvas.poly_add(poly);
-    if(m_with_canvas.poly_data(pid).normal.dot(vec3d(0,0,1))<0)
+    if(m_with_canvas.poly_data(pid).normal.dot(cinolib::vec3d(0,0,1))<0)
     {
         m_with_canvas.poly_remove(pid);
         std::reverse(poly.begin(),poly.end());

@@ -31,6 +31,7 @@
 *********************************************************************************/
 
 #include "datasetwidget.h"
+#include "meshes/vem_elements.h"
 #include "ui_datasetwidget.h"
 
 #include "meshes/mirroring.h"
@@ -39,17 +40,18 @@
 #include <cinolib/triangle_wrap.h>
 #include <cinolib/tetgen_wrap.h>
 
-#include <addpolygondialog.h>
-#include <parametricdatasetsettingsdialog.h>
-#include <aggregatedialog.h>
-#include <solversettingsdialog.h>
-#include <sortgeometricqualitiesdialog.h>
+#include "addpolygondialog.h"
+#include "parametricdatasetsettingsdialog.h"
+#include "aggregatedialog.h"
+#include "solversettingsdialog.h"
+#include "sortgeometricqualitiesdialog.h"
 
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QString>
 
 
 DatasetWidget::DatasetWidget(QWidget *parent) :
@@ -63,10 +65,10 @@ DatasetWidget::DatasetWidget(QWidget *parent) :
     ui->param_slider->hide();
     ui->mesh_number_label->hide();
 
-    ui->canvas->callback_mouse_press =
-            [this](cinolib::GLcanvas* canvas, QMouseEvent* event){ this->add_polygon(canvas, event); };
+    // ui->canvas->callback_mouse_press =
+    //         [this](cinolib::GLcanvas* canvas, QMouseEvent* event){ this->add_polygon(canvas, event); };
 
-    ui->canvas->skip_default_mouse_press_handler = true;
+    // ui->canvas->skip_default_mouse_press_handler = true;
 
     std::vector<cinolib::vec3d> verts;
     verts.push_back(cinolib::vec3d(0.0,0.0,0.0));
@@ -82,33 +84,36 @@ DatasetWidget::DatasetWidget(QWidget *parent) :
     poly.push_back(3);
     polys.push_back(poly);
 
-    DrawablePolygonmesh<> * polymesh =  new DrawablePolygonmesh<>(verts, polys);
+    cinolib::Polygonmesh<> polymesh (verts, polys);
 
-    polymesh->updateGL();
-    ui->canvas->push_obj(polymesh, true);
-    ui->canvas->updateGL();
+    cinolib::Color c = cinolib::Color(0,0,0,1);
+    ui->canvas->add_mesh(polymesh, c);;
 
-    markers.resize(4);
+    // polymesh->updateGL();
+    // ui->canvas->push_obj(polymesh, true);
+    // ui->canvas->updateGL();
 
-    for (uint i=0; i < markers.size(); i++)
-        markers.at(i) = new Marker();
+    // markers.resize(4);
 
-    markers.at(0)->p3d = cinolib::vec3d(0,0,0);
-    markers.at(0)->label = "0,0";
+    // for (uint i=0; i < markers.size(); i++)
+    //     markers.at(i) = new Marker();
 
-    markers.at(1)->p3d = cinolib::vec3d(1,0,0);
-    markers.at(1)->label = "1,0";
+    // markers.at(0)->p3d = cinolib::vec3d(0,0,0);
+    // markers.at(0)->label = "0,0";
 
-    markers.at(2)->p3d = cinolib::vec3d(0,1,0);
-    markers.at(2)->label = "0,1";
+    // markers.at(1)->p3d = cinolib::vec3d(1,0,0);
+    // markers.at(1)->label = "1,0";
 
-    markers.at(3)->p3d = cinolib::vec3d(1,1,0);
-    markers.at(3)->label = "1,0";
+    // markers.at(2)->p3d = cinolib::vec3d(0,1,0);
+    // markers.at(2)->label = "0,1";
 
-    ui->canvas->push_marker(new Marker(*markers.at(0)));
-    ui->canvas->push_marker(new Marker(*markers.at(1)));
-    ui->canvas->push_marker(new Marker(*markers.at(2)));
-    ui->canvas->push_marker(new Marker(*markers.at(3)));
+    // markers.at(3)->p3d = cinolib::vec3d(1,1,0);
+    // markers.at(3)->label = "1,0";
+
+    // ui->canvas->push_marker(new Marker(*markers.at(0)));
+    // ui->canvas->push_marker(new Marker(*markers.at(1)));
+    // ui->canvas->push_marker(new Marker(*markers.at(2)));
+    // ui->canvas->push_marker(new Marker(*markers.at(3)));
 
     QSizePolicy spRight(QSizePolicy::Preferred, QSizePolicy::Preferred);
     spRight.setHorizontalStretch(4);
@@ -116,6 +121,8 @@ DatasetWidget::DatasetWidget(QWidget *parent) :
 
     ui->polygon_list->horizontalHeader()->setStretchLastSection(true);
     ui->polygon_list->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ui->groupBox_3->setVisible(false);
 }
 
 DatasetWidget::~DatasetWidget()
@@ -131,7 +138,7 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly,
 
     add_polygon(selected_poly, pos, false);
 
-    DrawablePolygonmesh<> *m = drawable_polys.at(drawable_polys.size()-1);
+    cinolib::Polygonmesh<> *m = drawable_polys.at(drawable_polys.size()-1);
 
     std::cout << "BBOX CENTER BEFORE SCALING : " << m->bbox().center() << std::endl;
 
@@ -145,35 +152,35 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly,
 
     m->translate(cinolib::vec3d(pos.x(), pos.y(), 0.0) - m->bbox().center());
 
-    m->updateGL();
+    // m->updateGL();
 
     std::cout << "BBOX CENTER : " << m->bbox().center() << std::endl;
 
-    ui->canvas->updateGL();
+    // ui->canvas->add_mesh(*m);
 }
 
-void DatasetWidget::add_polygon (GLcanvas *canvas, QMouseEvent *event)
+void DatasetWidget::add_polygon (QMouseEvent *event)
 {
     if (!enable_add_polygon)
         return;
 
-    cinolib::vec3d proj;
-    cinolib::vec2i pos (event->pos().x(), event->pos().y());
-    canvas->unproject(pos, proj);
-    std::cout << proj.x() << " -- " << proj.y() << std::endl;
+    // cinolib::vec3d proj;
+    // cinolib::vec2i pos (event->pos().x(), event->pos().y());
+    // canvas->unproject(pos, proj);
+    // std::cout << proj.x() << " -- " << proj.y() << std::endl;
 
-    if (proj.x() < 1e-6 && proj.y() < 1e-6 ) return;
+    // if (proj.x() < 1e-6 && proj.y() < 1e-6 ) return;
 
-    cinolib::vec2d pos2d (proj.x(), proj.y());
+    // cinolib::vec2d pos2d (proj.x(), proj.y());
 
-    SelectedPolyData selected_poly = ask_polygon_class();
+    // SelectedPolyData selected_poly = ask_polygon_class();
 
-    if (selected_poly.class_name.length() > 0)
-    {
-        add_polygon(selected_poly, pos2d);
+    // if (selected_poly.class_name.length() > 0)
+    // {
+    //     add_polygon(selected_poly, pos2d);
 
-        ui->load_meshes_btn->setEnabled(false);
-    }
+    //     ui->load_meshes_btn->setEnabled(false);
+    // }
 }
 
 const SelectedPolyData DatasetWidget::ask_polygon_class() const
@@ -210,9 +217,9 @@ const SelectedPolyData DatasetWidget::ask_polygon_class() const
     return selected_poly;
 }
 
-void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const vec2d &pos, const bool scale_to_fit)
+void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const cinolib::vec2d &pos, const bool scale_to_fit)
 {
-    Polygonmesh<> deformed;
+    cinolib::Polygonmesh<> deformed;
 
     if (selected_poly.mesh != nullptr)
     {
@@ -292,15 +299,12 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const vec
     elems_centers.at(elems_centers.size()-1) = deformed.bbox().center();
 
     // Generate model to be visualized
-    DrawablePolygonmesh<> * polymesh =  new DrawablePolygonmesh<>(deformed.vector_verts(), deformed.vector_polys());
+    cinolib::Polygonmesh<> * polymesh =  new cinolib::Polygonmesh<>(deformed.vector_verts(), deformed.vector_polys());
 
     drawable_polys.push_back(polymesh);
 
-    polymesh->poly_set_color(cinolib::Color::RED());
-    polymesh->show_poly_color();
-
-    ui->canvas->push_obj(polymesh, drawable_polys.size() < 2);
-    ui->canvas->updateGL();
+    cinolib::Color c = cinolib::Color(1,0,0,1);
+    ui->canvas->add_mesh(*polymesh, c);
 
     QWidget *scale_btn_box = new QWidget(this);
     QHBoxLayout *l = new QHBoxLayout(scale_btn_box);
@@ -384,16 +388,16 @@ void DatasetWidget::on_add_btn_clicked()
     ui->load_meshes_btn->setEnabled(false);
 }
 
-void DatasetWidget::polygon_zoom_in(DrawablePolygonmesh<> *m)
+void DatasetWidget::polygon_zoom_in(cinolib::Polygonmesh<> *m)
 {
     m->scale(1.0 + (1.0 - minus_scale_factor));
-    m->updateGL();
+    // m->updateGL();
 }
 
-void DatasetWidget::polygon_zoom_out(DrawablePolygonmesh<> *m)
+void DatasetWidget::polygon_zoom_out(cinolib::Polygonmesh<> *m)
 {
     m->scale(minus_scale_factor);
-    m->updateGL();
+    // m->updateGL();
 }
 
 void DatasetWidget::polygon_zoom_in()
@@ -405,7 +409,9 @@ void DatasetWidget::polygon_zoom_in()
         if (obj == plus_buttons.at(i))
         {
             polygon_zoom_in(drawable_polys.at(i));
-            ui->canvas->updateGL();
+
+            cinolib::Color c = cinolib::Color (1,0,0,1);
+            ui->canvas->update_mesh(*drawable_polys.at(i), c, i+1);
 
             elems_scale_factors.at(i) /= minus_scale_factor;
 
@@ -423,7 +429,9 @@ void DatasetWidget::polygon_zoom_out()
         if (obj == minus_buttons.at(i))
         {
             polygon_zoom_out(drawable_polys.at(i));
-            ui->canvas->updateGL();
+
+            cinolib::Color c = cinolib::Color (1,0,0,1);
+            ui->canvas->update_mesh(*drawable_polys.at(i), c, i+1);
 
             elems_scale_factors.at(i) *= minus_scale_factor;
 
@@ -443,8 +451,9 @@ void DatasetWidget::rotate_polygon(double angle)
             double a = - (elems_rotation_angles.at(i) - angle);
 
             drawable_polys.at(i)->rotate(cinolib::vec3d(0,0,1), a);
-            drawable_polys.at(i)->updateGL();
-            ui->canvas->updateGL();
+
+            cinolib::Color c = cinolib::Color (1,0,0,1);
+            ui->canvas->update_mesh(*drawable_polys.at(i), c, i+1);
 
             elems_rotation_angles.at(i) += a;
 
@@ -505,12 +514,7 @@ AbstractVEMelement * DatasetWidget::create_element(const uint elem_type, const s
 
 void DatasetWidget::clean_canvas()
 {
-    for (DrawablePolygonmesh<> * p : drawable_polys)
-        ui->canvas->pop(p);
-
-    for (DrawablePolygonmesh<> * p : dataset->get_parametric_meshes())
-        ui->canvas->pop(p);
-
+    ui->canvas->clear();
     drawable_polys.clear();
 }
 
@@ -521,7 +525,7 @@ void DatasetWidget::compute_geometric_metrics ()
 
     for (uint i=0; i < dataset->get_parametric_meshes().size(); i++)
     {
-        Polygonmesh<> m = *(dataset->get_parametric_mesh(i));
+        cinolib::Polygonmesh<> m = *(dataset->get_parametric_mesh(i));
 
         // This is fundamental because many metrics are scale dependent.
         // With area normalization we fix this degree of freedom.
@@ -562,7 +566,7 @@ void DatasetWidget::on_geom_qualities_btn_clicked()
 
 void DatasetWidget::on_generate_dataset_btn_clicked()
 {
-    for (DrawablePolygonmesh<> *m : drawable_polys)
+    for (cinolib::Polygonmesh<> *m : drawable_polys)
     {
         if (m->bbox().min.x() < 0.0 ||
             m->bbox().min.y() < 0.0 ||
@@ -600,7 +604,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 
         std::vector<float> sample_interval;
 
-        std::vector<DrawablePolygonmesh<> *> meshes_with_canvas;
+        std::vector<cinolib::Polygonmesh<> *> meshes_with_canvas;
         std::vector<float> t_values;
 
         uint n_samples = 0;
@@ -612,7 +616,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
             const float int_begin = 0.0;
             const float int_end = dialog->get_max_deformation_value();
 
-            sample_interval = sample_within_interval(int_begin, int_end, n_samples);
+            sample_interval = cinolib::sample_within_interval(int_begin, int_end, n_samples);
         }
         else
         {
@@ -622,13 +626,13 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 
         for(float t : sample_interval)
         {
-            std::vector<cinolib::DrawablePolygonmesh<> *> polys;
+            std::vector<cinolib::Polygonmesh<> *> polys;
 
             for (uint e=0; e < elems.size(); e++)
             {
                 AbstractVEMelement *elem = elems.at(e);
 
-                Polygonmesh<> deformed = elem->deform(t);
+                cinolib::Polygonmesh<> deformed = elem->deform(t);
 
                 deformed.scale(elems_scale_factors.at(e));
                 deformed.rotate(cinolib::vec3d(0,0,1), elems_rotation_angles.at(e));
@@ -644,7 +648,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 
                 deformed.update_bbox();
 
-                DrawablePolygonmesh<> * polymesh =  new DrawablePolygonmesh<>(deformed.vector_verts(), deformed.vector_polys());
+                cinolib::Polygonmesh<> * polymesh =  new cinolib::Polygonmesh<>(deformed.vector_verts(), deformed.vector_polys());
 
                 std::cout << "Scaling : " << elems_scale_factors.at(e) << std::endl;
                 std::cout << "Center : " << polymesh->bbox().center() << std::endl;
@@ -661,8 +665,8 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 
             if (max_area_type == BASED_ON_MIN_EDGE)
             {
-                double area_b = inf_double, min_e = inf_double, min_angle = inf_double;
-                for (DrawablePolygonmesh<> *m : polys)
+                double area_b = cinolib::inf_double, min_e = cinolib::inf_double, min_angle = cinolib::inf_double;
+                for (cinolib::Polygonmesh<> *m : polys)
                 {
                     for(uint pid=0; pid<m->num_polys(); ++pid)
                         area_b = std::min(area_b, m->poly_area(pid));   //min area
@@ -672,7 +676,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 
                     for(uint pid=0; pid<m->num_polys(); ++pid)
                         for (uint vid : m->adj_p2v(pid))
-                            min_angle = std::min(min_angle, m->poly_angle_at_vert(pid, vid, RAD));    //min angle
+                            min_angle = std::min(min_angle, m->poly_angle_at_vert(pid, vid, cinolib::RAD));    //min angle
                 }
                 double edge_b = min_e * min_e * sqrt(3) / 4;  //area of an equilateral triangle with edge min_e
                 double angle_b = min_e * min_e * std::sin(min_angle);     //area of an isoscele triangle with angle min_angle
@@ -685,7 +689,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
             if (max_area_type == BASED_ON_AVG_POLY_DIAGONAL)
             {
                 double delta = 0.0;
-                for (DrawablePolygonmesh<> *m : polys)
+                for (cinolib::Polygonmesh<> *m : polys)
                     delta += m->bbox().diag();
                 delta /= polys.size();
 
@@ -702,8 +706,8 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
             if (min_angle > 0.0)
                 triangle_flags += "q" + std::to_string(min_angle);
 
-            Polygonmesh<> m = deform_with_canvas(polys, triangle_flags);
-            DrawablePolygonmesh<> *dm = new DrawablePolygonmesh<> (m.vector_verts(), m.vector_polys());
+            cinolib::Polygonmesh<> m = deform_with_canvas(polys, triangle_flags);
+            cinolib::Polygonmesh<> *dm = new cinolib::Polygonmesh<> (m.vector_verts(), m.vector_polys());
 
             for (uint pid=dm->num_polys()-elems.size(); pid < dm->num_polys(); pid++)
             {
@@ -713,7 +717,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
                 dm->poly_data(pid).color = cinolib::Color::RED();
             }
 
-            dm->show_marked_edge(true);
+            // dm->show_marked_edge(true);
 
             std::stringstream ss;
             ss << dm->bbox();
@@ -733,7 +737,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 
         uint id = 0;
 
-        for (DrawablePolygonmesh<>* m : meshes_with_canvas)
+        for (cinolib::Polygonmesh<>* m : meshes_with_canvas)
         {
             dataset->add_parametric_mesh(m, static_cast<double>(t_values.at(id)), UINT_MAX);
             id++;
@@ -770,8 +774,8 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 
         ui->highlight_polys_cb->setEnabled(true);
 
-        ui->canvas->callback_mouse_press =
-                [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
+        // ui->canvas->callback_mouse_press =
+        //         [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
 
         emit (computed_parametric_dataset());
     }
@@ -783,14 +787,10 @@ void DatasetWidget::show_parametric_mesh(int index)
 {
     clean_canvas();
 
-    DrawablePolygonmesh<> *m = dataset->get_parametric_mesh(static_cast<uint>(index));
+    cinolib::Polygonmesh<> *m = dataset->get_parametric_mesh(static_cast<uint>(index));
 
-    m->show_marked_edge(true);
-    m->show_poly_color();
-
-    m->updateGL();
-    ui->canvas->push_obj(m, reset_canvas);
-    ui->canvas->updateGL();
+    cinolib::Color c = cinolib::Color(0.5, 0.5, 0.5, 1);
+    ui->canvas->add_mesh(*m, c, false);
 
     reset_canvas = false;
 
@@ -854,9 +854,9 @@ void DatasetWidget::on_save_btn_clicked()
 //    delete dialog;
 //}
 
-Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinolib::DrawablePolygonmesh<> *> &elems_polys, const std::string triangle_flags)
+cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinolib::Polygonmesh<> *> &elems_polys, const std::string triangle_flags)
 {
-    std::vector<vec2d> verts_in;
+    std::vector<cinolib::vec2d> verts_in;
     std::vector<uint>  segs;
 
     uint vid_off = 0;
@@ -864,11 +864,11 @@ Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinolib::Drawa
 
     for (uint i=0; i < elems_polys.size(); i++)
     {
-        DrawablePolygonmesh<> m = *elems_polys.at(i);
+        cinolib::Polygonmesh<> m = *elems_polys.at(i);
 
         for(uint vid=0; vid<m.num_verts(); ++vid)
         {
-            verts_in.push_back(vec2d(m.vert(vid).x(), m.vert(vid).y()));
+            verts_in.push_back(cinolib::vec2d(m.vert(vid).x(), m.vert(vid).y()));
             if (vid==0) vert_holes.push_back(vid_off);
         }
 
@@ -890,38 +890,38 @@ Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinolib::Drawa
 
 
 
-    verts_in.push_back(vec2d(0.0, 0.0));
-    verts_in.push_back(vec2d(1.0, 0.0));
-    verts_in.push_back(vec2d(1.0, 1.0));
-    verts_in.push_back(vec2d(0.0, 1.0));
+    verts_in.push_back(cinolib::vec2d(0.0, 0.0));
+    verts_in.push_back(cinolib::vec2d(1.0, 0.0));
+    verts_in.push_back(cinolib::vec2d(1.0, 1.0));
+    verts_in.push_back(cinolib::vec2d(0.0, 1.0));
 
     // create a hole in correspondence of the deformed element
     // (I'm taking as hole seed the centroid of one of the
     // triangles in the triangulation of the poligon)
     //
-    std::vector<vec2d> holes;
+    std::vector<cinolib::vec2d> holes;
 
     for (uint i=0; i < elems_polys.size(); i++)
     {
-        DrawablePolygonmesh<> m = *elems_polys.at(i);
+        cinolib::Polygonmesh<> m = *elems_polys.at(i);
         std::vector<uint>  tmp = m.poly_tessellation(0);
-        vec3d sum = (m.vert(tmp.at(0)) + m.vert(tmp.at(1)) + m.vert(tmp.at(2)));
-        vec2d hole = vec2d(sum.x(), sum.y())/3.0;
+        cinolib::vec3d sum = (m.vert(tmp.at(0)) + m.vert(tmp.at(1)) + m.vert(tmp.at(2)));
+        cinolib::vec2d hole = cinolib::vec2d(sum.x(), sum.y())/3.0;
         holes.push_back(hole);
 
         std::stringstream ss;
         ss << hole;
-        ui->canvas->updateGL();
+        // ui->canvas->updateGL();
     }
 
-    std::vector<vec3d> verts_out;
+    std::vector<cinolib::vec3d> verts_out;
     std::vector<uint> tris;
     //std::string flags("cq20.0a");
 //    std::string t_flags = "cq20.0a" + std::to_string(delta*delta*0.25);
     std::string t_flags = "cq" + triangle_flags;
     triangle_wrap(verts_in, segs, holes, 0, t_flags.c_str(), verts_out, tris);
 
-    Polygonmesh<> m_with_canvas(verts_out, polys_from_serialized_vids(tris,3));
+    cinolib::Polygonmesh<> m_with_canvas(verts_out, cinolib::polys_from_serialized_vids(tris,3));
     m_with_canvas.save ("mesh_with_canvas.obj");
 
     std::vector<uint> new_polys;
@@ -941,7 +941,7 @@ Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinolib::Drawa
             for(uint eid : m_with_canvas.adj_v2e(curr_v))
             {
                 if (found || !m_with_canvas.edge_is_boundary(eid)) continue;
-                if(DOES_NOT_CONTAIN(visited,eid))
+                if(cinolib::DOES_NOT_CONTAIN(visited,eid))
                 {
                     visited.insert(eid);
                     assert(found==false);
@@ -954,7 +954,7 @@ Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinolib::Drawa
             if (!found)
             {
                 ui->log_label->append("<b><font color=\"red\"> ERROR: Polygons intersecting each other. </font></b>");
-                return Polygonmesh<>();
+                return cinolib::Polygonmesh<>();
             }
 
 
@@ -962,7 +962,7 @@ Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinolib::Drawa
         }
         while(curr_v!=start_v);
         uint pid = m_with_canvas.poly_add(poly);
-        if(m_with_canvas.poly_data(pid).normal.dot(vec3d(0,0,1))<0)
+        if(m_with_canvas.poly_data(pid).normal.dot(cinolib::vec3d(0,0,1))<0)
         {
             m_with_canvas.poly_remove(pid);
             std::reverse(poly.begin(),poly.end());
@@ -1027,7 +1027,7 @@ void DatasetWidget::move_polygon_on_x(double new_pos)
     {
         if (obj == x_poses.at(i))
         {
-            DrawablePolygonmesh<> *m = drawable_polys.at(i);
+            cinolib::Polygonmesh<> *m = drawable_polys.at(i);
             cinolib::vec3d bb_center = m->bbox().center();
 
             for (uint vid=0; vid < m->num_verts(); vid++)
@@ -1040,8 +1040,9 @@ void DatasetWidget::move_polygon_on_x(double new_pos)
             std::cout << m->bbox().center() << std::endl;
 
             elems_centers.at(i).x() = new_pos;
-            m->updateGL();
-            ui->canvas->updateGL();
+
+            cinolib::Color c = cinolib::Color (1,0,0,1);
+            ui->canvas->update_mesh(*m, c, i+1);
 
             break;
         }
@@ -1056,7 +1057,7 @@ void DatasetWidget::move_polygon_on_y(double new_pos)
     {
         if (obj == y_poses.at(i))
         {
-            DrawablePolygonmesh<> *m = drawable_polys.at(i);
+            cinolib::Polygonmesh<> *m = drawable_polys.at(i);
             cinolib::vec3d bb_center = m->bbox().center();
 
             for (uint vid=0; vid < m->num_verts(); vid++)
@@ -1069,8 +1070,9 @@ void DatasetWidget::move_polygon_on_y(double new_pos)
             std::cout << m->bbox().center() << std::endl;
 
             elems_centers.at(i).y() = new_pos;
-            m->updateGL();
-            ui->canvas->updateGL();
+
+            cinolib::Color c = cinolib::Color (1,0,0,1);
+            ui->canvas->update_mesh(*m, c, i+1);
 
             break;
         }
@@ -1135,7 +1137,7 @@ void DatasetWidget::on_load_polys_btn_clicked()
 
         if (fname.compare("NONE") != 0)
         {
-            selected_poly.mesh = new Polygonmesh<> (fname.c_str());
+            selected_poly.mesh = new cinolib::Polygonmesh<> (fname.c_str());
             selected_poly.class_type = 8;
         }
 
@@ -1207,14 +1209,14 @@ void DatasetWidget::on_load_meshes_btn_clicked()
         ui->log_label->append(message.c_str());
 
         // check class
-        QStringRef subString = &f;
+        QString subString = f;
 
         if (f.length() > 0 && f.at(0).isDigit())
         {
-            subString = QStringRef(&f, f.indexOf("_")+1, f.length() - f.indexOf("_") - 1);
+            // subString = QStringRef(&f, f.indexOf("_")+1, f.length() - f.indexOf("_") - 1);
         }
 
-        std:: cout << subString.toString().toStdString() << std::endl;
+        std:: cout << subString.toStdString() << std::endl;
 
         uint class_id = UINT_MAX;
 
@@ -1233,7 +1235,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
                 break;
             }
 
-        DrawablePolygonmesh<> *m = new DrawablePolygonmesh<> (filename.c_str());
+        cinolib::Polygonmesh<> *m = new cinolib::Polygonmesh<> (filename.c_str());
 
         message = std::to_string(m->num_verts()) + "V / " + std::to_string(m->num_polys()) + "P ";
         ui->log_label->append(message.c_str());
@@ -1248,7 +1250,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
                 m->poly_data(pid).flags.set(1, true);
             }
 
-            m->show_marked_edge(true);
+            // m->show_marked_edge(true);
         }
 
         // save node/ele if not present - to enable pde solver
@@ -1296,8 +1298,8 @@ void DatasetWidget::on_load_meshes_btn_clicked()
 
     ui->geom_qualities_btn->setEnabled(true);
 
-    ui->canvas->callback_mouse_press =
-            [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
+    // ui->canvas->callback_mouse_press =
+    //         [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
 
     ui->aggregate_btn->setEnabled(true);
 
@@ -1319,14 +1321,14 @@ void DatasetWidget::on_aggregate_btn_clicked()
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
-    for (DrawablePolygonmesh<> *m : dataset->get_parametric_meshes())
+    for (cinolib::Polygonmesh<> *m : dataset->get_parametric_meshes())
     {
-        double diameter = -inf_double, rho = -inf_double, rho_a = -inf_double;
+        double diameter = -cinolib::inf_double, rho = -cinolib::inf_double, rho_a = -cinolib::inf_double;
 
         for (uint pid = 0; pid < m->num_polys(); pid++)
         {
-            double max_pd = -inf_double;
-            std::vector<vec3d> points = m->poly_verts(pid);
+            double max_pd = -cinolib::inf_double;
+            std::vector<cinolib::vec3d> points = m->poly_verts(pid);
             for(uint i=0; i<points.size()-1; ++i)
                 for(uint j=i+1; j<points.size(); ++j)
                 {
@@ -1344,7 +1346,7 @@ void DatasetWidget::on_aggregate_btn_clicked()
             }
             else */if (aggregation_type == 1)
             {
-                double min_e = inf_double;
+                double min_e = cinolib::inf_double;
                 for (auto eid : m->adj_p2e(pid))
                     min_e = std::min(min_e, m->edge_length(eid));
 
@@ -1354,7 +1356,7 @@ void DatasetWidget::on_aggregate_btn_clicked()
             }
             else if (aggregation_type == 2)
             {
-                double min_e = inf_double;
+                double min_e = cinolib::inf_double;
                 for (auto eid : m->adj_p2e(pid))
                     min_e = std::min(min_e, m->edge_length(eid));
 
@@ -1388,21 +1390,21 @@ void DatasetWidget::on_aggregate_btn_clicked()
 
         ui->log_label->append("DONE");
 
-        m->updateGL();
+        // m->updateGL();
 
         QCoreApplication::processEvents();
 
 
         count_mesh++;
     }
-    ui->canvas->updateGL();
+    // ui->canvas->updateGL();
     QApplication::restoreOverrideCursor();
 
     ui->aggregate_btn->setEnabled(false);
     ui->save_btn->setEnabled(true);
 }
 
-void DatasetWidget::aggregate_triangles (Polygonmesh<> &dm, const double value_b, const int aggregation_type)
+void DatasetWidget::aggregate_triangles (cinolib::Polygonmesh<> &dm, const double value_b, const int aggregation_type)
 {
     bool ok = false;
     while (!ok)
@@ -1440,12 +1442,12 @@ void DatasetWidget::aggregate_triangles (Polygonmesh<> &dm, const double value_b
 
                     std::vector<uint> points_adj = dm.poly_verts_id(adj_pid); // id dei vertici di adj_pid
                     std::set<uint> points_ids;
-                    std::vector<vec3d> points;
+                    std::vector<cinolib::vec3d> points;
                     for (uint p : points_pid)   points_ids.insert(p);
                     for (uint p : points_adj)   points_ids.insert(p);
                     for (uint p : points_ids)   points.push_back(dm.vert(p));
 
-                    double diameter = -inf_double;
+                    double diameter = -cinolib::inf_double;
                     for(uint i=0; i<points.size()-1; ++i)
                         for(uint j=i+1; j<points.size(); ++j)
                             diameter = std::max(diameter, points.at(i).dist(points.at(j)));
@@ -1470,7 +1472,7 @@ void DatasetWidget::aggregate_triangles (Polygonmesh<> &dm, const double value_b
                     else
                     if (aggregation_type == 2)
                     {
-                        double min_e = inf_double;
+                        double min_e = cinolib::inf_double;
                         for (auto eid : dm.adj_p2e(pid))
                             if(!(dm.poly_contains_edge(adj_pid,eid)))
                                 min_e = std::min(min_e, dm.edge_length(eid));
@@ -1486,7 +1488,7 @@ void DatasetWidget::aggregate_triangles (Polygonmesh<> &dm, const double value_b
                     }
                     else if (aggregation_type == 3)
                     {
-                        double min_e = inf_double;
+                        double min_e = cinolib::inf_double;
                         for (auto eid : dm.adj_p2e(pid))
                             if(!(dm.poly_contains_edge(adj_pid,eid)))
                                 min_e = std::min(min_e, dm.edge_length(eid));
@@ -1522,7 +1524,7 @@ void DatasetWidget::aggregate_triangles (Polygonmesh<> &dm, const double value_b
         if (value > value_b )    ok = true;
         else        //se il valore è < di quello di bound, unisco
         {
-                Polygonmesh<> *m = new Polygonmesh<> (dm.vector_verts(), {});
+                cinolib::Polygonmesh<> *m = new cinolib::Polygonmesh<> (dm.vector_verts(), {});
 
                 m->poly_add(dm.adj_p2v(pid_tb_merged_2));
                 m->poly_add(dm.adj_p2v(pid_tb_merged));
@@ -1625,7 +1627,7 @@ void DatasetWidget::on_mirroring_btn_clicked()
 
     uint index=0;
 
-    for (cinolib::DrawablePolygonmesh<> *mesh : dataset->get_parametric_meshes())
+    for (cinolib::Polygonmesh<> *mesh : dataset->get_parametric_meshes())
     {
         std::string message = "Mirriring mesh " + std::to_string(index) + ": " +
                                                   std::to_string(mesh->num_verts()) + "V|" +
@@ -1637,7 +1639,7 @@ void DatasetWidget::on_mirroring_btn_clicked()
         //mesh->edge_unmark_all();
         mesh->edge_mark_boundaries();
 
-        mesh->updateGL();
+        // mesh->updateGL();
 
         message = "--> Mirrired mesh " + std::to_string(index) + ": " +
                                          std::to_string(mesh->num_verts()) + "V|" +
@@ -1648,7 +1650,7 @@ void DatasetWidget::on_mirroring_btn_clicked()
         index++;
     }
 
-    ui->canvas->updateGL();
+    show_parametric_mesh(ui->param_slider->value());
 
     QApplication::restoreOverrideCursor();
 
@@ -1657,15 +1659,15 @@ void DatasetWidget::on_mirroring_btn_clicked()
 
 void DatasetWidget::on_show_coords_cb_stateChanged(int checked)
 {
-    if (!checked)
-        ui->canvas->pop_all_markers();
-    else
-    {
-        for (const Marker * m : markers)
-            ui->canvas->push_marker(new Marker(*m));
-    }
+    // if (!checked)
+    //     ui->canvas->pop_all_markers();
+    // else
+    // {
+    //     for (const Marker * m : markers)
+    //         ui->canvas->push_marker(new Marker(*m));
+    // }
 
-    ui->canvas->updateGL();
+    // ui->canvas->updateGL();
 }
 
 void DatasetWidget::on_highlight_polys_cb_stateChanged(int checked)
@@ -1673,11 +1675,11 @@ void DatasetWidget::on_highlight_polys_cb_stateChanged(int checked)
     #pragma omp parallel for
     for (uint i=0; i < dataset->get_num_parametric_meshes(); i++)
     {
-        DrawablePolygonmesh<> *m = dataset->get_parametric_mesh(i);
+        cinolib::Polygonmesh<> *m = dataset->get_parametric_mesh(i);
 
-        m->show_marked_edge(checked);
-        m->updateGL();
+        // m->show_marked_edge(checked);
+        // m->updateGL();
     }
 
-    ui->canvas->updateGL();
+    // ui->canvas->updateGL();
 }

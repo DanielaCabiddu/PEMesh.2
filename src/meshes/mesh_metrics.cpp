@@ -215,7 +215,7 @@ void save_to_file(const char *filename, const MeshMetrics & metrics)
     }
 }
 
-void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
+void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics)
 {
     // convenient compact representations for each item
     std::vector<std::pair<double,uint>> INR;
@@ -248,7 +248,7 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
     {
         //std::cout << "[pid " << pid << "] " << std::endl;
 
-        std::vector<vec3d> points = m.poly_verts(pid);
+        std::vector<cinolib::vec3d> points = m.poly_verts(pid);
         bool is_triangle = (points.size() == 3);
         double TOLL = 1e-6;
 
@@ -256,10 +256,10 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
         for(uint eid : m.adj_p2e(pid)) { e.push_back(m.edge_length(eid)); }
         double min_edge = *std::min_element(e.begin(), e.end());
 
-        vec3d  dummy;
+        cinolib::vec3d  dummy;
         double inradius, outradius;
-        polygon_maximum_inscribed_circle(points, dummy, inradius);
-        smallest_enclosing_disk(points, dummy, outradius);
+        cinolib::polygon_maximum_inscribed_circle(points, dummy, inradius);
+        cinolib::smallest_enclosing_disk(points, dummy, outradius);
         assert(inradius < outradius && outradius > 0.);
         double diameter = DBL_MIN;
         for(uint i=0; i<points.size()-1; ++i) {
@@ -272,7 +272,7 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
         double our = diameter / (2. * outradius);
         double cir = inradius / outradius;
 
-        std::vector<vec3d> kernel_verts;
+        std::vector<cinolib::vec3d> kernel_verts;
         double kernel_area = polygon_kernel(points, kernel_verts);
         double kernel_inradius = 0.;
         if (!kernel_verts.empty()) { polygon_maximum_inscribed_circle(kernel_verts, dummy, kernel_inradius); }
@@ -286,7 +286,7 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
         double apr = sqrt(area) / perimeter;
 
         std::vector<double> angles;
-        for(uint vid : m.adj_p2v(pid)) { angles.push_back(m.poly_angle_at_vert(pid, vid, RAD)); }
+        for(uint vid : m.adj_p2v(pid)) { angles.push_back(m.poly_angle_at_vert(pid, vid, cinolib::RAD)); }
         double mia = *std::min_element(angles.begin(), angles.end()) / (2. * M_PI);
         double maa = *std::max_element(angles.begin(), angles.end()) / (2. * M_PI);
         assert(mia <= maa && maa != 0.);
@@ -296,12 +296,12 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
         double rho2 = std::min(sqrt(area), min_edge) / diameter;
         double rho3 = 3. / points.size();
         double rho4 = DBL_MAX;
-        std::vector<std::vector<vec3d>> tau;
-        std::vector<vec3d> tau_i = {points.front()};
+        std::vector<std::vector<cinolib::vec3d>> tau;
+        std::vector<cinolib::vec3d> tau_i = {points.front()};
         for (uint i = 0; i < points.size(); ++i) {
-            vec3d p0 = points.at(i);
-            vec3d p1 = points.at((i + 1) % points.size());
-            vec3d p2 = points.at((i + 2) % points.size());
+            cinolib::vec3d p0 = points.at(i);
+            cinolib::vec3d p1 = points.at((i + 1) % points.size());
+            cinolib::vec3d p2 = points.at((i + 2) % points.size());
             while (points_are_colinear_3d(p0, p1, p2)) {
                 tau_i.push_back(p1);
                 i++;
@@ -312,7 +312,7 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
             tau.push_back(tau_i);
             tau_i = {p1};
         }
-        for (const std::vector<vec3d> &tau_i : tau) {
+        for (const std::vector<cinolib::vec3d> &tau_i : tau) {
             double min_ei = DBL_MAX;
             double max_ei = DBL_MIN;
             for (uint vid = 0; vid < tau_i.size() - 1; vid++) {
@@ -327,25 +327,25 @@ void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
 
         double jac = DBL_MAX;
         double fro = DBL_MAX;
-        std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+        std::vector<cinolib::vec2d> points_2d = vec2d_from_vec3d(points);
         for (uint i = 0; i < points_2d.size(); ++i) {
-            vec2d p0 = points_2d.at(i);
-            vec2d p1 = points_2d.at((i + 1) % points_2d.size());
-            vec2d p2 = points_2d.at((i + 2) % points_2d.size());
+            cinolib::vec2d p0 = points_2d.at(i);
+            cinolib::vec2d p1 = points_2d.at((i + 1) % points_2d.size());
+            cinolib::vec2d p2 = points_2d.at((i + 2) % points_2d.size());
 
-            vec2d L0 = p1 - p0;
-            vec2d L1 = p2 - p0;
+            cinolib::vec2d L0 = p1 - p0;
+            cinolib::vec2d L1 = p2 - p0;
 
-            mat<2,2,double> A;
+            cinolib::mat<2,2,double> A;
             A.set_col(0, L0);
             A.set_col(1, L1);
             double J = A.det();
             double lambda = L0.norm() * L1.norm();
             jac = std::min(jac, J / lambda);
 
-            mat<2,2,double> inv_A = A.inverse();
-            mat<2,2,double> tsp_A = A.transpose();
-            mat<2,2,double> tsp_inv_A = inv_A.transpose();
+            cinolib::mat<2,2,double> inv_A = A.inverse();
+            cinolib::mat<2,2,double> tsp_A = A.transpose();
+            cinolib::mat<2,2,double> tsp_inv_A = inv_A.transpose();
 
             double k = sqrt((tsp_A * A).trace() * (tsp_inv_A * inv_A).trace());
             fro = std::min(fro, 2. / k);

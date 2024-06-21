@@ -28,7 +28,6 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QLogValueAxis>
 #include <QtCharts/QValueAxis>
-QT_CHARTS_USE_NAMESPACE
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -363,7 +362,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
 
     for (unsigned int m=0; m < metrics.size(); m++)
     {
-        double val = max_double;
+        double val = cinolib::max_double;
 
         switch (to_be_sort_id)
         {
@@ -932,25 +931,25 @@ void MainWindow::on_tab_widgets_currentChanged(int index)
         if (dataset.get_parametric_meshes().size() == 0)
             return;
 
-        for (cinolib::DrawablePolygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
-            p->show_vert_color();
+        // for (cinolib::Polygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
+        //     p->show_vert_color();
     }
     else
     if (index == 1)
     {
         ui->graphicMeshMetricWidget->set_slider_max(static_cast<const uint>( dataset.get_parametric_meshes().size()-1));
 
-        for (cinolib::DrawablePolygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
-            p->show_poly_color();
+        // for (cinolib::Polygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
+        //     p->show_poly_color();
     }
     else
     if (index == 2) // solver widget
     {
-        for (uint m=0; m < dataset.get_parametric_meshes().size(); m++)
-        {
-            dataset.get_parametric_mesh(m)->poly_set_color(cinolib::Color(1,1,1));
-            dataset.get_parametric_mesh(m)->show_poly_color();
-        }
+        // for (uint m=0; m < dataset.get_parametric_meshes().size(); m++)
+        // {
+        //     dataset.get_parametric_mesh(m)->poly_set_color(cinolib::Color(1,1,1));
+        //     dataset.get_parametric_mesh(m)->show_poly_color();
+        // }
 
         ui->solverWidget->update();
     }

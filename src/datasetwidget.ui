@@ -80,7 +80,7 @@
            </widget>
           </item>
           <item row="0" column="0" colspan="2">
-           <widget class="cinolib::GLcanvas" name="canvas" native="true">
+           <widget class="genericVTKwidget" name="canvas" native="true">
             <property name="minimumSize">
              <size>
               <width>475</width>
@@ -155,7 +155,7 @@
              <string> Geometric Qualities</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/geometry_icon.png</normaloff>:/icons/img/geometry_icon.png</iconset>
             </property>
            </widget>
@@ -169,7 +169,7 @@
              <string> Aggregate Triangles</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/aggregate.png</normaloff>:/icons/img/aggregate.png</iconset>
             </property>
            </widget>
@@ -183,7 +183,7 @@
              <string> Mirroring</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/mirroring.png</normaloff>:/icons/img/mirroring.png</iconset>
             </property>
            </widget>
@@ -197,7 +197,7 @@
              <string> Generate Dataset</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/slider.png</normaloff>:/icons/img/slider.png</iconset>
             </property>
            </widget>
@@ -208,7 +208,7 @@
              <string> Add a new Polygon</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/add_icon.png</normaloff>:/icons/img/add_icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -231,7 +231,7 @@
                 <string> Open Polygons</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/open_file_icon.ico</normaloff>:/icons/img/open_file_icon.ico</iconset>
                </property>
               </widget>
@@ -242,7 +242,7 @@
                 <string> Open Dataset</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/open_file_icon.ico</normaloff>:/icons/img/open_file_icon.ico</iconset>
                </property>
               </widget>
@@ -295,7 +295,7 @@
                 <string> Save Polygon Set</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/save_icon.png</normaloff>:/icons/img/save_icon.png</iconset>
                </property>
               </widget>
@@ -309,7 +309,7 @@
                 <string> Save &amp;&amp; Run Solver</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/save_icon.png</normaloff>:/icons/img/save_icon.png</iconset>
                </property>
               </widget>
@@ -360,14 +360,12 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>cinolib::GLcanvas</class>
+   <class>genericVTKwidget</class>
    <extends>QWidget</extends>
-   <header>cinolib/gui/qt/glcanvas.h</header>
+   <header>genericvtkwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

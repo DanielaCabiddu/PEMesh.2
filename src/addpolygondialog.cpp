@@ -33,6 +33,8 @@
 #include "addpolygondialog.h"
 #include "ui_addpolygondialog.h"
 
+#include <cinolib/meshes/polygonmesh.h>
+
 #include <QFileDialog>
 
 AddPolygonDialog::AddPolygonDialog(QWidget *parent)
@@ -78,9 +80,13 @@ void AddPolygonDialog::update_img(int index)
         ui->preview_filename->show();
         ui->change_poly_btn->show();
 
-        ui->preview_canvas->pop_all_occurrences_of(cinolib::DRAWABLE_POLYGONMESH);
+        // ui->preview_canvas->pop_all_occurrences_of(cinolib::DRAWABLE_POLYGONMESH);
 
-        ui->preview_canvas->push_obj(new cinolib::DrawablePolygonmesh<> (mesh->vector_verts(), mesh->vector_polys()));
+        // ui->preview_canvas->push_obj(new cinolib::DrawablePolygonmesh<> (mesh->vector_verts(), mesh->vector_polys()));
+        ui->preview_canvas->clear();
+
+        cinolib::Color c = cinolib::Color(1,0,0,1);
+        ui->preview_canvas->add_mesh(cinolib::Polygonmesh<> (mesh->vector_verts(), mesh->vector_polys()), c);
 
         ui->preview_filename->setText(mesh->mesh_data().filename.c_str());
         return;
@@ -118,7 +124,7 @@ void AddPolygonDialog::update_img(int index)
     }
 
     ui->preview_img->show();
-    ui->preview_canvas->hide();
+    // ui->preview_canvas->hide();
     ui->preview_filename->hide();
     ui->change_poly_btn->hide();
 

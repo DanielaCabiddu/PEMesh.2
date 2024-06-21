@@ -36,9 +36,7 @@
 #include <cinolib/meshes/polygonmesh.h>
 #include <cinolib/min_max_inf.h>
 
-using namespace cinolib;
-
-void non_uniform_scaling (Polygonmesh<> &mesh)
+void non_uniform_scaling (cinolib::Polygonmesh<> &mesh)
 {
     double minX = mesh.bbox().min.x(), maxX = mesh.bbox().max.x();
     double minY = mesh.bbox().min.y(), maxY = mesh.bbox().max.y();

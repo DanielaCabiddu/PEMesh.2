@@ -39,7 +39,8 @@
 #include <QWidget>
 
 #include <QtCharts/QChartView>
-QT_CHARTS_USE_NAMESPACE
+
+
 
 namespace Ui {
 class MeshMetricsWidget;
@@ -62,7 +63,7 @@ public:
 
 Q_SIGNALS:
 
-    void sort_geometric_qualities (uint id);
+    void sort_geometric_qualities (unsigned int id);
     void show_unsorted_metrics ();
 
 private slots:
@@ -118,7 +119,7 @@ private:
     const unsigned int n_cols = 3;
 
     void change_series_color (const int series_id);
-    void show_series(const uint series_id, const bool check);
+    void show_series(const unsigned int series_id, const bool check);
 };
 
 #endif // MESHMETRICSWIDGET_H
