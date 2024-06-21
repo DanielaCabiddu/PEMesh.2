@@ -265,28 +265,35 @@ int metis_wrap_primal(Polyhedralmesh<> &m, const double parts,
 
 #else
 CINO_INLINE
-int metis_wrap_primal(Polygonmesh<> &m, const double parts, const bool N_WEIGHTS, const bool A_WEIGHTS) {
+int metis_wrap_primal(Polygonmesh<> &m, const double parts,
+                      double (*quality)(const std::vector<vec3d> &),
+                      const bool N_WEIGHTS, const bool A_WEIGHTS) {
+    std::cerr << "ERROR : Metis missing. Install Metis and recompile defining "
+                 "symbol CINOLIB_USES_METIS" << std::endl;
+    exit(-1);
+}
+
+int metis_wrap_dual(Polygonmesh<> &m, const double parts,
+                    double (*quality)(const std::vector<vec3d> &),
+                    const bool N_WEIGHTS, const bool A_WEIGHTS) {
     std::cerr << "ERROR : Metis missing. Install Metis and recompile defining "
                  "symbol CINOLIB_USES_METIS" << std::endl;
     exit(-1);
 }
 
 CINO_INLINE
-int metis_wrap_dual(Polygonmesh<> &m, const double parts, const bool N_WEIGHTS, const bool A_WEIGHTS) {
+int metis_wrap_primal(Polyhedralmesh<> &m, const double parts,
+                      double (*quality)(const std::vector<vec3d> &, const std::vector<std::vector<uint>> &, const std::vector<vec3d> &),
+                      const bool N_WEIGHTS, const bool A_WEIGHTS) {
     std::cerr << "ERROR : Metis missing. Install Metis and recompile defining "
                  "symbol CINOLIB_USES_METIS" << std::endl;
     exit(-1);
 }
 
 CINO_INLINE
-int metis_wrap_primal(Polyhedralmesh<> &m, const double parts, const bool N_WEIGHTS, const bool A_WEIGHTS) {
-    std::cerr << "ERROR : Metis missing. Install Metis and recompile defining "
-                 "symbol CINOLIB_USES_METIS" << std::endl;
-    exit(-1);
-}
-
-CINO_INLINE
-int metis_wrap_dual(Polyhedralmesh<> &m, const double parts, const bool N_WEIGHTS, const bool A_WEIGHTS) {
+int metis_wrap_dual(Polyhedralmesh<> &m, const double parts,
+                    double (*quality)(const std::vector<vec3d> &, const std::vector<std::vector<uint>> &, const std::vector<vec3d> &),
+                    const bool N_WEIGHTS, const bool A_WEIGHTS) {
     std::cerr << "ERROR : Metis missing. Install Metis and recompile defining "
                  "symbol CINOLIB_USES_METIS" << std::endl;
     exit(-1);

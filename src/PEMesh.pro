@@ -30,10 +30,13 @@ DEFINES     += CINOLIB_USES_TRIANGLE
 INCLUDEPATH += ../external/triangle
 LIBS        += -L$$PWD/../external/triangle/build -ltriangle
 
-DEFINES     += CINOLIB_USES_METIS
-INCLUDEPATH += /home/tommaso/local/include/
-LIBS        += -L/home/tommaso/local/lib -lmetis
-LIBS        += -L/home/tommaso/local/lib -lGKlib
+# DEFINES     += CINOLIB_USES_METIS
+# linux { INCLUDEPATH += /home/tommaso/local/include/
+#         LIBS        += -L/home/tommaso/local/lib -lmetis
+#         LIBS        += -L/home/tommaso/local/lib -lGKlib }
+# macos { INCLUDEPATH += /usr/local/include/
+#         LIBS        += -L/usr/local/lib -lmetis
+#         LIBS        += -L/usr/local/lib -lGKlib }
 
 #INCLUDEPATH += meshes
 
