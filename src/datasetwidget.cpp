@@ -714,7 +714,7 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
                 for (uint eid : dm->adj_p2e(pid))
                     dm->edge_data(eid).flags.set(0, true);
 
-                dm->poly_data(pid).color = cinolib::Color::RED();
+                // dm->poly_data(pid).color = cinolib::Color::RED();
             }
 
             // dm->show_marked_edge(true);
@@ -886,10 +886,6 @@ cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinol
 //    vec2d  bot_l = vec2d(m.bbox().min);
 //    vec2d  top_r = vec2d(m.bbox().max);
 
-
-
-
-
     verts_in.push_back(cinolib::vec2d(0.0, 0.0));
     verts_in.push_back(cinolib::vec2d(1.0, 0.0));
     verts_in.push_back(cinolib::vec2d(1.0, 1.0));
@@ -897,7 +893,7 @@ cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinol
 
     // create a hole in correspondence of the deformed element
     // (I'm taking as hole seed the centroid of one of the
-    // triangles in the triangulation of the poligon)
+    // triangles in the triangulation of the polygon)
     //
     std::vector<cinolib::vec2d> holes;
 
@@ -922,11 +918,13 @@ cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinol
     triangle_wrap(verts_in, segs, holes, 0, t_flags.c_str(), verts_out, tris);
 
     cinolib::Polygonmesh<> m_with_canvas(verts_out, cinolib::polys_from_serialized_vids(tris,3));
-    m_with_canvas.save ("mesh_with_canvas.obj");
 
     std::vector<uint> new_polys;
 
-    for (uint i=0; i < holes.size(); i++)
+    std::cout << "elems_polys.size() : "<< elems_polys.size() << std::endl;
+    std::cout << "holes : "<< holes.size() << std::endl;
+
+    for (uint i=0; i < elems_polys.size(); i++)
     {
         // walk along boundary to fill holes with PEM elements
         uint start_v = vert_holes.at(i);
@@ -961,16 +959,24 @@ cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinol
             curr_v = next_v;
         }
         while(curr_v!=start_v);
+
+        for (uint vid : poly)
+            std::cout << m_with_canvas.vert(vid) << std::endl;
+
         uint pid = m_with_canvas.poly_add(poly);
-        if(m_with_canvas.poly_data(pid).normal.dot(cinolib::vec3d(0,0,1))<0)
+        if(m_with_canvas.poly_verts_are_CCW(pid, m_with_canvas.poly_vert_id(pid, 0), m_with_canvas.poly_vert_id(pid, 1)))
         {
             m_with_canvas.poly_remove(pid);
             std::reverse(poly.begin(),poly.end());
             m_with_canvas.poly_add(poly);
         }
 
-        new_polys.push_back(pid);
+        // cinolib::Polygonmesh<> m_with_canvas__(verts_out, cinolib::polys_from_serialized_vids(poly,3));
+        // m_with_canvas = m_with_canvas__;
+        // new_polys.push_back(pid);
     }
+
+
 
     /////////
 

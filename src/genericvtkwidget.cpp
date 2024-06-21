@@ -13,6 +13,7 @@
 #include <vtkPointData.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkPolygon.h>
 #include <vtkProperty.h>
 #include <vtkRegressionTestImage.h>
 #include <vtkRenderWindow.h>
@@ -145,10 +146,16 @@ bool genericVTKwidget::add_mesh(const cinolib::Polygonmesh<> &m, cinolib::Color 
 
     for (uint pid=0; pid < m.num_polys(); pid++)
     {
-        polys->InsertNextCell(m.poly_verts(pid).size());
+        vtkNew<vtkPolygon> polygon;
+        polygon->GetPointIds()->SetNumberOfIds(m.poly_verts(pid).size());
 
+        uint c=0;
         for (uint vid : m.poly_verts_id(pid))
-            polys->InsertCellPoint(vid);
+        {
+            polygon->GetPointIds()->SetId(c++, vid);
+        }
+
+        polys->InsertNextCell(polygon);
     }
 
     // Create a polydata object
@@ -197,6 +204,8 @@ bool genericVTKwidget::add_mesh(const cinolib::Polygonmesh<> &m, cinolib::Color 
 
     if (wireframe)
         actor.at(mapper.size()-1)->GetProperty()->SetRepresentationToWireframe();
+
+    actor.at(mapper.size()-1)->GetProperty()->SetEdgeVisibility(true);
 
     /**
      * @brief Adds the actor to the scene and sets the background color.
