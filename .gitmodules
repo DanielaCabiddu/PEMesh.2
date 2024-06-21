@@ -10,3 +10,6 @@
 [submodule "METIS"]
 	path = METIS
 	url = https://github.com/KarypisLab/METIS
+[submodule "external/METIS"]
+	path = external/METIS
+	url = https://github.com/KarypisLab/METIS
