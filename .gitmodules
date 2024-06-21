@@ -13,3 +13,6 @@
 [submodule "external/METIS"]
 	path = external/METIS
 	url = https://github.com/KarypisLab/METIS
+[submodule "external/GKlib"]
+	path = external/GKlib
+	url = https://github.com/KarypisLab/GKlib
