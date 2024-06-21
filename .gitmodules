@@ -7,3 +7,6 @@
 [submodule "external/cinolib"]
 	path = external/cinolib
 	url = https://github.com/mlivesu/cinolib
+[submodule "METIS"]
+	path = METIS
+	url = https://github.com/KarypisLab/METIS
