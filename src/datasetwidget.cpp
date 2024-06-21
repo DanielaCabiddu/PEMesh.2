@@ -377,6 +377,8 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const cin
     y_poses.push_back(y_dsb);
 
     ui->generate_dataset_btn->setEnabled(true);
+
+    std::cout << "Enabled" << std::endl;
     //ui->save_btn->setEnabled(true);
     ui->save_polys_btn->setEnabled(true);
 }
@@ -997,7 +999,7 @@ cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinol
 //        {
 //            for (uint pid=0; pid < new_polys.size(); pid++)
 //            {
-//                std::vector<vec3d> points = m_with_canvas.poly_verts(new_polys.at(pid));
+//                std::vector<cinolib::vec3d> points = m_with_canvas.poly_verts(new_polys.at(pid));
 
 //                for(uint i=0;   i<points.size()-1; ++i)
 //                for(uint j=i+1; j<points.size();   ++j)
@@ -1014,7 +1016,7 @@ cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinol
 
 //        for (uint pid=0; pid < m_with_canvas.num_polys(); pid++)
 //        {
-//            std::vector<vec3d> points = m_with_canvas.poly_verts(pid);
+//            std::vector<cinolib::vec3d> points = m_with_canvas.poly_verts(pid);
 //            if (points.size() == 3) continue;
 
 //            double d = -inf_double;
@@ -1702,7 +1704,7 @@ void DatasetWidget::on_optimize_btn_clicked()
     ui->optimize_btn->setEnabled(false);
 
     OptimizeDialog *dialog = new OptimizeDialog();
-    double (*indicator)(const std::vector<vec3d>&);
+    double (*indicator)(const std::vector<cinolib::vec3d>&);
     bool node_weights, arc_weights;
     double parameter;
 
@@ -1751,7 +1753,7 @@ void DatasetWidget::on_optimize_btn_clicked()
     QApplication::setOverrideCursor(Qt::WaitCursor);
 
     uint index=0;
-    for (DrawablePolygonmesh<> *mesh : dataset->get_parametric_meshes())
+    for (cinolib::Polygonmesh<> *mesh : dataset->get_parametric_meshes())
     {
         std::string message = "Optimizing mesh " + std::to_string(index) + ": " +
                               std::to_string(mesh->num_verts()) + "V|" +
@@ -1763,12 +1765,12 @@ void DatasetWidget::on_optimize_btn_clicked()
         message += ", found: " + std::to_string(n_labels);
         ui->log_label->append(message.c_str());
 
-        DrawablePolygonmesh<> *m_old = mesh;
+        cinolib::Polygonmesh<> *m_old = mesh;
         mesh_agglomerate_wrt_labels(*mesh);
         message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh->num_polys());
         ui->log_label->append(message.c_str());
 
-        Hierarchy agglomeration_hierarchy;
+        cinolib::Hierarchy agglomeration_hierarchy;
         agglomeration_hierarchy.compute(*m_old, *mesh);
         assert(agglomeration_hierarchy.check(*m_old, *mesh) && "ERROR: hierarchy check failed");
         std::string output_h  = "_hierarchy.txt";
@@ -1781,12 +1783,12 @@ void DatasetWidget::on_optimize_btn_clicked()
                   std::to_string(m_old->num_polys() - mesh->num_polys()) + " merged polys.\n" ;
         ui->log_label->append(message.c_str());
 
-        mesh->updateGL();
+        //mesh->updateGL();
 
         index++;
     }
 
-    ui->canvas->updateGL();
+    // ui->canvas->updateGL();
 
     QApplication::restoreOverrideCursor();
 

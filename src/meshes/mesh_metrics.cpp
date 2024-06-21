@@ -247,7 +247,7 @@ void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics)
 
     for(uint pid=0; pid<m.num_polys(); ++pid)
     {
-        std::vector<vec3d> points = m.poly_verts(pid);
+        std::vector<cinolib::vec3d> points = m.poly_verts(pid);
         bool is_triangle = points.size() == 3;
 
         double inr = compute_metric_INR(points);
@@ -347,8 +347,8 @@ void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics)
     get_all(FRO, FRO_poly, metrics.FRO_all);    
 }
 
-inline double compute_metric_INR(const std::vector<vec3d> &points) {
-    vec3d  dummy;
+inline double compute_metric_INR(const std::vector<cinolib::vec3d> &points) {
+    cinolib::vec3d  dummy;
     double inradius;
     polygon_maximum_inscribed_circle(points, dummy, inradius);
 
@@ -365,8 +365,8 @@ inline double compute_metric_INR(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_OUR(const std::vector<vec3d> &points) {
-    vec3d  dummy;
+inline double compute_metric_OUR(const std::vector<cinolib::vec3d> &points) {
+    cinolib::vec3d  dummy;
     double outradius;
     smallest_enclosing_disk(points, dummy, outradius);
 
@@ -383,8 +383,8 @@ inline double compute_metric_OUR(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_CIR(const std::vector<vec3d> &points) {
-    vec3d  dummy;
+inline double compute_metric_CIR(const std::vector<cinolib::vec3d> &points) {
+    cinolib::vec3d  dummy;
     double inradius, outradius;
     polygon_maximum_inscribed_circle(points, dummy, inradius);
     smallest_enclosing_disk(points, dummy, outradius);
@@ -395,12 +395,12 @@ inline double compute_metric_CIR(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_KRR(const std::vector<vec3d> &points) {
-    vec3d  dummy;
+inline double compute_metric_KRR(const std::vector<cinolib::vec3d> &points) {
+    cinolib::vec3d  dummy;
     double outradius;
     smallest_enclosing_disk(points, dummy, outradius);
 
-    std::vector<vec3d> kernel_verts;
+    std::vector<cinolib::vec3d> kernel_verts;
     double kernel_inradius = 0.;
     if (!kernel_verts.empty()) { polygon_maximum_inscribed_circle(kernel_verts, dummy, kernel_inradius); }
 
@@ -409,12 +409,12 @@ inline double compute_metric_KRR(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_KAR(const std::vector<vec3d> &points) {
-    std::vector<vec3d> kernel_verts;
+inline double compute_metric_KAR(const std::vector<cinolib::vec3d> &points) {
+    std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
     assert(kernel_area > 0.);
 
-    std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+    std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     double area = polygon_unsigned_area(points_2d);
 
     double value = kernel_area / area;
@@ -422,8 +422,8 @@ inline double compute_metric_KAR(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_APR(const std::vector<vec3d> &points) {
-    std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+inline double compute_metric_APR(const std::vector<cinolib::vec3d> &points) {
+    std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     double area = polygon_unsigned_area(points_2d);
 
     double perimeter = 0.;
@@ -437,16 +437,16 @@ inline double compute_metric_APR(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_MIA(const std::vector<vec3d> &points) {
+inline double compute_metric_MIA(const std::vector<cinolib::vec3d> &points) {
     std::vector<double> angles;
     uint nv = points.size();
-    vec3d normal = polygon_normal(points);
+    cinolib::vec3d normal = polygon_normal(points);
     for(uint curr = 0; curr < nv; ++curr) {
         uint next = (curr+1   ) % nv;
         uint prev = (curr-1+nv) % nv;
-        vec3d p = points.at(curr);
-        vec3d u = points.at(prev) - p;
-        vec3d v = points.at(next) - p;
+        cinolib::vec3d p = points.at(curr);
+        cinolib::vec3d u = points.at(prev) - p;
+        cinolib::vec3d v = points.at(next) - p;
         double angle  = u.angle_rad(v);
         if((-u).cross(v).dot(normal)<0) { angle = 2*M_PI - angle; }
         angles.push_back(angle);
@@ -457,16 +457,16 @@ inline double compute_metric_MIA(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_MAA(const std::vector<vec3d> &points) {
+inline double compute_metric_MAA(const std::vector<cinolib::vec3d> &points) {
     std::vector<double> angles;
     uint nv = points.size();
-    vec3d normal = polygon_normal(points);
+    cinolib::vec3d normal = polygon_normal(points);
     for(uint curr = 0; curr < nv; ++curr) {
         uint next = (curr+1   ) % nv;
         uint prev = (curr-1+nv) % nv;
-        vec3d p = points.at(curr);
-        vec3d u = points.at(prev) - p;
-        vec3d v = points.at(next) - p;
+        cinolib::vec3d p = points.at(curr);
+        cinolib::vec3d u = points.at(prev) - p;
+        cinolib::vec3d v = points.at(next) - p;
         double angle  = u.angle_rad(v);
         if((-u).cross(v).dot(normal)<0) { angle = 2*M_PI - angle; }
         angles.push_back(angle);
@@ -477,16 +477,16 @@ inline double compute_metric_MAA(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_ANR(const std::vector<vec3d> &points) {
+inline double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {
     std::vector<double> angles;
     uint nv = points.size();
-    vec3d normal = polygon_normal(points);
+    cinolib::vec3d normal = polygon_normal(points);
     for(uint curr = 0; curr < nv; ++curr) {
         uint next = (curr+1   ) % nv;
         uint prev = (curr-1+nv) % nv;
-        vec3d p = points.at(curr);
-        vec3d u = points.at(prev) - p;
-        vec3d v = points.at(next) - p;
+        cinolib::vec3d p = points.at(curr);
+        cinolib::vec3d u = points.at(prev) - p;
+        cinolib::vec3d v = points.at(next) - p;
         double angle  = u.angle_rad(v);
         if((-u).cross(v).dot(normal)<0) { angle = 2*M_PI - angle; }
         angles.push_back(angle);
@@ -501,11 +501,11 @@ inline double compute_metric_ANR(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_VEM(const std::vector<vec3d> &points) {
-    std::vector<vec3d> kernel_verts;
+inline double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {
+    std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
     assert(kernel_area > 0.);
-    std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+    std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     double area = polygon_unsigned_area(points_2d);
     double rho1 = kernel_area / area;
 
@@ -526,12 +526,12 @@ inline double compute_metric_VEM(const std::vector<vec3d> &points) {
     double rho3 = 3. / points.size();
 
     double rho4 = DBL_MAX;
-    std::vector<std::vector<vec3d>> tau;
-    std::vector<vec3d> tau_i = {points.front()};
+    std::vector<std::vector<cinolib::vec3d>> tau;
+    std::vector<cinolib::vec3d> tau_i = {points.front()};
     for (uint i = 0; i < points.size(); ++i) {
-        vec3d p0 = points.at(i);
-        vec3d p1 = points.at((i + 1) % points.size());
-        vec3d p2 = points.at((i + 2) % points.size());
+        cinolib::vec3d p0 = points.at(i);
+        cinolib::vec3d p1 = points.at((i + 1) % points.size());
+        cinolib::vec3d p2 = points.at((i + 2) % points.size());
         while (points_are_colinear_3d(p0, p1, p2)) {
             tau_i.push_back(p1);
             i++;
@@ -542,7 +542,7 @@ inline double compute_metric_VEM(const std::vector<vec3d> &points) {
         tau.push_back(tau_i);
         tau_i = {p1};
     }
-    for (const std::vector<vec3d> &tau_i : tau) {
+    for (const std::vector<cinolib::vec3d> &tau_i : tau) {
         double min_ei = DBL_MAX;
         double max_ei = DBL_MIN;
         for (uint vid = 0; vid < tau_i.size() - 1; vid++) {
@@ -559,18 +559,18 @@ inline double compute_metric_VEM(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_JAC(const std::vector<vec3d> &points) {
+inline double compute_metric_JAC(const std::vector<cinolib::vec3d> &points) {
     double jac = DBL_MAX;
-    std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+    std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     for (uint i = 0; i < points_2d.size(); ++i) {
-        vec2d p0 = points_2d.at(i);
-        vec2d p1 = points_2d.at((i + 1) % points_2d.size());
-        vec2d p2 = points_2d.at((i + 2) % points_2d.size());
+        cinolib::vec2d p0 = points_2d.at(i);
+        cinolib::vec2d p1 = points_2d.at((i + 1) % points_2d.size());
+        cinolib::vec2d p2 = points_2d.at((i + 2) % points_2d.size());
 
-        vec2d L0 = p1 - p0;
-        vec2d L1 = p2 - p0;
+        cinolib::vec2d L0 = p1 - p0;
+        cinolib::vec2d L1 = p2 - p0;
 
-        mat<2,2,double> A;
+        cinolib::mat<2,2,double> A;
         A.set_col(0, L0);
         A.set_col(1, L1);
         double J = A.det();
@@ -583,24 +583,24 @@ inline double compute_metric_JAC(const std::vector<vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_FRO(const std::vector<vec3d> &points) {
+inline double compute_metric_FRO(const std::vector<cinolib::vec3d> &points) {
     double fro = DBL_MAX;
-    std::vector<vec2d> points_2d = vec2d_from_vec3d(points);
+    std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     for (uint i = 0; i < points_2d.size(); ++i) {
-        vec2d p0 = points_2d.at(i);
-        vec2d p1 = points_2d.at((i + 1) % points_2d.size());
-        vec2d p2 = points_2d.at((i + 2) % points_2d.size());
+        cinolib::vec2d p0 = points_2d.at(i);
+        cinolib::vec2d p1 = points_2d.at((i + 1) % points_2d.size());
+        cinolib::vec2d p2 = points_2d.at((i + 2) % points_2d.size());
 
-        vec2d L0 = p1 - p0;
-        vec2d L1 = p2 - p0;
+        cinolib::vec2d L0 = p1 - p0;
+        cinolib::vec2d L1 = p2 - p0;
 
-        mat<2,2,double> A;
+        cinolib::mat<2,2,double> A;
         A.set_col(0, L0);
         A.set_col(1, L1);
 
-        mat<2,2,double> inv_A = A.inverse();
-        mat<2,2,double> tsp_A = A.transpose();
-        mat<2,2,double> tsp_inv_A = inv_A.transpose();
+        cinolib::mat<2,2,double> inv_A = A.inverse();
+        cinolib::mat<2,2,double> tsp_A = A.transpose();
+        cinolib::mat<2,2,double> tsp_inv_A = inv_A.transpose();
 
         double k = sqrt((tsp_A * A).trace() * (tsp_inv_A * inv_A).trace());
         fro = std::min(fro, 2. / k);

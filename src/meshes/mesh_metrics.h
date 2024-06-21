@@ -237,17 +237,17 @@ void save_to_file(const char *filename, const MeshMetrics & metrics);
 
 void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics);
 
-inline double compute_metric_INR(const std::vector<vec3d> &points);
-inline double compute_metric_OUR(const std::vector<vec3d> &points);
-inline double compute_metric_CIR(const std::vector<vec3d> &points);
-inline double compute_metric_KRR(const std::vector<vec3d> &points);
-inline double compute_metric_KAR(const std::vector<vec3d> &points);
-inline double compute_metric_APR(const std::vector<vec3d> &points);
-inline double compute_metric_MIA(const std::vector<vec3d> &points);
-inline double compute_metric_MAA(const std::vector<vec3d> &points);
-inline double compute_metric_ANR(const std::vector<vec3d> &points);
-inline double compute_metric_VEM(const std::vector<vec3d> &points);
-inline double compute_metric_JAC(const std::vector<vec3d> &points);
-inline double compute_metric_FRO(const std::vector<vec3d> &points);
+inline double compute_metric_INR(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_OUR(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_CIR(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_KRR(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_KAR(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_APR(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_MIA(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_MAA(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_ANR(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_VEM(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_JAC(const std::vector<cinolib::vec3d> &points);
+inline double compute_metric_FRO(const std::vector<cinolib::vec3d> &points);
 
 #endif
