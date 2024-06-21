@@ -216,7 +216,7 @@ void save_to_file(const char *filename, const MeshMetrics & metrics)
     }
 }
 
-void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics)
+void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics)
 {
     // convenient compact representations for each item
     std::vector<std::pair<double,uint>> INR;

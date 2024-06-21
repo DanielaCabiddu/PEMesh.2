@@ -36,14 +36,11 @@
 #include <cinolib/meshes/polygonmesh.h>
 #include <cinolib/min_max_inf.h>
 
-#include <float.h>
 #include <limits.h>
 #include <vector>
 
 
-using namespace cinolib;
-
-typedef struct
+struct MeshMetrics
 {
     // INR - Inradius/Diameter Ratio - Range: [0,1] - high is good - scale INdependent
     double INR_min    = 0.0;
@@ -224,8 +221,7 @@ typedef struct
     uint   FRO_poly_min_id = UINT_MAX;
     uint   FRO_poly_max_id = UINT_MAX;
     std::vector<double> FRO_all;
-}
-MeshMetrics;
+};
 
 template<typename T>
 void get_min_max_avg(std::vector<std::pair<T,uint>> & list,
@@ -239,7 +235,7 @@ void get_all(std::vector<std::pair<double,uint>> & list_triangles, std::vector<s
 
 void save_to_file(const char *filename, const MeshMetrics & metrics);
 
-void compute_mesh_metrics(const Polygonmesh<> &m, MeshMetrics &metrics);
+void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics);
 
 inline double compute_metric_INR(const std::vector<vec3d> &points);
 inline double compute_metric_OUR(const std::vector<vec3d> &points);

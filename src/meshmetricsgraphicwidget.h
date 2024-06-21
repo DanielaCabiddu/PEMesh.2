@@ -88,7 +88,7 @@ private slots:
 private:
     Ui::MeshMetricsGraphicWidget *ui;
 
-    std::vector<cinolib::DrawablePolygonmesh<> *> mesh_with_metrics;
+    std::vector<cinolib::Polygonmesh<> *> mesh_with_metrics;
 
     Dataset *d = nullptr;
 

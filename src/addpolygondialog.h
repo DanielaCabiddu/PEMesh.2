@@ -33,7 +33,7 @@
 #ifndef ADDPOLYGONDIALOG_H
 #define ADDPOLYGONDIALOG_H
 
-#include "cinolib/meshes/drawable_polygonmesh.h"
+#include <cinolib/meshes/polygonmesh.h>
 
 #include <QDialog>
 

@@ -80,7 +80,7 @@
            </widget>
           </item>
           <item row="0" column="0" colspan="2">
-           <widget class="cinolib::GLcanvas" name="canvas" native="true">
+           <widget class="genericVTKwidget" name="canvas" native="true">
             <property name="minimumSize">
              <size>
               <width>475</width>
@@ -146,13 +146,69 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout">
+          <item row="10" column="0">
+           <widget class="QPushButton" name="geom_qualities_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Geometric Qualities</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/geometry_icon.png</normaloff>:/icons/img/geometry_icon.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QPushButton" name="aggregate_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Aggregate Triangles</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/aggregate.png</normaloff>:/icons/img/aggregate.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QPushButton" name="mirroring_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Mirroring</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/mirroring.png</normaloff>:/icons/img/mirroring.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QPushButton" name="generate_dataset_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Generate Dataset</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/slider.png</normaloff>:/icons/img/slider.png</iconset>
+            </property>
+           </widget>
+          </item>
           <item row="5" column="0">
            <widget class="QPushButton" name="add_btn">
             <property name="text">
              <string> Add a new Polygon</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/add_icon.png</normaloff>:/icons/img/add_icon.png</iconset>
             </property>
             <property name="iconSize">
@@ -175,7 +231,7 @@
                 <string> Open Polygons</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/open_file_icon.ico</normaloff>:/icons/img/open_file_icon.ico</iconset>
                </property>
               </widget>
@@ -186,7 +242,7 @@
                 <string> Open Dataset</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/open_file_icon.ico</normaloff>:/icons/img/open_file_icon.ico</iconset>
                </property>
               </widget>
@@ -313,7 +369,7 @@
                 <string> Save Polygon Set</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/save_icon.png</normaloff>:/icons/img/save_icon.png</iconset>
                </property>
               </widget>
@@ -327,7 +383,7 @@
                 <string> Save &amp;&amp; Run Solver</string>
                </property>
                <property name="icon">
-                <iconset resource="images.qrc">
+                <iconset>
                  <normaloff>:/icons/img/save_icon.png</normaloff>:/icons/img/save_icon.png</iconset>
                </property>
               </widget>
@@ -370,14 +426,12 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>cinolib::GLcanvas</class>
+   <class>genericVTKwidget</class>
    <extends>QWidget</extends>
-   <header>cinolib/gui/qt/glcanvas.h</header>
+   <header>genericvtkwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

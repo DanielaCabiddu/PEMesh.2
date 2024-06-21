@@ -38,7 +38,7 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QScatterSeries>
 #include <QtCharts/QValueAxis>
-QT_CHARTS_USE_NAMESPACE
+
 
 class CustomizedChartView : public QChartView
 {

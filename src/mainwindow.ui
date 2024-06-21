@@ -197,7 +197,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="images.qrc">:/logo/img/erc_logo.png</pixmap>
+             <pixmap>:/logo/img/erc_logo.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -358,7 +358,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
   </action>
   <action name="actionCompute">
    <property name="icon">
-    <iconset resource="images.qrc">
+    <iconset>
      <normaloff>:/logo/img/erc_logo.png</normaloff>:/logo/img/erc_logo.png</iconset>
    </property>
    <property name="text">
@@ -411,8 +411,6 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

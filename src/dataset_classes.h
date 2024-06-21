@@ -34,7 +34,12 @@
 #define DATASET_CLASSES_H
 
 #include <map>
+
+#ifndef _WIN32
 #include <sys/types.h>
+#else
+typedef unsigned int uint;
+#endif
 #include <string>
 #include <vector>
 

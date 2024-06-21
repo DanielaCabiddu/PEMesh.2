@@ -32,7 +32,7 @@
 
 #include "mirroring.h"
 #include "non_uniform_scaling_01.h"
-#include "cinolib/vertex_clustering.h"
+#include <cinolib/vertex_clustering.h>
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -119,7 +119,7 @@ void apply_mirroring (cinolib::Polygonmesh<> &mesh)
     std::vector<uint> poly_tb_rem;
     std::vector<std::vector<uint>> poly_tb_added;
     std::vector<uint> boundary_verts_id = mesh.get_boundary_vertices();
-    std::vector<vec3d> boundary_verts;
+    std::vector<cinolib::vec3d> boundary_verts;
 
     for (uint vid : boundary_verts_id)
         boundary_verts.push_back(mesh.vert(vid));

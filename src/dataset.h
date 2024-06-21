@@ -36,7 +36,6 @@
 #include "dataset_classes.h"
 
 #include "meshes/mesh_metrics.h"
-#include "meshes/vem_elements.h"
 
 #include <cinolib/meshes/meshes.h>
 
@@ -51,11 +50,11 @@ public:
 
     uint get_num_parametric_meshes () const { return parametric_meshes.size(); }
 
-    void add_parametric_mesh (DrawablePolygonmesh<> *m, const double t, const uint class_id);
+    void add_parametric_mesh (cinolib::Polygonmesh<> *m, const double t, const uint class_id);
     void add_parametric_mesh_metrics (const MeshMetrics &m) { parametric_meshes_metrics.push_back(m); }
 
-    const std::vector<DrawablePolygonmesh<> *> & get_parametric_meshes  ()             const { return parametric_meshes; }
-                      DrawablePolygonmesh<> *    get_parametric_mesh    (const uint i) const { return parametric_meshes.at(i); }
+    const std::vector<cinolib::Polygonmesh<> *> & get_parametric_meshes  ()             const { return parametric_meshes; }
+                      cinolib::Polygonmesh<> *    get_parametric_mesh    (const uint i) const { return parametric_meshes.at(i); }
 
     const std::vector<MeshMetrics>  & get_parametric_meshes_metrics     () const { return parametric_meshes_metrics; }
     const std::vector<double>       & get_parametric_meshes_t           () const { return parametric_meshes_t; }
@@ -70,7 +69,7 @@ public:
 
 private:
 
-    std::vector<DrawablePolygonmesh<> *> parametric_meshes;
+    std::vector<cinolib::Polygonmesh<> *> parametric_meshes;
 
     std::vector<MeshMetrics> parametric_meshes_metrics;
 

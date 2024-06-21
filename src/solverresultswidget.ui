@@ -79,10 +79,10 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="cinolib::GLcanvas" name="solver_output" native="true"/>
+            <widget class="genericVTKwidget" name="solver_output" native="true"/>
            </item>
            <item row="1" column="1">
-            <widget class="cinolib::GLcanvas" name="groundtruth" native="true"/>
+            <widget class="genericVTKwidget" name="groundtruth" native="true"/>
            </item>
            <item row="2" column="0" colspan="2">
             <widget class="QSlider" name="t_slider">
@@ -181,7 +181,7 @@
              <string> errL2</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
             </property>
             <property name="toolButtonStyle">
@@ -195,7 +195,7 @@
              <string> hEmax</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
             </property>
             <property name="autoRepeat">
@@ -212,7 +212,7 @@
              <string> errS</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
             </property>
             <property name="toolButtonStyle">
@@ -226,7 +226,7 @@
              <string>  errInf</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
             </property>
             <property name="toolButtonStyle">
@@ -240,7 +240,7 @@
              <string> condVect</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
             </property>
             <property name="toolButtonStyle">
@@ -254,7 +254,7 @@
              <string> ALL</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
             </property>
             <property name="toolButtonStyle">
@@ -277,7 +277,7 @@
              <string>Save Plots</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/image_icon.png</normaloff>:/icons/img/image_icon.png</iconset>
             </property>
            </widget>
@@ -293,14 +293,12 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>cinolib::GLcanvas</class>
+   <class>genericVTKwidget</class>
    <extends>QWidget</extends>
-   <header>cinolib/gui/qt/glcanvas.h</header>
+   <header>genericvtkwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

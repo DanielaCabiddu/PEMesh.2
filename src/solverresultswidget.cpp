@@ -57,9 +57,9 @@ void SolverResultsWidget::set_dataset(Dataset *d)
 {
   for (uint i = 0; i < d->get_parametric_meshes().size(); i++)
   {
-    DrawablePolygonmesh<> *m = d->get_parametric_mesh(i);
-    DrawablePolygonmesh<> *m_gt =
-        new DrawablePolygonmesh<>(m->vector_verts(), m->vector_polys());
+    cinolib::Polygonmesh<> *m = d->get_parametric_mesh(i);
+    cinolib::Polygonmesh<> *m_gt =
+        new cinolib::Polygonmesh<>(m->vector_verts(), m->vector_polys());
 
     results.push_back(m);
     groundtruth.push_back(m_gt);
@@ -86,8 +86,8 @@ void SolverResultsWidget::show_mesh_solution_and_groundtruth() const
     // results.at(i)->show_texture1D(tex_type);
     // groundtruth.at(i)->show_texture1D(tex_type);
 
-    results.at(i)->show_vert_color();
-    groundtruth.at(i)->show_vert_color();
+    // results.at(i)->show_vert_color();
+    // groundtruth.at(i)->show_vert_color();
   }
 }
 
@@ -153,29 +153,36 @@ void SolverResultsWidget::clean_charts() {
 
 void SolverResultsWidget::clean_canvas()
 {
-  if (curr_mesh_id == max_uint)
+  if (curr_mesh_id == cinolib::max_uint)
     return;
 
-  ui->solver_output->pop(results.at(curr_mesh_id));
-  ui->groundtruth->pop(groundtruth.at(curr_mesh_id));
+  // ui->solver_output->pop(results.at(curr_mesh_id));
+  // ui->groundtruth->pop(groundtruth.at(curr_mesh_id));
 }
 
 void SolverResultsWidget::show_parametric_mesh(int index)
 {
   clean_canvas();
 
-  cinolib::DrawablePolygonmesh<> *p_r = results.at(static_cast<uint>(index));
-  cinolib::DrawablePolygonmesh<> *p_gt =
+  cinolib::Polygonmesh<> *p_r = results.at(static_cast<uint>(index));
+  cinolib::Polygonmesh<> *p_gt =
       groundtruth.at(static_cast<uint>(index));
 
-  p_r->updateGL();
-  p_gt->updateGL();
+  // p_r->updateGL();
+  // p_gt->updateGL();
 
-  ui->solver_output->push_obj(p_r, update_scene);
-  ui->solver_output->updateGL();
+  // ui->solver_output->push_obj(p_r, update_scene);
+  // ui->solver_output->updateGL();
 
-  ui->groundtruth->push_obj(p_gt, update_scene);
-  ui->groundtruth->updateGL();
+  // ui->groundtruth->push_obj(p_gt, update_scene);
+  // ui->groundtruth->updateGL();
+
+  ui->solver_output->clear();
+  ui->groundtruth->clear();
+
+  cinolib::Color c = cinolib::Color(0,0,0,1);
+  ui->solver_output->add_mesh(*p_r,c);
+  ui->groundtruth->add_mesh(*p_gt,c);
 
   update_scene = false;
 
@@ -231,14 +238,14 @@ void SolverResultsWidget::change_series_color(const uint series_id)
   QPen pen = series->pen();
   QColor prev_color = pen.brush().color();
 
-  QColorDialog *colorDialog = new QColorDialog(this);
-  QColor color = colorDialog->getColor(prev_color, this, "Effect Color",
-                                       QColorDialog::DontUseNativeDialog);
+  // QColorDialog *colorDialog = new QColorDialog(this);
+  // QColor color = colorDialog->getColor(prev_color, this, "Effect Color",
+  //                                      QColorDialog::DontUseNativeDialog);
 
-  if (color == nullptr)
-    return;
+  // if (color == nullptr)
+  //   return;
 
-  pen.setBrush(QBrush(color)); // or just pen.setColor("red");
+  // pen.setBrush(QBrush(color)); // or just pen.setColor("red");
   series->setPen(pen);
 }
 
@@ -335,7 +342,7 @@ void SolverResultsWidget::on_meshsize_cb_stateChanged(int checked)
   ui->deformation_cb->setChecked(!checked);
 }
 
-cinolib::DrawablePolygonmesh<> *SolverResultsWidget::get_gt_mesh(const uint i)
+cinolib::Polygonmesh<> *SolverResultsWidget::get_gt_mesh(const uint i)
 {
   return groundtruth.at(i);
 }

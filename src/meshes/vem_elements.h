@@ -36,15 +36,13 @@
 #include "abstract_vem_element.h"
 #include <cinolib/meshes/polygonmesh.h>
 
-using namespace cinolib;
-
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 class IsotropyTester : public AbstractVEMelement
 {
     public:
         IsotropyTester();
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -53,7 +51,7 @@ class ConvexityTester : public AbstractVEMelement
 {
     public:
         ConvexityTester();
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -62,10 +60,10 @@ class NumSidesTester : public AbstractVEMelement
 {
     public:
         NumSidesTester(const uint max_sides = 40);
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
     private:
         uint max_sides;
-        Polygonmesh<> n_sided_polygon(const uint n_sides) const;
+        cinolib::Polygonmesh<> n_sided_polygon(const uint n_sides) const;
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -74,7 +72,7 @@ class MazeTester : public AbstractVEMelement
 {
     public:
         MazeTester();
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -83,10 +81,10 @@ class StarTester : public AbstractVEMelement
 {
     public:
         StarTester(const uint max_spikes = 40);
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
     private:
         uint max_spikes;
-        Polygonmesh<> n_sided_polygon(const uint n_sides) const;
+        cinolib::Polygonmesh<> n_sided_polygon(const uint n_sides) const;
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -95,7 +93,7 @@ class UTester : public AbstractVEMelement
 {
     public:
         UTester();
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -104,7 +102,7 @@ class ZetaTester : public AbstractVEMelement
 {
     public:
         ZetaTester();
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
 };
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -113,7 +111,7 @@ class CombTester : public AbstractVEMelement
 {
     public:
         CombTester(const uint max_dents = 10);
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
     private:
         uint max_dents;
 };
@@ -124,7 +122,7 @@ class RandomTester : public AbstractVEMelement
 {
     public:
         RandomTester(const std::string filename);
-        Polygonmesh<> deform(float t) const;
+        cinolib::Polygonmesh<> deform(float t) const;
     private:
         std::string filename;
 };
