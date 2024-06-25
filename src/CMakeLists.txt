@@ -29,7 +29,7 @@ set (VTK_BUILD ${VTK_DIR}/build-${CMAKE_SYSTEM_NAME})
 set (VTK_INSTALL ${VTK_DIR}/install-${CMAKE_SYSTEM_NAME})
 
 if (APPLE)
-    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.9.3.dylib)
+    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.1.dylib)
 elseif(MSVC)
     set (VTK_LIB ${VTK_INSTALL}/lib/vtkGUISupportQt-9.3.lib)
 else()
@@ -42,7 +42,6 @@ file(MAKE_DIRECTORY ${VTK_INSTALL})
 message (${Qt6_DIR})
 
 if (MSVC)
-
     add_custom_command(
         OUTPUT ${VTK_LIB}
         COMMAND cmake -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES #[[-UQt5*]] -DQt6_DIR=${Qt6_DIR} -DVTK_MODULE_ENABLE_VTK_GuiSupportQt=YES .. && cmake --build . --config Release --parallel 16 && cmake --install .
@@ -55,7 +54,6 @@ else()
         WORKING_DIRECTORY ${VTK_BUILD}
     )
 endif()
-
 
 include_directories(${VTK_INSTALL}/include/vtk-9.3)
 
@@ -127,8 +125,8 @@ endif()
 
 include_directories(${Boost_INCLUDE_DIRS})
 
-
 ## cinolib
+
 add_definitions(-DCINOLIB_USES_BOOST)
 add_definitions(-DCINOLIB_USES_TRIANGLE)
 include_directories( ${CMAKE_SOURCE_DIR}/../external)
@@ -159,7 +157,6 @@ include_directories(${TRIANGLE_DIR})
 ## includes
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
 
 FILE (GLOB HEADERS *.h meshes/*.h)
 FILE (GLOB SOURCES *.cpp meshes/*.cpp)

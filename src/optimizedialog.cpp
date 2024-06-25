@@ -12,7 +12,6 @@ OptimizeDialog::OptimizeDialog(QWidget *parent)
     for (uint i=0; i < metrics_names.size(); i++)
     {
         ui->indicator_cb->addItem(metrics_names.at(i).c_str());
-        cbID2metricsID.push_back(i);
     }
 }
 
@@ -21,17 +20,50 @@ OptimizeDialog::~OptimizeDialog()
     delete ui;
 }
 
-int OptimizeDialog::get_indicator () const
+void OptimizeDialog::get_indicator ( double (*indicator)(const std::vector<cinolib::vec3d>&) ) const
 {
-    return ui->indicator_cb->currentIndex();
+    switch (ui->indicator_cb->currentIndex()) {
+    case 0 : { indicator = compute_metric_INR; break; }
+    case 1 : { indicator = compute_metric_OUR; break; }
+    case 2 : { indicator = compute_metric_CIR; break; }
+    case 3 : { indicator = compute_metric_KRR; break; }
+    case 4 : { indicator = compute_metric_KAR; break; }
+    case 5 : { indicator = compute_metric_APR; break; }
+    case 6 : { indicator = compute_metric_MIA; break; }
+    case 7 : { indicator = compute_metric_MAA; break; }
+    case 8 : { indicator = compute_metric_ANR; break; }
+    case 9 : { indicator = compute_metric_VEM; break; }
+    case 10: { indicator = compute_metric_JAC; break; }
+    case 11: { indicator = compute_metric_FRO; break; }
+    default: break;
+    }
 }
 
-int OptimizeDialog::get_weights () const
+void OptimizeDialog::get_weights ( bool &node_weights, bool arc_weights ) const
 {
-    return ui->weights_cb->currentIndex();
+    switch (ui->weights_cb->currentIndex()) {
+    case 0:
+        node_weights = true;
+        arc_weights  = true;
+        break;
+    case 1:
+        node_weights = true;
+        arc_weights  = false;
+        break;
+    case 2:
+        node_weights = false;
+        arc_weights  = true;
+        break;
+    case 3:
+        node_weights = false;
+        arc_weights  = false;
+        break;
+    default:
+        break;
+    }
 }
 
-double OptimizeDialog::get_parameter () const
+void OptimizeDialog::get_parameter ( double &parameter ) const
 {
-    return ui->parameter_cb->value();
+    parameter = ui->parameter_cb->value();
 }
