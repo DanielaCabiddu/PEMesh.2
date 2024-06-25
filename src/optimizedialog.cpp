@@ -20,6 +20,11 @@ OptimizeDialog::~OptimizeDialog()
     delete ui;
 }
 
+int OptimizeDialog::get_indicator () const
+{
+    return ui->indicator_cb->currentIndex();
+}
+
 void OptimizeDialog::get_indicator ( double (*indicator)(const std::vector<cinolib::vec3d>&) ) const
 {
     switch (ui->indicator_cb->currentIndex()) {

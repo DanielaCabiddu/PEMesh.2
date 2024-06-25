@@ -1710,7 +1710,22 @@ void DatasetWidget::on_optimize_btn_clicked()
 
     if (dialog->exec() == 1)
     {
-        dialog->get_indicator(indicator);
+        // dialog->get_indicator(indicator);
+        switch (dialog->get_indicator()) {
+        case 0 : { indicator = compute_metric_INR; break; }
+        case 1 : { indicator = compute_metric_OUR; break; }
+        case 2 : { indicator = compute_metric_CIR; break; }
+        case 3 : { indicator = compute_metric_KRR; break; }
+        case 4 : { indicator = compute_metric_KAR; break; }
+        case 5 : { indicator = compute_metric_APR; break; }
+        case 6 : { indicator = compute_metric_MIA; break; }
+        case 7 : { indicator = compute_metric_MAA; break; }
+        case 8 : { indicator = compute_metric_ANR; break; }
+        case 9 : { indicator = compute_metric_VEM; break; }
+        case 10: { indicator = compute_metric_JAC; break; }
+        case 11: { indicator = compute_metric_FRO; break; }
+        default: break;
+        }
         dialog->get_weights(node_weights, arc_weights);
         dialog->get_parameter(parameter);
     }

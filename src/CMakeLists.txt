@@ -154,6 +154,19 @@ add_custom_command(
 
 include_directories(${TRIANGLE_DIR})
 
+## metis
+
+if(LINUX)
+    add_definitions(-DCINOLIB_USES_METIS)
+    set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
+    set(METIS_LIB /home/tommaso/local/lib/libmetis.so)
+    include_directories (BEFORE ${METIS_DIR})
+
+    set(GKLIB_DIR /home/tommaso/local/include)
+    set(GKLIB_LIB /home/tommaso/local/lib/libGKlib.a)
+    include_directories (BEFORE ${GKLIB_DIR})
+endif()
+
 ## includes
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -175,5 +188,5 @@ endif()
 
 # qt5_use_modules(${PROJECT_NAME} Core Widgets OpenGL Network Charts)
 
-target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts ${VTK_LIBs} ${TRIANGLE_LIB})
+target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts ${VTK_LIBs} ${TRIANGLE_LIB} ${METIS_LIB} ${GKLIB_LIB})
 qt_finalize_executable(${PROJECT_NAME})
