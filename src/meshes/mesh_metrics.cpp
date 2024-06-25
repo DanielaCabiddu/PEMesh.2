@@ -412,7 +412,7 @@ inline double compute_metric_KRR(const std::vector<cinolib::vec3d> &points) {
 inline double compute_metric_KAR(const std::vector<cinolib::vec3d> &points) {
     std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
-    assert(kernel_area > 0.);
+    assert(kernel_area >= 0.);
 
     std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     double area = polygon_unsigned_area(points_2d);
@@ -504,7 +504,7 @@ inline double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {
 inline double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {
     std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
-    assert(kernel_area > 0.);
+    assert(kernel_area >= 0.);
     std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     double area = polygon_unsigned_area(points_2d);
     double rho1 = kernel_area / area;

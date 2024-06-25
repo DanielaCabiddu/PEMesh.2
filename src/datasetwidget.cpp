@@ -1705,48 +1705,14 @@ void DatasetWidget::on_optimize_btn_clicked()
 
     OptimizeDialog *dialog = new OptimizeDialog();
     double (*indicator)(const std::vector<cinolib::vec3d>&);
-    bool node_weights, arc_weights;
-    double parameter;
+    bool   node_weights = false, arc_weights = false;
+    double parameter = 100.;
 
     if (dialog->exec() == 1)
     {
-        switch (dialog->get_indicator()) {
-        case 0 : { indicator = compute_metric_INR; break; }
-        case 1 : { indicator = compute_metric_OUR; break; }
-        case 2 : { indicator = compute_metric_CIR; break; }
-        case 3 : { indicator = compute_metric_KRR; break; }
-        case 4 : { indicator = compute_metric_KAR; break; }
-        case 5 : { indicator = compute_metric_APR; break; }
-        case 6 : { indicator = compute_metric_MIA; break; }
-        case 7 : { indicator = compute_metric_MAA; break; }
-        case 8 : { indicator = compute_metric_ANR; break; }
-        case 9 : { indicator = compute_metric_VEM; break; }
-        case 10: { indicator = compute_metric_JAC; break; }
-        case 11: { indicator = compute_metric_FRO; break; }
-        default: break;
-        }
-
-        switch (dialog->get_weights()) {
-        case 0:
-            node_weights = true;
-            arc_weights  = true;
-            break;
-        case 1:
-            node_weights = true;
-            arc_weights  = false;
-            break;
-        case 2:
-            node_weights = false;
-            arc_weights  = true;
-            break;
-        case 3:
-            node_weights = false;
-            arc_weights  = false;
-            break;
-        default:
-            break;
-        }
-        parameter = dialog->get_parameter();
+        dialog->get_indicator(indicator);
+        dialog->get_weights(node_weights, arc_weights);
+        dialog->get_parameter(parameter);
     }
     delete dialog;
 
