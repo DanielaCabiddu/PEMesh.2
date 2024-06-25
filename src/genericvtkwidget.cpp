@@ -113,8 +113,10 @@ genericVTKwidget::genericVTKwidget(QWidget *parent)
 
 void genericVTKwidget::clear ()
 {
-    for (int a= actor.size()-1; a >= 0; a--)
-        renderer->RemoveActor(renderer->GetActors()->GetLastActor());
+
+    if (actor.size()>0)
+        for (int a= actor.size()-1; a >= 0; a--)
+            renderer->RemoveActor(renderer->GetActors()->GetLastActor());
 
     renderer->RemoveAllViewProps();
     renderer->RemoveAllObservers();
@@ -202,7 +204,7 @@ bool genericVTKwidget::add_mesh(const cinolib::Polygonmesh<> &m, cinolib::Color 
     actor.push_back(vtkSmartPointer<vtkActor>::New());
     actor.at(mapper.size()-1)->SetMapper(mapper.at(mapper.size()-1));
 
-    if (wireframe)
+    // if (wireframe)
         actor.at(mapper.size()-1)->GetProperty()->SetRepresentationToWireframe();
 
     actor.at(mapper.size()-1)->GetProperty()->SetEdgeVisibility(true);

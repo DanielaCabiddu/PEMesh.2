@@ -39,6 +39,8 @@ endif()
 file(MAKE_DIRECTORY ${VTK_BUILD})
 file(MAKE_DIRECTORY ${VTK_INSTALL})
 
+message (${Qt6_DIR})
+
 if (MSVC)
 
     add_custom_command(
@@ -49,7 +51,7 @@ if (MSVC)
 else()
     add_custom_command(
         OUTPUT ${VTK_LIB}
-        COMMAND cmake .. -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES #[[-UQt5*]] -DCMAKE_BUILD_TYPE=Release && cmake --build . --parallel 16 && cmake --install .
+        COMMAND cmake .. -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES -UQt5* -DCMAKE_PREFIX_PATH=${Qt6_DIR}/.. -DCMAKE_BUILD_TYPE=Debug && cmake --build . --parallel 16 && cmake --install .
         WORKING_DIRECTORY ${VTK_BUILD}
     )
 endif()
