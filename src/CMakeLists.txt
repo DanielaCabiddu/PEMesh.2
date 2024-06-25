@@ -29,7 +29,7 @@ set (VTK_BUILD ${VTK_DIR}/build-${CMAKE_SYSTEM_NAME})
 set (VTK_INSTALL ${VTK_DIR}/install-${CMAKE_SYSTEM_NAME})
 
 if (APPLE)
-    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.1.dylib)
+    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.dylib)
 elseif(MSVC)
     set (VTK_LIB ${VTK_INSTALL}/lib/vtkGUISupportQt-9.3.lib)
 else()
