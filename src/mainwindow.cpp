@@ -45,8 +45,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->solverWidget->set_dataset(&dataset);
 
     connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_mesh_metrics()));
+    connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_full_mesh_metrics()));
     connect(ui->metricsWidget, SIGNAL (sort_geometric_qualities(const uint)), this, SLOT(show_sorted_mesh_metrics(const uint)));
     connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_mesh_metrics()));
+    connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_full_mesh_metrics()));
     connect(ui->solverWidget, SIGNAL (solver_completed (const uint, const std::string, const std::string)), this, SLOT (show_solver_results (const uint, const std::string, const std::string)));
     connect(ui->datasetWidget, SIGNAL (saved_in(const std::string)), this, SLOT (update_solver_input_folder (const std::string)));
 
@@ -58,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     extra_colors.push_back(QColor(211, 211, 211));
     extra_colors.push_back(QColor(0, 0, 139));
     extra_colors.push_back(QColor(34,139,34));
+    extra_colors.push_back(QColor(139,0,0));
 
 }
 
@@ -91,9 +94,12 @@ void MainWindow::show_mesh_metrics()
         QLineSeries *series_poly_max = new QLineSeries();
         QLineSeries *series_poly_avg = new QLineSeries();
 
+        QLineSeries *series_mesh = new QLineSeries();
+
         series_poly_min->setColor(extra_colors.at(0));
         series_poly_max->setColor(extra_colors.at(1));
         series_poly_avg->setColor(extra_colors.at(2));
+        series_mesh->setColor(extra_colors.at(3));
 
         series_min->setName("Min");
         series_max->setName("Max");
@@ -102,6 +108,8 @@ void MainWindow::show_mesh_metrics()
         series_poly_min->setName("Poly Min");
         series_poly_max->setName("Poly Max");
         series_poly_avg->setName("Poly Avg");
+
+        series_mesh->setName("Mesh");
 
         QChart *chart = new QChart();
 
@@ -114,6 +122,8 @@ void MainWindow::show_mesh_metrics()
             double val_poly_min = 0.0;
             double val_poly_max = 0.0;
             double val_poly_avg = 0.0;
+
+            double val_mesh = 0.0;
 
             uint min_id = 0;
             uint max_id = 0;
@@ -128,6 +138,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).INR_poly_min;
                 val_poly_max = metrics.at(m).INR_poly_max;
                 val_poly_avg = metrics.at(m).INR_poly_avg;
+                val_mesh = metrics.at(m).INR_mesh;
                 min_id = metrics.at(m).INR_min_id;
                 max_id = metrics.at(m).INR_max_id;
                 min_poly_id = metrics.at(m).INR_poly_min_id;
@@ -139,6 +150,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).OUR_poly_min;
                 val_poly_max = metrics.at(m).OUR_poly_max;
                 val_poly_avg = metrics.at(m).OUR_poly_avg;
+                val_mesh = metrics.at(m).OUR_mesh;
                 min_id = metrics.at(m).OUR_min_id;
                 max_id = metrics.at(m).OUR_max_id;
                 min_poly_id = metrics.at(m).OUR_poly_min_id;
@@ -150,6 +162,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).CIR_poly_min;
                 val_poly_max = metrics.at(m).CIR_poly_max;
                 val_poly_avg = metrics.at(m).CIR_poly_avg;
+                val_mesh = metrics.at(m).CIR_mesh;
                 min_id = metrics.at(m).CIR_min_id;
                 max_id = metrics.at(m).CIR_max_id;
                 min_poly_id = metrics.at(m).CIR_poly_min_id;
@@ -161,6 +174,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).KRR_poly_min;
                 val_poly_max = metrics.at(m).KRR_poly_max;
                 val_poly_avg = metrics.at(m).KRR_poly_avg;
+                val_mesh = metrics.at(m).KRR_mesh;
                 min_id = metrics.at(m).KRR_min_id;
                 max_id = metrics.at(m).KRR_max_id;
                 min_poly_id = metrics.at(m).KRR_poly_min_id;
@@ -172,6 +186,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).KAR_poly_min;
                 val_poly_max = metrics.at(m).KAR_poly_max;
                 val_poly_avg = metrics.at(m).KAR_poly_avg;
+                val_mesh = metrics.at(m).KAR_mesh;
                 min_id = metrics.at(m).KAR_min_id;
                 max_id = metrics.at(m).KAR_max_id;
                 min_poly_id = metrics.at(m).KAR_poly_min_id;
@@ -183,6 +198,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).APR_poly_min;
                 val_poly_max = metrics.at(m).APR_poly_max;
                 val_poly_avg = metrics.at(m).APR_poly_avg;
+                val_mesh = metrics.at(m).APR_mesh;
                 min_id = metrics.at(m).APR_min_id;
                 max_id = metrics.at(m).APR_max_id;
                 min_poly_id = metrics.at(m).APR_poly_min_id;
@@ -194,6 +210,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).MIA_poly_min;
                 val_poly_max = metrics.at(m).MIA_poly_max;
                 val_poly_avg = metrics.at(m).MIA_poly_avg;
+                val_mesh = metrics.at(m).MIA_mesh;
                 min_id = metrics.at(m).MIA_min_id;
                 max_id = metrics.at(m).MIA_max_id;
                 min_poly_id = metrics.at(m).MIA_poly_min_id;
@@ -205,6 +222,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).MAA_poly_min;
                 val_poly_max = metrics.at(m).MAA_poly_max;
                 val_poly_avg = metrics.at(m).MAA_poly_avg;
+                val_mesh = metrics.at(m).MAA_mesh;
                 min_id = metrics.at(m).MAA_min_id;
                 max_id = metrics.at(m).MAA_max_id;
                 min_poly_id = metrics.at(m).MAA_poly_min_id;
@@ -216,6 +234,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).ANR_poly_min;
                 val_poly_max = metrics.at(m).ANR_poly_max;
                 val_poly_avg = metrics.at(m).ANR_poly_avg;
+                val_mesh = metrics.at(m).ANR_mesh;
                 min_id = metrics.at(m).ANR_min_id;
                 max_id = metrics.at(m).ANR_max_id;
                 min_poly_id = metrics.at(m).ANR_poly_min_id;
@@ -227,6 +246,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).VEM_poly_min;
                 val_poly_max = metrics.at(m).VEM_poly_max;
                 val_poly_avg = metrics.at(m).VEM_poly_avg;
+                val_mesh = metrics.at(m).INR_mesh;
                 min_id = metrics.at(m).VEM_min_id;
                 max_id = metrics.at(m).VEM_max_id;
                 min_poly_id = metrics.at(m).VEM_poly_min_id;
@@ -238,6 +258,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).JAC_poly_min;
                 val_poly_max = metrics.at(m).JAC_poly_max;
                 val_poly_avg = metrics.at(m).JAC_poly_avg;
+                val_mesh = metrics.at(m).JAC_mesh;
                 min_id = metrics.at(m).JAC_min_id;
                 max_id = metrics.at(m).JAC_max_id;
                 min_poly_id = metrics.at(m).JAC_poly_min_id;
@@ -249,6 +270,7 @@ void MainWindow::show_mesh_metrics()
                 val_poly_min = metrics.at(m).FRO_poly_min;
                 val_poly_max = metrics.at(m).FRO_poly_max;
                 val_poly_avg = metrics.at(m).FRO_poly_avg;
+                val_mesh = metrics.at(m).FRO_mesh;
                 min_id = metrics.at(m).FRO_min_id;
                 max_id = metrics.at(m).FRO_max_id;
                 min_poly_id = metrics.at(m).FRO_poly_min_id;
@@ -275,6 +297,8 @@ void MainWindow::show_mesh_metrics()
 
             if (min_poly_id < UINT_MAX && max_poly_id < UINT_MAX)
                 series_poly_avg->append(m, val_poly_avg);
+
+            series_mesh->append(m, val_mesh);
         }
 
         chart->legend()->hide();
@@ -287,6 +311,8 @@ void MainWindow::show_mesh_metrics()
         series_poly_max->setPointsVisible();
         series_poly_avg->setPointsVisible();
 
+        series_mesh->setPointsVisible();
+
         chart->addSeries(series_min);
         chart->addSeries(series_max);
         chart->addSeries(series_avg);
@@ -294,6 +320,8 @@ void MainWindow::show_mesh_metrics()
         chart->addSeries(series_poly_min);
         chart->addSeries(series_poly_max);
         chart->addSeries(series_poly_avg);
+
+        chart->addSeries(series_mesh);
 
 //        QLogValueAxis *axisXlog = new QLogValueAxis();
 //        axisXlog->setLabelFormat("%g");
@@ -366,29 +394,29 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
 
         switch (to_be_sort_id)
         {
-        case 0: val = metrics.at(m).INR_min;
+        case 0:  val = metrics.at(m).INR_mesh;
             break;
-        case 1: val = metrics.at(m).OUR_min;
+        case 1:  val = metrics.at(m).OUR_mesh;
             break;
-        case 2: val = metrics.at(m).CIR_min;
+        case 2:  val = metrics.at(m).CIR_mesh;
             break;
-        case 3: val = metrics.at(m).KRR_min;
+        case 3:  val = metrics.at(m).KRR_mesh;
             break;
-        case 4: val = metrics.at(m).KAR_min;
+        case 4:  val = metrics.at(m).KAR_mesh;
             break;
-        case 5: val = metrics.at(m).APR_min;
+        case 5:  val = metrics.at(m).APR_mesh;
             break;
-        case 6: val = metrics.at(m).MIA_min;
+        case 6:  val = metrics.at(m).MIA_mesh;
             break;
-        case 7: val = metrics.at(m).MAA_min;
+        case 7:  val = metrics.at(m).MAA_mesh;
             break;
-        case 8: val = metrics.at(m).ANR_min;
+        case 8:  val = metrics.at(m).ANR_mesh;
             break;
-        case 9: val = metrics.at(m).VEM_min;
+        case 9:  val = metrics.at(m).VEM_mesh;
             break;
-        case 10: val = metrics.at(m).JAC_min;
+        case 10: val = metrics.at(m).JAC_mesh;
             break;
-        case 11: val = metrics.at(m).FRO_min;
+        case 11: val = metrics.at(m).FRO_mesh;
             break;
         default:
             std::cerr << "Invalid metric index" << std::endl;
@@ -407,9 +435,12 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
         QLineSeries *series_poly_max = new QLineSeries();
         QLineSeries *series_poly_avg = new QLineSeries();
 
+        QLineSeries *series_mesh = new QLineSeries();
+
         series_poly_min->setColor(extra_colors.at(0));
         series_poly_max->setColor(extra_colors.at(1));
         series_poly_avg->setColor(extra_colors.at(2));
+        series_mesh->setColor(extra_colors.at(3));
 
         series_min->setName("Minimum");
         series_max->setName("Maximum");
@@ -418,6 +449,8 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
         series_poly_min->setName("Polygon Min");
         series_poly_max->setName("Polygon Max");
         series_poly_avg->setName("Polygon Avg");
+
+        series_mesh->setName("Polygon Avg");
 
         QChart *chart = new QChart();
         uint metric_id = 0;
@@ -434,6 +467,8 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
             double val_poly_max = 0.0;
             double val_poly_avg = 0.0;
 
+            double val_mesh = 0.0;
+
             uint min_id = 0;
             uint max_id = 0;
             uint min_poly_id = 0;
@@ -447,6 +482,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).INR_poly_min;
                 val_poly_max = metrics.at(m).INR_poly_max;
                 val_poly_avg = metrics.at(m).INR_poly_avg;
+                val_mesh = metrics.at(m).INR_mesh;
                 min_id = metrics.at(m).INR_min_id;
                 max_id = metrics.at(m).INR_max_id;
                 min_poly_id = metrics.at(m).INR_poly_min_id;
@@ -458,6 +494,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).OUR_poly_min;
                 val_poly_max = metrics.at(m).OUR_poly_max;
                 val_poly_avg = metrics.at(m).OUR_poly_avg;
+                val_mesh = metrics.at(m).OUR_mesh;
                 min_id = metrics.at(m).OUR_min_id;
                 max_id = metrics.at(m).OUR_max_id;
                 min_poly_id = metrics.at(m).OUR_poly_min_id;
@@ -469,6 +506,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).CIR_poly_min;
                 val_poly_max = metrics.at(m).CIR_poly_max;
                 val_poly_avg = metrics.at(m).CIR_poly_avg;
+                val_mesh = metrics.at(m).CIR_mesh;
                 min_id = metrics.at(m).CIR_min_id;
                 max_id = metrics.at(m).CIR_max_id;
                 min_poly_id = metrics.at(m).CIR_poly_min_id;
@@ -480,6 +518,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).KRR_poly_min;
                 val_poly_max = metrics.at(m).KRR_poly_max;
                 val_poly_avg = metrics.at(m).KRR_poly_avg;
+                val_mesh = metrics.at(m).KRR_mesh;
                 min_id = metrics.at(m).KRR_min_id;
                 max_id = metrics.at(m).KRR_max_id;
                 min_poly_id = metrics.at(m).KRR_poly_min_id;
@@ -491,6 +530,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).KAR_poly_min;
                 val_poly_max = metrics.at(m).KAR_poly_max;
                 val_poly_avg = metrics.at(m).KAR_poly_avg;
+                val_mesh = metrics.at(m).KAR_mesh;
                 min_id = metrics.at(m).KAR_min_id;
                 max_id = metrics.at(m).KAR_max_id;
                 min_poly_id = metrics.at(m).KAR_poly_min_id;
@@ -502,6 +542,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).APR_poly_min;
                 val_poly_max = metrics.at(m).APR_poly_max;
                 val_poly_avg = metrics.at(m).APR_poly_avg;
+                val_mesh = metrics.at(m).APR_mesh;
                 min_id = metrics.at(m).APR_min_id;
                 max_id = metrics.at(m).APR_max_id;
                 min_poly_id = metrics.at(m).APR_poly_min_id;
@@ -513,6 +554,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).MIA_poly_min;
                 val_poly_max = metrics.at(m).MIA_poly_max;
                 val_poly_avg = metrics.at(m).MIA_poly_avg;
+                val_mesh = metrics.at(m).MIA_mesh;
                 min_id = metrics.at(m).MIA_min_id;
                 max_id = metrics.at(m).MIA_max_id;
                 min_poly_id = metrics.at(m).MIA_poly_min_id;
@@ -524,6 +566,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).MAA_poly_min;
                 val_poly_max = metrics.at(m).MAA_poly_max;
                 val_poly_avg = metrics.at(m).MAA_poly_avg;
+                val_mesh = metrics.at(m).MAA_mesh;
                 min_id = metrics.at(m).MAA_min_id;
                 max_id = metrics.at(m).MAA_max_id;
                 min_poly_id = metrics.at(m).MAA_poly_min_id;
@@ -535,6 +578,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).ANR_poly_min;
                 val_poly_max = metrics.at(m).ANR_poly_max;
                 val_poly_avg = metrics.at(m).ANR_poly_avg;
+                val_mesh = metrics.at(m).ANR_mesh;
                 min_id = metrics.at(m).ANR_min_id;
                 max_id = metrics.at(m).ANR_max_id;
                 min_poly_id = metrics.at(m).ANR_poly_min_id;
@@ -546,6 +590,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).VEM_poly_min;
                 val_poly_max = metrics.at(m).VEM_poly_max;
                 val_poly_avg = metrics.at(m).VEM_poly_avg;
+                val_mesh = metrics.at(m).INR_mesh;
                 min_id = metrics.at(m).VEM_min_id;
                 max_id = metrics.at(m).VEM_max_id;
                 min_poly_id = metrics.at(m).VEM_poly_min_id;
@@ -557,6 +602,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).JAC_poly_min;
                 val_poly_max = metrics.at(m).JAC_poly_max;
                 val_poly_avg = metrics.at(m).JAC_poly_avg;
+                val_mesh = metrics.at(m).JAC_mesh;
                 min_id = metrics.at(m).JAC_min_id;
                 max_id = metrics.at(m).JAC_max_id;
                 min_poly_id = metrics.at(m).JAC_poly_min_id;
@@ -568,6 +614,7 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
                 val_poly_min = metrics.at(m).FRO_poly_min;
                 val_poly_max = metrics.at(m).FRO_poly_max;
                 val_poly_avg = metrics.at(m).FRO_poly_avg;
+                val_mesh = metrics.at(m).FRO_mesh;
                 min_id = metrics.at(m).FRO_min_id;
                 max_id = metrics.at(m).FRO_max_id;
                 min_poly_id = metrics.at(m).FRO_poly_min_id;
@@ -595,6 +642,8 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
             if (min_poly_id < UINT_MAX && max_poly_id < UINT_MAX)
                 series_poly_avg->append(metric_id, val_poly_avg);
 
+            series_mesh->append(m, val_mesh);
+
             metric_id++;
         }
 
@@ -607,6 +656,8 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
         chart->addSeries(series_poly_min);
         chart->addSeries(series_poly_max);
         chart->addSeries(series_poly_avg);
+
+        chart->addSeries(series_mesh);
 
         chart->createDefaultAxes();
 
@@ -626,6 +677,89 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
         ui->metricsWidget->add_chart(chartView);
     }
 
+}
+
+void MainWindow::show_full_mesh_metrics()
+{
+    ui->tab_widgets->setCurrentIndex(1);
+    ui->tab_widgets->setTabEnabled(1, true);
+    ui->meshFullMetricsWidget->set_dataset(&dataset);
+    ui->meshFullMetricsWidget->set_metrics(&metrics);
+    ui->graphicMeshMetricWidget->clean_canvas();
+
+    metrics = ui->datasetWidget->get_parametric_meshes_metrics();
+    ui->graphicMeshMetricWidget->set_metrics(&metrics);
+    ui->graphicMeshMetricWidget->set_slider_max(dataset.get_parametric_meshes().size()-1);
+
+    ui->graphicMeshMetricWidget->show_mesh(0);
+    ui->meshFullMetricsWidget->reset();
+
+    QChart *chart = new QChart();
+    double min = cinolib::max_double, max = cinolib::min_double;
+
+    for (uint i=0; i < n_metrics; i++)
+    {
+        QLineSeries *series_mesh = new QLineSeries();
+        series_mesh->setName(metrics_names.at(i).c_str());
+
+        for (uint m=0; m < metrics.size(); m++)
+        {
+            double val_mesh = 0.0;
+            switch (i)
+            {
+            case 0:  { val_mesh = metrics.at(m).INR_mesh; break; }
+            case 1:  { val_mesh = metrics.at(m).OUR_mesh; break; }
+            case 2:  { val_mesh = metrics.at(m).CIR_mesh; break; }
+            case 3:  { val_mesh = metrics.at(m).KRR_mesh; break; }
+            case 4:  { val_mesh = metrics.at(m).KAR_mesh; break; }
+            case 5:  { val_mesh = metrics.at(m).APR_mesh; break; }
+            case 6:  { val_mesh = metrics.at(m).MIA_mesh; break; }
+            case 7:  { val_mesh = metrics.at(m).MAA_mesh; break; }
+            case 8:  { val_mesh = metrics.at(m).ANR_mesh; break; }
+            case 9:  { val_mesh = metrics.at(m).INR_mesh; break; }
+            case 10: { val_mesh = metrics.at(m).JAC_mesh; break; }
+            case 11: { val_mesh = metrics.at(m).FRO_mesh; break; }
+            default: std::cerr << "Invalid metric index" << std::endl;
+            }
+            series_mesh->append(m, val_mesh);
+        }
+
+        min = std::min(min, get_metrics_min(i));
+        max = std::max(max, get_metrics_max(i));
+
+        chart->legend()->show();
+
+        series_mesh->setPointsVisible();
+
+        chart->addSeries(series_mesh);
+    }
+
+    chart->createDefaultAxes();
+    chart->legend()->setAlignment(Qt::AlignRight);
+
+    static_cast<QValueAxis *>(chart->axisX())->setLabelFormat("%i");
+    static_cast<QValueAxis *>(chart->axisX())->setMinorTickCount(10);
+
+    std::string max_str = std::to_string(max);
+    if (max == cinolib::max_double) max_str = "+inf";
+    else if (max == 0) max_str = "0";
+    else if (max == 1) max_str = "1";
+
+    std::string min_str = std::to_string(min);
+    if      (min == 0) min_str = "0";
+    else if (min == 1) min_str = "1";
+
+    std::string title = "All Metrics ["+min_str+", "+max_str+"]";
+    chart->setTitle(title.c_str());
+
+    CustomizedChartView *chartView = new CustomizedChartView();
+    chartView->setChart(chart);
+    chartView->setBackgroundBrush(QColor (230, 230, 230));
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    ui->meshFullMetricsWidget->add_chart(chartView);
+
+    ui->scatterPlotsGGWidget->create_scatterPlots(dataset, metrics);
 }
 
 void MainWindow::show_solver_results(const uint solution_id, const std::string folder, const std::string filename)
@@ -910,8 +1044,10 @@ void MainWindow::on_reset_btn_clicked()
     ui->solver_results_tab->layout()->addWidget(ui->solverResultsWidget);
 
     connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_mesh_metrics()));
+    connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_full_mesh_metrics()));
     connect(ui->metricsWidget, SIGNAL (sort_geometric_qualities(const uint)), this, SLOT(show_sorted_mesh_metrics(const uint)));
     connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_mesh_metrics()));
+    connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_full_mesh_metrics()));
     connect(ui->solverWidget, SIGNAL (solver_completed (const uint, const std::string, const std::string)), this, SLOT (show_solver_results (const uint, const std::string, const std::string)));
     connect(ui->datasetWidget, SIGNAL (saved_in(const std::string)), this, SLOT (update_solver_input_folder (const std::string)));
 

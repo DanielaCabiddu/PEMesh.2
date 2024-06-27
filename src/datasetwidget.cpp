@@ -91,7 +91,7 @@ DatasetWidget::DatasetWidget(QWidget *parent) :
     cinolib::Polygonmesh<> polymesh (verts, polys);
 
     cinolib::Color c = cinolib::Color(0,0,0,1);
-    ui->canvas->add_mesh(polymesh, c);;
+    ui->canvas->add_mesh(polymesh, c);
 
     // polymesh->updateGL();
     // ui->canvas->push_obj(polymesh, true);
@@ -1764,7 +1764,10 @@ void DatasetWidget::on_optimize_btn_clicked()
                   std::to_string(m_old->num_polys() - mesh->num_polys()) + " merged polys.\n" ;
         ui->log_label->append(message.c_str());
 
-        //mesh->updateGL();
+        cinolib::Color c = cinolib::Color::BLACK();
+
+        ui->canvas->clear();
+        ui->canvas->add_mesh(*mesh, c);
 
         index++;
     }

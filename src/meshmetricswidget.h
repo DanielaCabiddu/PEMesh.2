@@ -40,8 +40,6 @@
 
 #include <QtCharts/QChartView>
 
-
-
 namespace Ui {
 class MeshMetricsWidget;
 }
@@ -88,6 +86,8 @@ private slots:
 
     void on_poly_avg_color_btn_clicked();
 
+    void on_mesh_color_btn_clicked();
+
     void on_save_txt_btn_clicked();
 
     void on_save_plots_btn_clicked();
@@ -105,6 +105,8 @@ private slots:
     void on_poly_max_cb_stateChanged(int arg1);
 
     void on_poly_avg_cb_stateChanged(int arg1);
+
+    void on_mesh_cb_stateChanged(int arg1);
 
 private:
     Ui::MeshMetricsWidget *ui;

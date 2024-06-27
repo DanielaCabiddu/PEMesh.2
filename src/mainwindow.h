@@ -58,6 +58,7 @@ private slots:
 
     void show_mesh_metrics();
     void show_sorted_mesh_metrics(const uint to_be_sort_id);
+    void show_full_mesh_metrics();
 
     void show_solver_results (const uint solution_id, const std::string folder, const std::string filename);
 

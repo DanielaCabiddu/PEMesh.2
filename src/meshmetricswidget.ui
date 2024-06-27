@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1046</width>
-    <height>643</height>
+    <height>658</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,7 +49,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="min_cb">
             <property name="text">
-             <string> Triangle Min</string>
+             <string>Triangle Min</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -62,77 +62,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QToolButton" name="max_color_btn">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QToolButton" name="avg_color_btn">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QToolButton" name="poly_min_color_btn">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QToolButton" name="poly_max_color_btn">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QToolButton" name="poly_avg_color_btn">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
             </property>
             <property name="toolButtonStyle">
@@ -150,6 +80,20 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="1">
+           <widget class="QToolButton" name="max_color_btn">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="avg_cb">
             <property name="text">
@@ -157,6 +101,20 @@
             </property>
             <property name="checked">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QToolButton" name="avg_color_btn">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
             </property>
            </widget>
           </item>
@@ -170,6 +128,20 @@
             </property>
            </widget>
           </item>
+          <item row="3" column="1">
+           <widget class="QToolButton" name="poly_min_color_btn">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0">
            <widget class="QCheckBox" name="poly_max_cb">
             <property name="text">
@@ -180,6 +152,20 @@
             </property>
            </widget>
           </item>
+          <item row="4" column="1">
+           <widget class="QToolButton" name="poly_max_color_btn">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
           <item row="5" column="0">
            <widget class="QCheckBox" name="poly_avg_cb">
             <property name="text">
@@ -187,6 +173,37 @@
             </property>
             <property name="checked">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QToolButton" name="poly_avg_color_btn">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="mesh_cb">
+            <property name="text">
+             <string>Mesh</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QToolButton" name="mesh_color_btn">
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -278,7 +295,7 @@
              <string>Save Plots</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/image_icon.png</normaloff>:/icons/img/image_icon.png</iconset>
             </property>
            </widget>
@@ -289,7 +306,7 @@
              <string>Save (.txt)</string>
             </property>
             <property name="icon">
-             <iconset resource="images.qrc">
+             <iconset>
               <normaloff>:/icons/img/save_icon.png</normaloff>:/icons/img/save_icon.png</iconset>
             </property>
            </widget>
@@ -317,8 +334,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

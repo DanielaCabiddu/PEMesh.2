@@ -36,7 +36,7 @@
 #include <cinolib/polygon_maximum_inscribed_circle.h>
 #include <cinolib/smallest_enclosing_disk.h>
 
-double METRICS_TOLL = 1e-6;
+double METRICS_TOLL = 1e-4;
 
 template<typename T>
 void get_min_max_avg(std::vector<std::pair<T,uint>> & list,
@@ -62,10 +62,12 @@ template<typename T>
 void get_global_avg_norm (const std::vector<std::pair<T,uint>> & list1,
                           const std::vector<std::pair<T,uint>> & list2,
                                 double &avg,
-                                double &norm)
+                                double &norm,
+                                double &global)
 {
-    avg  = 0.0;
-    norm = 0.0;
+    avg    = 0.0;
+    norm   = 0.0;
+    global = 0.0;
 
     for(auto item : list1) avg += item.first;
     for(auto item : list2) avg += item.first;
@@ -74,6 +76,8 @@ void get_global_avg_norm (const std::vector<std::pair<T,uint>> & list1,
     for(auto item : list2) norm += item.first * item.first;
 
     avg/=static_cast<double>(list1.size() + list2.size());
+
+    global = sqrt(avg);
 
     norm/=static_cast<double>(list1.size() + list2.size());
 
@@ -320,18 +324,18 @@ void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics)
     get_min_max_avg(JAC_poly, metrics.JAC_poly_min, metrics.JAC_poly_max, metrics.JAC_poly_avg, metrics.JAC_poly_min_id, metrics.JAC_poly_max_id);
     get_min_max_avg(FRO_poly, metrics.FRO_poly_min, metrics.FRO_poly_max, metrics.FRO_poly_avg, metrics.FRO_poly_min_id, metrics.FRO_poly_max_id);
 
-    get_global_avg_norm(INR, INR_poly, metrics.INR_global_avg, metrics.INR_global_norm);
-    get_global_avg_norm(OUR, OUR_poly, metrics.OUR_global_avg, metrics.OUR_global_norm);
-    get_global_avg_norm(CIR, CIR_poly, metrics.CIR_global_avg, metrics.CIR_global_norm);
-    get_global_avg_norm(KRR, KRR_poly, metrics.KRR_global_avg, metrics.KRR_global_norm);
-    get_global_avg_norm(KAR, KAR_poly, metrics.KAR_global_avg, metrics.KAR_global_norm);
-    get_global_avg_norm(APR, APR_poly, metrics.APR_global_avg, metrics.APR_global_norm);
-    get_global_avg_norm(MIA, MIA_poly, metrics.MIA_global_avg, metrics.MIA_global_norm);
-    get_global_avg_norm(MAA, MAA_poly, metrics.MAA_global_avg, metrics.MAA_global_norm);
-    get_global_avg_norm(ANR, ANR_poly, metrics.ANR_global_avg, metrics.ANR_global_norm);
-    get_global_avg_norm(VEM, VEM_poly, metrics.VEM_global_avg, metrics.VEM_global_norm);
-    get_global_avg_norm(JAC, JAC_poly, metrics.JAC_global_avg, metrics.JAC_global_norm);
-    get_global_avg_norm(FRO, FRO_poly, metrics.FRO_global_avg, metrics.FRO_global_norm);
+    get_global_avg_norm(INR, INR_poly, metrics.INR_global_avg, metrics.INR_global_norm, metrics.INR_mesh);
+    get_global_avg_norm(OUR, OUR_poly, metrics.OUR_global_avg, metrics.OUR_global_norm, metrics.OUR_mesh);
+    get_global_avg_norm(CIR, CIR_poly, metrics.CIR_global_avg, metrics.CIR_global_norm, metrics.CIR_mesh);
+    get_global_avg_norm(KRR, KRR_poly, metrics.KRR_global_avg, metrics.KRR_global_norm, metrics.KRR_mesh);
+    get_global_avg_norm(KAR, KAR_poly, metrics.KAR_global_avg, metrics.KAR_global_norm, metrics.KAR_mesh);
+    get_global_avg_norm(APR, APR_poly, metrics.APR_global_avg, metrics.APR_global_norm, metrics.APR_mesh);
+    get_global_avg_norm(MIA, MIA_poly, metrics.MIA_global_avg, metrics.MIA_global_norm, metrics.MIA_mesh);
+    get_global_avg_norm(MAA, MAA_poly, metrics.MAA_global_avg, metrics.MAA_global_norm, metrics.MAA_mesh);
+    get_global_avg_norm(ANR, ANR_poly, metrics.ANR_global_avg, metrics.ANR_global_norm, metrics.ANR_mesh);
+    get_global_avg_norm(VEM, VEM_poly, metrics.VEM_global_avg, metrics.VEM_global_norm, metrics.VEM_mesh);
+    get_global_avg_norm(JAC, JAC_poly, metrics.JAC_global_avg, metrics.JAC_global_norm, metrics.JAC_mesh);
+    get_global_avg_norm(FRO, FRO_poly, metrics.FRO_global_avg, metrics.FRO_global_norm, metrics.FRO_mesh);
 
     get_all(INR, INR_poly, metrics.INR_all);
     get_all(OUR, OUR_poly, metrics.OUR_all);
@@ -347,8 +351,8 @@ void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics)
     get_all(FRO, FRO_poly, metrics.FRO_all);    
 }
 
-inline double compute_metric_INR(const std::vector<cinolib::vec3d> &points) {
-    cinolib::vec3d  dummy;
+double compute_metric_INR(const std::vector<cinolib::vec3d> &points) {
+    cinolib::vec3d dummy;
     double inradius;
     polygon_maximum_inscribed_circle(points, dummy, inradius);
 
@@ -365,8 +369,8 @@ inline double compute_metric_INR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_OUR(const std::vector<cinolib::vec3d> &points) {
-    cinolib::vec3d  dummy;
+double compute_metric_OUR(const std::vector<cinolib::vec3d> &points) {
+    cinolib::vec3d dummy;
     double outradius;
     smallest_enclosing_disk(points, dummy, outradius);
 
@@ -383,7 +387,7 @@ inline double compute_metric_OUR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_CIR(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_CIR(const std::vector<cinolib::vec3d> &points) {
     cinolib::vec3d  dummy;
     double inradius, outradius;
     polygon_maximum_inscribed_circle(points, dummy, inradius);
@@ -395,12 +399,13 @@ inline double compute_metric_CIR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_KRR(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_KRR(const std::vector<cinolib::vec3d> &points) {
     cinolib::vec3d  dummy;
     double outradius;
     smallest_enclosing_disk(points, dummy, outradius);
 
     std::vector<cinolib::vec3d> kernel_verts;
+    polygon_kernel(points, kernel_verts);
     double kernel_inradius = 0.;
     if (!kernel_verts.empty()) { polygon_maximum_inscribed_circle(kernel_verts, dummy, kernel_inradius); }
 
@@ -409,7 +414,7 @@ inline double compute_metric_KRR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_KAR(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_KAR(const std::vector<cinolib::vec3d> &points) {
     std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
     assert(kernel_area >= 0.);
@@ -422,7 +427,7 @@ inline double compute_metric_KAR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_APR(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_APR(const std::vector<cinolib::vec3d> &points) {
     std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     double area = polygon_unsigned_area(points_2d);
 
@@ -437,7 +442,7 @@ inline double compute_metric_APR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_MIA(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_MIA(const std::vector<cinolib::vec3d> &points) {
     std::vector<double> angles;
     uint nv = points.size();
     cinolib::vec3d normal = polygon_normal(points);
@@ -457,7 +462,7 @@ inline double compute_metric_MIA(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_MAA(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_MAA(const std::vector<cinolib::vec3d> &points) {
     std::vector<double> angles;
     uint nv = points.size();
     cinolib::vec3d normal = polygon_normal(points);
@@ -477,7 +482,7 @@ inline double compute_metric_MAA(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {
     std::vector<double> angles;
     uint nv = points.size();
     cinolib::vec3d normal = polygon_normal(points);
@@ -501,7 +506,7 @@ inline double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {
     std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
     assert(kernel_area >= 0.);
@@ -559,7 +564,7 @@ inline double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_JAC(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_JAC(const std::vector<cinolib::vec3d> &points) {
     double jac = DBL_MAX;
     std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     for (uint i = 0; i < points_2d.size(); ++i) {
@@ -583,7 +588,7 @@ inline double compute_metric_JAC(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-inline double compute_metric_FRO(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_FRO(const std::vector<cinolib::vec3d> &points) {
     double fro = DBL_MAX;
     std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     for (uint i = 0; i < points_2d.size(); ++i) {

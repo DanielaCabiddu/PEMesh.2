@@ -175,7 +175,8 @@ FILE (GLOB HEADERS *.h meshes/*.h)
 FILE (GLOB SOURCES *.cpp meshes/*.cpp)
 FILE (GLOB GUI *.ui )
 
-qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB} ${VTK_LIB})
+qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB} ${VTK_LIB}
+    meshfullmetricswidget.h meshfullmetricswidget.cpp meshfullmetricswidget.ui)
 
 if (MSVC)
     file(GLOB VTK_LIBs ${VTK_INSTALL}/lib/*.lib)

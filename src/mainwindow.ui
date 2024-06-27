@@ -228,7 +228,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>false</bool>
@@ -261,7 +261,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
@@ -280,6 +280,16 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="MeshMetricsWidget" name="metricsWidget" native="true"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_6">
+           <attribute name="title">
+            <string>Full Metrics</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="MeshFullMetricsWidget" name="meshFullMetricsWidget" native="true"/>
             </item>
            </layout>
           </widget>
@@ -408,6 +418,12 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
    <class>GeometryPerformanceScatterPlotsWidget</class>
    <extends>QWidget</extends>
    <header>geometryperformancescatterplotswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MeshFullMetricsWidget</class>
+   <extends>QWidget</extends>
+   <header>meshfullmetricswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

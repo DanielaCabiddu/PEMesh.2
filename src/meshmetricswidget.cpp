@@ -242,6 +242,11 @@ void MeshMetricsWidget::on_poly_avg_color_btn_clicked()
     change_series_color(5);
 }
 
+void MeshMetricsWidget::on_mesh_color_btn_clicked()
+{
+    change_series_color(6);
+}
+
 void MeshMetricsWidget::on_save_txt_btn_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
@@ -357,4 +362,9 @@ void MeshMetricsWidget::on_poly_max_cb_stateChanged(int checked)
 void MeshMetricsWidget::on_poly_avg_cb_stateChanged(int checked)
 {
     show_series(5, checked);
+}
+
+void MeshMetricsWidget::on_mesh_cb_stateChanged(int checked)
+{
+    show_series(6, checked);
 }
