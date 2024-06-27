@@ -84,7 +84,20 @@ private:
 
     const std::string project_ext = ".changeproj";
 
-    std::vector<QColor> extra_colors;
+    std::vector<QColor> extra_colors = {QColor(0,   0,   255),
+                                        QColor(0,   255, 0),
+                                        QColor(255, 0,   0),
+                                        QColor(0,   255, 255),
+                                        QColor(255, 0,   255),
+                                        QColor(255, 255, 0),
+                                        QColor(0,   0,   0),
+                                        QColor(100, 100, 155),
+                                        QColor(100, 155, 100),
+                                        QColor(155, 100, 100),
+                                        QColor(100, 155, 155),
+                                        QColor(155, 100, 155),
+                                        QColor(155, 155, 100),
+                                        QColor(100, 100, 100)};
 
     const double default_missing_geometric_val = -1.0;
 

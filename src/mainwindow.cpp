@@ -49,19 +49,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->metricsWidget, SIGNAL (sort_geometric_qualities(const uint)), this, SLOT(show_sorted_mesh_metrics(const uint)));
     connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_mesh_metrics()));
     connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_full_mesh_metrics()));
-    connect(ui->solverWidget, SIGNAL (solver_completed (const uint, const std::string, const std::string)), this, SLOT (show_solver_results (const uint, const std::string, const std::string)));
+    connect(ui->solverWidget,  SIGNAL (solver_completed (const uint, const std::string, const std::string)), this, SLOT (show_solver_results (const uint, const std::string, const std::string)));
     connect(ui->datasetWidget, SIGNAL (saved_in(const std::string)), this, SLOT (update_solver_input_folder (const std::string)));
 
     connect(ui->scatterPlotsGPWidget, SIGNAL(compute_GP_scatterplots()), this, SLOT(compute_GP_scatterplots()));
 
     setWindowIcon(QIcon(":/logo/img/erc_logo.png"));
-
-    extra_colors.push_back(QColor(255, 192, 203));
-    extra_colors.push_back(QColor(211, 211, 211));
-    extra_colors.push_back(QColor(0, 0, 139));
-    extra_colors.push_back(QColor(34,139,34));
-    extra_colors.push_back(QColor(139,0,0));
-
 }
 
 MainWindow::~MainWindow()
@@ -701,6 +694,9 @@ void MainWindow::show_full_mesh_metrics()
     {
         QLineSeries *series_mesh = new QLineSeries();
         series_mesh->setName(metrics_names.at(i).c_str());
+        series_mesh->setColor(extra_colors.at(i % extra_colors.size()));
+        series_mesh->setMarkerSize(5.);
+        series_mesh->setPointsVisible();
 
         for (uint m=0; m < metrics.size(); m++)
         {
@@ -723,17 +719,13 @@ void MainWindow::show_full_mesh_metrics()
             }
             series_mesh->append(m, val_mesh);
         }
+        chart->addSeries(series_mesh);
 
         min = std::min(min, get_metrics_min(i));
         max = std::max(max, get_metrics_max(i));
-
-        chart->legend()->show();
-
-        series_mesh->setPointsVisible();
-
-        chart->addSeries(series_mesh);
     }
 
+    chart->legend()->show();
     chart->createDefaultAxes();
     chart->legend()->setAlignment(Qt::AlignRight);
 

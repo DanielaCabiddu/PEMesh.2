@@ -82,7 +82,6 @@ void get_global_avg_norm (const std::vector<std::pair<T,uint>> & list1,
     norm/=static_cast<double>(list1.size() + list2.size());
 
     norm = sqrt (norm);
-
 }
 
 void get_all(std::vector<std::pair<double,uint>> & list_triangles, std::vector<std::pair<double,uint>> & list_polys, std::vector<double> & values) {

@@ -610,19 +610,12 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
 //        std::string flags = "cq" + std::to_string(dialog->get_min_angle_value()) + "a";
 
         std::vector<float> sample_interval;
+        uint n_samples = dialog->get_num_meshes();
 
-        std::vector<cinolib::Polygonmesh<> *> meshes_with_canvas;
-        std::vector<float> t_values;
-
-        uint n_samples = 0;
-
-        if (is_parametric)
+        if (is_parametric && n_samples >= 2)
         {
-            n_samples = dialog->get_num_meshes();
-
             const float int_begin = 0.0;
             const float int_end = dialog->get_max_deformation_value();
-
             sample_interval = cinolib::sample_within_interval(int_begin, int_end, n_samples);
         }
         else
@@ -630,6 +623,9 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
             sample_interval.push_back(0.0);
             n_samples = 1;
         }
+
+        std::vector<cinolib::Polygonmesh<> *> meshes_with_canvas;
+        std::vector<float> t_values;
 
         for(float t : sample_interval)
         {
@@ -1707,6 +1703,7 @@ void DatasetWidget::on_optimize_btn_clicked()
     double (*indicator)(const std::vector<cinolib::vec3d>&);
     bool   node_weights = false, arc_weights = false;
     double parameter = 100.;
+    bool   overwrite = false;
 
     if (dialog->exec() == 1)
     {
@@ -1728,10 +1725,18 @@ void DatasetWidget::on_optimize_btn_clicked()
         }
         dialog->get_weights(node_weights, arc_weights);
         dialog->get_parameter(parameter);
+        dialog->get_overwrite(overwrite);
+    }
+    else
+    {
+        ui->optimize_btn->setEnabled(true);
+        return;
     }
     delete dialog;
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    ui->canvas->clear();
 
     uint index=0;
     for (cinolib::Polygonmesh<> *mesh : dataset->get_parametric_meshes())
@@ -1746,28 +1751,32 @@ void DatasetWidget::on_optimize_btn_clicked()
         message += ", found: " + std::to_string(n_labels);
         ui->log_label->append(message.c_str());
 
-        cinolib::Polygonmesh<> *m_old = mesh;
-        mesh_agglomerate_wrt_labels(*mesh);
-        message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh->num_polys());
+        cinolib::Polygonmesh<> *mesh_new = mesh;
+        mesh_agglomerate_wrt_labels(*mesh_new);
+        message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh_new->num_polys());
         ui->log_label->append(message.c_str());
 
         cinolib::Hierarchy agglomeration_hierarchy;
-        agglomeration_hierarchy.compute(*m_old, *mesh);
-        assert(agglomeration_hierarchy.check(*m_old, *mesh) && "ERROR: hierarchy check failed");
+        agglomeration_hierarchy.compute(*mesh, *mesh_new);
+        assert(agglomeration_hierarchy.check(*mesh, *mesh_new) && "ERROR: hierarchy check failed");
         std::string output_h  = "_hierarchy.txt";
         agglomeration_hierarchy.print(output_h);
         message = "Computed Hierarchy";
         ui->log_label->append(message.c_str());
 
         message = "Optimization done: " +
-                  std::to_string(m_old->num_verts() - mesh->num_verts()) + " removed verts, " +
-                  std::to_string(m_old->num_polys() - mesh->num_polys()) + " merged polys.\n" ;
+                  std::to_string(mesh->num_verts() - mesh_new->num_verts()) + " removed verts, " +
+                  std::to_string(mesh->num_polys() - mesh_new->num_polys()) + " merged polys.\n" ;
         ui->log_label->append(message.c_str());
 
+        mesh = mesh_new;
         cinolib::Color c = cinolib::Color::BLACK();
-
-        ui->canvas->clear();
-        ui->canvas->add_mesh(*mesh, c);
+        // if (overwrite) {
+        // } else {
+        //     ui->canvas->add_mesh(*mesh, c);
+        //     // dataset->add_parametric_mesh(mesh_new, 1., index);
+        // }
+        ui->canvas->add_mesh(*mesh_new, c);
 
         index++;
     }

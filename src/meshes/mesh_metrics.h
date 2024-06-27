@@ -218,7 +218,7 @@ struct MeshMetrics
     uint   JAC_poly_max_id = UINT_MAX;
     std::vector<double> JAC_all;
 
-    // FRO - Frobenius Ratio - Range: [0,1] - high is good - scale INdependent
+    // FRO - Frobenius Norm - Range: [0,1] - high is good - scale INdependent
     double FRO_mesh      = 0.0;
     double FRO_min       = 0.0;
     double FRO_max       = 0.0;

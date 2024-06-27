@@ -93,8 +93,8 @@ void GeometryGeometryScatterPlotsWidget::create_scatterPlots(const Dataset &d, c
         {
             QChart *ch = new QChart();
 
-            double maxX = -DBL_MAX;
-            double maxY = -DBL_MAX;
+            double maxX = -DBL_MAX, maxY = -DBL_MAX;
+            double minX =  DBL_MAX, minY = DBL_MAX;
 
             for (uint cc=0; cc < class_chages.size()-1; cc++)
             {
@@ -230,12 +230,15 @@ void GeometryGeometryScatterPlotsWidget::create_scatterPlots(const Dataset &d, c
                     }
                     s->append(x,y);
 
-                    if(x>maxX)  maxX=x;
-                    if(y>maxY)  maxY=y;
+                    minX = std::min(minX, x);
+                    maxX = std::max(maxX, x);
+                    minY = std::min(minY, y);
+                    maxY = std::max(maxY, y);
                 }
                 ch->addSeries(s);
             }
 
+            ch->legend()->hide();
             ch->createDefaultAxes();
 
 //            QLogValueAxis *axisXlog = new QLogValueAxis();
@@ -252,8 +255,14 @@ void GeometryGeometryScatterPlotsWidget::create_scatterPlots(const Dataset &d, c
 //            ch->removeAxis(ch->axes().at(1));
 //            ch->addAxis(axisYlog, Qt::AlignLeft);
 
+            ch->axes()[0]->setMax(maxX*1.001);
+            ch->axes()[0]->setMin(minX*0.999);
+            ch->axes()[1]->setMax(maxY*1.001);
+            ch->axes()[1]->setMin(minY*0.999);
+
             ch->axes()[0]->setTitleText(metrics_names.at(cbID2metricsID.at(i)).c_str());
             ch->axes()[1]->setTitleText(metrics_names.at(cbID2metricsID.at(j)).c_str());
+            ch->setTitle((metrics_names.at(cbID2metricsID.at(i)) + " vs " + metrics_names.at(cbID2metricsID.at(j))).c_str());
 
             std::cout << chart_views.size() << " : " << metrics_names.at(cbID2metricsID.at(i)) <<
                                                " - " << metrics_names.at(cbID2metricsID.at(j)) << std::endl;

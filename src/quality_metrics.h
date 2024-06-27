@@ -53,7 +53,7 @@ const std::vector<std::string> metrics_names =
     "Angle Ratio",
     "VEM Indicator",
     "Scaled Jacobian",
-    "Frobenius Ratio"
+    "Frobenius Norm"
 };
 
 const std::vector<std::string> metrics_acronym =
