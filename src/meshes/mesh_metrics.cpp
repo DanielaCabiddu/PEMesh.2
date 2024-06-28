@@ -77,11 +77,11 @@ void get_global_avg_norm (const std::vector<std::pair<T,uint>> & list1,
 
     avg/=static_cast<double>(list1.size() + list2.size());
 
-    global = sqrt(avg);
-
     norm/=static_cast<double>(list1.size() + list2.size());
 
     norm = sqrt (norm);
+
+    global = avg;
 }
 
 void get_all(std::vector<std::pair<double,uint>> & list_triangles, std::vector<std::pair<double,uint>> & list_polys, std::vector<double> & values) {
@@ -347,12 +347,12 @@ void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics)
     get_all(ANR, ANR_poly, metrics.ANR_all);
     get_all(VEM, VEM_poly, metrics.VEM_all);
     get_all(JAC, JAC_poly, metrics.JAC_all);
-    get_all(FRO, FRO_poly, metrics.FRO_all);    
+    get_all(FRO, FRO_poly, metrics.FRO_all);
 }
 
 double compute_metric_INR(const std::vector<cinolib::vec3d> &points) {
     cinolib::vec3d dummy;
-    double inradius;
+    double inradius = 0.;
     polygon_maximum_inscribed_circle(points, dummy, inradius);
 
     double diameter = DBL_MIN;
@@ -370,7 +370,7 @@ double compute_metric_INR(const std::vector<cinolib::vec3d> &points) {
 
 double compute_metric_OUR(const std::vector<cinolib::vec3d> &points) {
     cinolib::vec3d dummy;
-    double outradius;
+    double outradius = 0.;
     smallest_enclosing_disk(points, dummy, outradius);
 
     double diameter = DBL_MIN;
@@ -387,8 +387,8 @@ double compute_metric_OUR(const std::vector<cinolib::vec3d> &points) {
 }
 
 double compute_metric_CIR(const std::vector<cinolib::vec3d> &points) {
-    cinolib::vec3d  dummy;
-    double inradius, outradius;
+    cinolib::vec3d dummy;
+    double inradius = 0., outradius = 0.;
     polygon_maximum_inscribed_circle(points, dummy, inradius);
     smallest_enclosing_disk(points, dummy, outradius);
     assert(inradius < outradius && outradius > 0.);
@@ -399,8 +399,8 @@ double compute_metric_CIR(const std::vector<cinolib::vec3d> &points) {
 }
 
 double compute_metric_KRR(const std::vector<cinolib::vec3d> &points) {
-    cinolib::vec3d  dummy;
-    double outradius;
+    cinolib::vec3d dummy;
+    double outradius = 0.;
     smallest_enclosing_disk(points, dummy, outradius);
 
     std::vector<cinolib::vec3d> kernel_verts;
@@ -431,7 +431,7 @@ double compute_metric_APR(const std::vector<cinolib::vec3d> &points) {
     double area = polygon_unsigned_area(points_2d);
 
     double perimeter = 0.;
-    for(uint i=0; i<points.size()-1; ++i) {
+    for(uint i=0; i<points.size(); ++i) {
         uint j=(i+1) % points.size();
         perimeter += points.at(i).dist(points.at(j));
     }
@@ -476,29 +476,15 @@ double compute_metric_MAA(const std::vector<cinolib::vec3d> &points) {
         angles.push_back(angle);
     }
 
-    double value = *std::max_element(angles.begin(), angles.end()) / (2. * M_PI);
+    double value = 1. - *std::max_element(angles.begin(), angles.end()) / (2. * M_PI);
     assert(0. <= value && value <= 1. + METRICS_TOLL);
     return value;
 }
 
-double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {
-    std::vector<double> angles;
-    uint nv = points.size();
-    cinolib::vec3d normal = polygon_normal(points);
-    for(uint curr = 0; curr < nv; ++curr) {
-        uint next = (curr+1   ) % nv;
-        uint prev = (curr-1+nv) % nv;
-        cinolib::vec3d p = points.at(curr);
-        cinolib::vec3d u = points.at(prev) - p;
-        cinolib::vec3d v = points.at(next) - p;
-        double angle  = u.angle_rad(v);
-        if((-u).cross(v).dot(normal)<0) { angle = 2*M_PI - angle; }
-        angles.push_back(angle);
-    }
-
-    double mia = *std::min_element(angles.begin(), angles.end()) / (2. * M_PI);
-    double maa = *std::max_element(angles.begin(), angles.end()) / (2. * M_PI);
-    assert(mia <= maa && maa != 0.);
+double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {   
+    double mia = compute_metric_MIA(points);
+    double maa = 1. - compute_metric_MAA(points);
+    assert(maa != 0.);
 
     double value = mia / maa;
     assert(0. <= value && value <= 1. + METRICS_TOLL);
@@ -513,8 +499,8 @@ double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {
     double area = polygon_unsigned_area(points_2d);
     double rho1 = kernel_area / area;
 
-    double min_edge = 0.;
-    for(uint i=0; i<points.size()-1; ++i) {
+    double min_edge = DBL_MAX;
+    for(uint i=0; i<points.size(); ++i) {
         uint j=(i+1) % points.size();
         min_edge = std::min(min_edge, points.at(i).dist(points.at(j)));
     }

@@ -56,7 +56,7 @@ int metis_wrap_dual(Polygonmesh<> &m, const double parts,
             std::vector<uint> adj_polys = m.adj_e2p(eid);
             std::vector<vec3d> v;
             sum_polys(adj_polys, m, v);
-            arcCosts.at(eid) = quality(v);
+            arcCosts.at(eid) = v.empty() ? 0. : quality(v);
         }
         std::vector<uint> _arcWeights(m.num_edges());
         costs_to_weights(arcCosts, _arcWeights);
@@ -121,7 +121,7 @@ int metis_wrap_dual(Polyhedralmesh<> &m, const double parts,
             std::vector<vec3d> v, n;
             std::vector<std::vector<uint>> f;
             sum_polys(adj_polys, m, v, f, n);
-            arcCosts.at(fid) = quality(v, f, n);
+            arcCosts.at(fid) = v.empty() ? 0. : quality(v, f, n);
             if(arcCosts.at(fid) == 0) {
                 std::cout << "Metis Warning: element with zero rho around face: " << fid
                           << ", pids: " << adj_polys.front() << ", " << adj_polys.back()
@@ -170,7 +170,7 @@ int metis_wrap_primal(Polygonmesh<> &m, const double parts,
             std::vector<uint> adj_polys = m.adj_v2p(vid);
             std::vector<vec3d> v;
             sum_polys(adj_polys, m, v);
-            nodeCosts.at(vid) = quality(v);
+            nodeCosts.at(vid) = v.empty() ? 0. : quality(v);
         }
         nodeWeights.resize(m.num_verts());
         costs_to_weights(nodeCosts, nodeWeights);
@@ -184,7 +184,7 @@ int metis_wrap_primal(Polygonmesh<> &m, const double parts,
             std::vector<uint> adj_polys = m.adj_e2p(eid);
             std::vector<vec3d> v;
             sum_polys(adj_polys, m, v);
-            arcCosts.at(eid) = quality(v);
+            arcCosts.at(eid) = v.empty() ? 0. : quality(v);
         }
         arcWeights.resize(m.num_edges());
         costs_to_weights(arcCosts, arcWeights);
@@ -222,7 +222,7 @@ int metis_wrap_primal(Polyhedralmesh<> &m, const double parts,
             std::vector<vec3d> v, n;
             std::vector<std::vector<uint>> f;
             sum_polys(adj_polys, m, v, f, n);
-            nodeCosts.at(vid) = quality(v, f, n);
+            nodeCosts.at(vid) = v.empty() ? 0. : quality(v, f, n);
         }
         nodeWeights.resize(m.num_verts());
         costs_to_weights(nodeCosts, nodeWeights);
@@ -237,7 +237,7 @@ int metis_wrap_primal(Polyhedralmesh<> &m, const double parts,
             std::vector<vec3d> v, n;
             std::vector<std::vector<uint>> f;
             sum_polys(adj_polys, m, v, f, n);
-            arcCosts.at(eid) = quality(v, f, n);
+            arcCosts.at(eid) = v.empty() ? 0. : quality(v, f, n);
             // arcCosts.at(eid) = 1. / pow(1.0 - rho_poly(v), 3);
         }
         arcWeights.resize(m.num_edges());

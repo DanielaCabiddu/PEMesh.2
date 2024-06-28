@@ -56,6 +56,7 @@ MeshMetricsWidget::MeshMetricsWidget(QWidget *parent) :
     QSizePolicy spRight(QSizePolicy::Preferred, QSizePolicy::Preferred);
     spRight.setHorizontalStretch(3);
     ui->charts->setSizePolicy(spRight);
+    ui->scale_dependent_cb->hide();
 }
 
 MeshMetricsWidget::~MeshMetricsWidget()
@@ -158,13 +159,16 @@ void MeshMetricsWidget::on_show_ranges_cb_stateChanged(int checked)
             double max = get_metrics_max(id);
 
             std::string max_str = std::to_string(max);
+            if (max == cinolib::max_double) max_str = "+inf";
+            else if (max == 0)  max_str = "0";
+            else if (max == 1)  max_str = "1";
 
-            if (max == cinolib::max_double)
-                max_str = "+inf";
+            std::string min_str = std::to_string(min);
+            if (min == 0)       min_str = "0";
+            else if (min == 1)  min_str = "1";
 
-            std::string title = metrics_names.at(id) + " [" +
-                                std::to_string(min) + ", " +
-                                max_str + "]";
+            std::string title = metrics_names.at(id) +
+                                " ["+min_str+", "+max_str+"]";
 
             chart->chart()->setTitle(title.c_str());
 
@@ -368,3 +372,27 @@ void MeshMetricsWidget::on_mesh_cb_stateChanged(int checked)
 {
     show_series(6, checked);
 }
+
+void MeshMetricsWidget::on_all_btn_clicked()
+{
+    ui->min_cb->setCheckState(Qt::Checked);
+    ui->max_cb->setCheckState(Qt::Checked);
+    ui->avg_cb->setCheckState(Qt::Checked);
+    ui->poly_min_cb->setCheckState(Qt::Checked);
+    ui->poly_max_cb->setCheckState(Qt::Checked);
+    ui->poly_avg_cb->setCheckState(Qt::Checked);
+    ui->mesh_cb->setCheckState(Qt::Checked);
+}
+
+
+void MeshMetricsWidget::on_none_btn_clicked()
+{
+    ui->min_cb->setCheckState(Qt::Unchecked);
+    ui->max_cb->setCheckState(Qt::Unchecked);
+    ui->avg_cb->setCheckState(Qt::Unchecked);
+    ui->poly_min_cb->setCheckState(Qt::Unchecked);
+    ui->poly_max_cb->setCheckState(Qt::Unchecked);
+    ui->poly_avg_cb->setCheckState(Qt::Unchecked);
+    ui->mesh_cb->setCheckState(Qt::Unchecked);
+}
+

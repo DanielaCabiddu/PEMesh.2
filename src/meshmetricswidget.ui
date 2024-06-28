@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1046</width>
-    <height>658</height>
+    <height>691</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,8 +45,26 @@
          <property name="title">
           <string>Line Options</string>
          </property>
-         <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="all_btn">
+              <property name="text">
+               <string>All</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="none_btn">
+              <property name="text">
+               <string>None</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
            <widget class="QCheckBox" name="min_cb">
             <property name="text">
              <string>Triangle Min</string>
@@ -56,7 +74,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
+          <item row="1" column="1">
            <widget class="QToolButton" name="min_color_btn">
             <property name="text">
              <string/>
@@ -70,7 +88,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QCheckBox" name="max_cb">
             <property name="text">
              <string>Triangle Max</string>
@@ -80,7 +98,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="2" column="1">
            <widget class="QToolButton" name="max_color_btn">
             <property name="text">
              <string/>
@@ -94,7 +112,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QCheckBox" name="avg_cb">
             <property name="text">
              <string>Triangle Avg</string>
@@ -104,7 +122,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="3" column="1">
            <widget class="QToolButton" name="avg_color_btn">
             <property name="text">
              <string/>
@@ -118,7 +136,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="4" column="0">
            <widget class="QCheckBox" name="poly_min_cb">
             <property name="text">
              <string>Polygon Min</string>
@@ -128,7 +146,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="QToolButton" name="poly_min_color_btn">
             <property name="text">
              <string/>
@@ -142,7 +160,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="poly_max_cb">
             <property name="text">
              <string>Polygon Max</string>
@@ -152,7 +170,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="5" column="1">
            <widget class="QToolButton" name="poly_max_color_btn">
             <property name="text">
              <string/>
@@ -166,7 +184,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="6" column="0">
            <widget class="QCheckBox" name="poly_avg_cb">
             <property name="text">
              <string>Polygon Avg</string>
@@ -176,7 +194,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="6" column="1">
            <widget class="QToolButton" name="poly_avg_color_btn">
             <property name="text">
              <string/>
@@ -190,7 +208,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="7" column="0">
            <widget class="QCheckBox" name="mesh_cb">
             <property name="text">
              <string>Mesh</string>
@@ -200,7 +218,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="7" column="1">
            <widget class="QToolButton" name="mesh_color_btn">
             <property name="text">
              <string/>

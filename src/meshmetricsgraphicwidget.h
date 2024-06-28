@@ -79,6 +79,7 @@ public slots:
     void show_min ();
     void show_max ();
     void show_avg ();
+    void show_tri ();
     void show_poly ();
     void show_all ();
 

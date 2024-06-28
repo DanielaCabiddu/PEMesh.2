@@ -45,7 +45,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>Polygon Metrics</string>
+         <string>Quality Indicators</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
@@ -172,6 +172,13 @@
           <widget class="QRadioButton" name="avg_rb">
            <property name="text">
             <string>Average</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="tri_rb">
+           <property name="text">
+            <string>Triangles</string>
            </property>
           </widget>
          </item>
