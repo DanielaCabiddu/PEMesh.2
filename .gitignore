@@ -38,6 +38,7 @@ external/triangle/build
 *.app
 
 build-*
+build*
 src/build/*
 external/triangle/build
 *.txt.user

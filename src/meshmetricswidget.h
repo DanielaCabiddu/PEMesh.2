@@ -40,8 +40,6 @@
 
 #include <QtCharts/QChartView>
 
-
-
 namespace Ui {
 class MeshMetricsWidget;
 }
@@ -69,42 +67,34 @@ Q_SIGNALS:
 private slots:
 
     void on_sort_btn_clicked();
-
     void on_original_btn_clicked();
 
     void on_show_legend_cb_stateChanged(int checked);
-
     void on_show_ranges_cb_stateChanged(int arg1);
 
     void on_min_color_btn_clicked();
-
     void on_max_color_btn_clicked();
-
     void on_avg_color_btn_clicked();
-
     void on_poly_min_color_btn_clicked();
-
     void on_poly_max_color_btn_clicked();
-
     void on_poly_avg_color_btn_clicked();
+    void on_mesh_color_btn_clicked();
 
     void on_save_txt_btn_clicked();
-
     void on_save_plots_btn_clicked();
 
     void on_scale_dependent_cb_stateChanged(int arg1);
 
     void on_min_cb_stateChanged(int arg1);
-
     void on_max_cb_stateChanged(int arg1);
-
     void on_avg_cb_stateChanged(int arg1);
-
     void on_poly_min_cb_stateChanged(int arg1);
-
     void on_poly_max_cb_stateChanged(int arg1);
-
     void on_poly_avg_cb_stateChanged(int arg1);
+    void on_mesh_cb_stateChanged(int arg1);
+
+    void on_all_btn_clicked();
+    void on_none_btn_clicked();
 
 private:
     Ui::MeshMetricsWidget *ui;

@@ -255,17 +255,17 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
         <bool>false</bool>
        </property>
        <attribute name="title">
-        <string>Geometric Metrics</string>
+        <string>Quality Indicators</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
-            <string>2D Visualization</string>
+            <string>Quality Localization</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
@@ -275,7 +275,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
           </widget>
           <widget class="QWidget" name="tab">
            <attribute name="title">
-            <string>Line Plots</string>
+            <string>Single Indicators</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
@@ -283,9 +283,19 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
             </item>
            </layout>
           </widget>
+          <widget class="QWidget" name="tab_6">
+           <attribute name="title">
+            <string>All Indicators</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_3">
+            <item row="0" column="0">
+             <widget class="MeshFullMetricsWidget" name="meshFullMetricsWidget" native="true"/>
+            </item>
+           </layout>
+          </widget>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
-            <string>Scatter Plots</string>
+            <string>Indicators Correlation</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
@@ -329,7 +339,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
           </widget>
           <widget class="QWidget" name="tab_5">
            <attribute name="title">
-            <string>Scatter Plots Geometry-Performance</string>
+            <string>Correlation Indicator-Performance</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
@@ -408,6 +418,12 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
    <class>GeometryPerformanceScatterPlotsWidget</class>
    <extends>QWidget</extends>
    <header>geometryperformancescatterplotswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MeshFullMetricsWidget</class>
+   <extends>QWidget</extends>
+   <header>meshfullmetricswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

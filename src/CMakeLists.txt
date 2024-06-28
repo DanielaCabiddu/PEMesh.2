@@ -29,7 +29,7 @@ set (VTK_BUILD ${VTK_DIR}/build-${CMAKE_SYSTEM_NAME})
 set (VTK_INSTALL ${VTK_DIR}/install-${CMAKE_SYSTEM_NAME})
 
 if (APPLE)
-    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.9.3.dylib)
+    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.dylib)
 elseif(MSVC)
     set (VTK_LIB ${VTK_INSTALL}/lib/vtkGUISupportQt-9.3.lib)
 else()
@@ -39,8 +39,9 @@ endif()
 file(MAKE_DIRECTORY ${VTK_BUILD})
 file(MAKE_DIRECTORY ${VTK_INSTALL})
 
-if (MSVC)
+message (${Qt6_DIR})
 
+if (MSVC)
     add_custom_command(
         OUTPUT ${VTK_LIB}
         COMMAND cmake -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES #[[-UQt5*]] -DQt6_DIR=${Qt6_DIR} -DVTK_MODULE_ENABLE_VTK_GuiSupportQt=YES .. && cmake --build . --config Release --parallel 16 && cmake --install .
@@ -49,11 +50,10 @@ if (MSVC)
 else()
     add_custom_command(
         OUTPUT ${VTK_LIB}
-        COMMAND cmake .. -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES #[[-UQt5*]] -DCMAKE_BUILD_TYPE=Release && cmake --build . --parallel 16 && cmake --install .
+        COMMAND cmake .. -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES -UQt5* -DCMAKE_PREFIX_PATH=${Qt6_DIR}/.. -DCMAKE_BUILD_TYPE=Debug && cmake --build . --parallel 16 && cmake --install .
         WORKING_DIRECTORY ${VTK_BUILD}
     )
 endif()
-
 
 include_directories(${VTK_INSTALL}/include/vtk-9.3)
 
@@ -125,8 +125,8 @@ endif()
 
 include_directories(${Boost_INCLUDE_DIRS})
 
-
 ## cinolib
+
 add_definitions(-DCINOLIB_USES_BOOST)
 add_definitions(-DCINOLIB_USES_TRIANGLE)
 include_directories( ${CMAKE_SOURCE_DIR}/../external)
@@ -154,16 +154,29 @@ add_custom_command(
 
 include_directories(${TRIANGLE_DIR})
 
+## metis
+
+if(LINUX)
+    add_definitions(-DCINOLIB_USES_METIS)
+    set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
+    set(METIS_LIB /home/tommaso/local/lib/libmetis.so)
+    include_directories (BEFORE ${METIS_DIR})
+
+    set(GKLIB_DIR /home/tommaso/local/include)
+    set(GKLIB_LIB /home/tommaso/local/lib/libGKlib.a)
+    include_directories (BEFORE ${GKLIB_DIR})
+endif()
+
 ## includes
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
 
 FILE (GLOB HEADERS *.h meshes/*.h)
 FILE (GLOB SOURCES *.cpp meshes/*.cpp)
 FILE (GLOB GUI *.ui )
 
-qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB} ${VTK_LIB})
+qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB} ${VTK_LIB}
+    meshfullmetricswidget.h meshfullmetricswidget.cpp meshfullmetricswidget.ui)
 
 if (MSVC)
     file(GLOB VTK_LIBs ${VTK_INSTALL}/lib/*.lib)
@@ -176,5 +189,5 @@ endif()
 
 # qt5_use_modules(${PROJECT_NAME} Core Widgets OpenGL Network Charts)
 
-target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts ${VTK_LIBs} ${TRIANGLE_LIB})
+target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts ${VTK_LIBs} ${TRIANGLE_LIB} ${METIS_LIB} ${GKLIB_LIB})
 qt_finalize_executable(${PROJECT_NAME})

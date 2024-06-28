@@ -113,8 +113,10 @@ genericVTKwidget::genericVTKwidget(QWidget *parent)
 
 void genericVTKwidget::clear ()
 {
-    for (int a= actor.size()-1; a >= 0; a--)
-        renderer->RemoveActor(renderer->GetActors()->GetLastActor());
+
+    if (actor.size()>0)
+        for (int a= actor.size()-1; a >= 0; a--)
+            renderer->RemoveActor(renderer->GetActors()->GetLastActor());
 
     renderer->RemoveAllViewProps();
     renderer->RemoveAllObservers();
@@ -187,7 +189,7 @@ bool genericVTKwidget::add_mesh(const cinolib::Polygonmesh<> &m, cinolib::Color 
     //  const vtkIdType *pts;
     for(int i =0; i< colors->GetNumberOfTuples(); i++)
     {
-        colors->SetTuple3(i, m.poly_data(i).color.r * 255, m.poly_data(i).color.g * 255, m.poly_data(i).color.b * 255);  // Default color for other triangles
+        colors->SetTuple3(i, /*m.poly_data(i).*/color.r * 255, /*m.poly_data(i).*/color.g * 255, /*m.poly_data(i).*/color.b * 255);  // Default color for other triangles
     }
 
     // Add the color array to your polydata
@@ -202,10 +204,11 @@ bool genericVTKwidget::add_mesh(const cinolib::Polygonmesh<> &m, cinolib::Color 
     actor.push_back(vtkSmartPointer<vtkActor>::New());
     actor.at(mapper.size()-1)->SetMapper(mapper.at(mapper.size()-1));
 
-    if (wireframe)
+    // if (wireframe)
         actor.at(mapper.size()-1)->GetProperty()->SetRepresentationToWireframe();
 
     actor.at(mapper.size()-1)->GetProperty()->SetEdgeVisibility(true);
+        actor.at(mapper.size()-1)->GetProperty()->SetEdgeColor(0,0,0);
 
     /**
      * @brief Adds the actor to the scene and sets the background color.

@@ -118,6 +118,9 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
         {
             QChart *ch = new QChart();
 
+            double maxX = -DBL_MAX, maxY = -DBL_MAX;
+            double minX =  DBL_MAX, minY = DBL_MAX;
+
             for (uint cc=0; cc < class_chages.size()-1; cc++)
             {
                 std::string class_name = "CLASS";
@@ -227,14 +230,22 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
                     y = log(y);
 
                     s->append(x,y);
-                    std::cout <<x<<" "<<y<<std::endl;
+
+                    minX = std::min(minX, x);
+                    maxX = std::max(maxX, x);
+                    minY = std::min(minY, y);
+                    maxY = std::max(maxY, y);
                 }
                 ch->addSeries(s);
             }
             ch->createDefaultAxes();
 
-            ch->axes()[0]->setTitleText(metrics_names.at(cbID2metricsID.at(i)).c_str());
-            ch->axes()[1]->setMax(*std::max_element(performances.at(j).begin(), performances.at(j).end()));
+
+            ch->axes()[0]->setMax(maxX*1.001);
+            ch->axes()[0]->setMin(minX*0.999);
+            ch->axes()[1]->setMax(maxY*1.001);
+            ch->axes()[1]->setMin(minY*0.999);
+            // ch->axes()[1]->setMax(*std::max_element(performances.at(j).begin(), performances.at(j).end()));
 
             ch->axes()[0]->setTitleText(metrics_names.at(cbID2metricsID.at(i)).c_str());
             ch->axes()[1]->setTitleText(ui->y_axis_cb->itemText(j).toStdString().c_str());

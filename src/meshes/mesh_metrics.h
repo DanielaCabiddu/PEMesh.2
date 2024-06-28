@@ -43,6 +43,7 @@
 struct MeshMetrics
 {
     // INR - Inradius/Diameter Ratio - Range: [0,1] - high is good - scale INdependent
+    double INR_mesh   = 0.0;
     double INR_min    = 0.0;
     double INR_max    = 0.0;
     double INR_avg    = 0.0;
@@ -58,6 +59,7 @@ struct MeshMetrics
     std::vector<double> INR_all;
 
     // OUR - Outradius/Diameter Ratio - Range: [0,1] - high is good - scale INdependent
+    double OUR_mesh   = 0.0;
     double OUR_min    = 0.0;
     double OUR_max    = 0.0;
     double OUR_avg    = 0.0;
@@ -73,6 +75,7 @@ struct MeshMetrics
     std::vector<double> OUR_all;
 
     // CIR - Circle Ratio - Range: [0,1] - high is good - scale INdependent
+    double CIR_mesh   = 0.0;
     double CIR_min    = 0.0;
     double CIR_max    = 0.0;
     double CIR_avg    = 0.0;
@@ -88,6 +91,7 @@ struct MeshMetrics
     std::vector<double> CIR_all;
 
     // KRR - Kernel Radius Ratio - Range: [0,1] - high is good - scale INdependent
+    double KRR_mesh   = 0.0;
     double KRR_min    = 0.0;
     double KRR_max    = 0.0;
     double KRR_avg    = 0.0;
@@ -103,6 +107,7 @@ struct MeshMetrics
     std::vector<double> KRR_all;
 
     // KAR - Kernel Area Ratio - Range: [0,1] - high is good - scale INdependent
+    double KAR_mesh   = 0.0;
     double KAR_min    = 0.0;
     double KAR_max    = 0.0;
     double KAR_avg    = 0.0;
@@ -118,6 +123,7 @@ struct MeshMetrics
     std::vector<double> KAR_all;
 
     // APR - Area/Perimeter Ratio - Range: [0,1] - high is good - scale INdependent
+    double APR_mesh   = 0.0;
     double APR_min    = 0.0;
     double APR_max    = 0.0;
     double APR_avg    = 0.0;
@@ -133,6 +139,7 @@ struct MeshMetrics
     std::vector<double> APR_all;
 
     // MIA - Minimum Angle - Range: [0,1] - high is good - scale INdependent
+    double MIA_mesh   = 0.0;
     double MIA_min    = 0.0;
     double MIA_max    = 0.0;
     double MIA_avg    = 0.0;
@@ -148,6 +155,7 @@ struct MeshMetrics
     std::vector<double> MIA_all;
 
     // MAA - Maximum Angle - Range: [0,1] - high is good - scale INdependent
+    double MAA_mesh   = 0.0;
     double MAA_min    = 0.0;
     double MAA_max    = 0.0;
     double MAA_avg    = 0.0;
@@ -163,6 +171,7 @@ struct MeshMetrics
     std::vector<double> MAA_all;
 
     // ANR - Angle Ratio - Range: [0,1] - high is good - scale INdependent
+    double ANR_mesh   = 0.0;
     double ANR_min    = 0.0;
     double ANR_max    = 0.0;
     double ANR_avg    = 0.0;
@@ -178,6 +187,7 @@ struct MeshMetrics
     std::vector<double> ANR_all;
 
     // VEM - VEM Indicator - Range: [0,1] - high is good - scale INdependent
+    double VEM_mesh      = 0.0;
     double VEM_min       = 0.0;
     double VEM_max       = 0.0;
     double VEM_avg       = 0.0;
@@ -193,6 +203,7 @@ struct MeshMetrics
     std::vector<double> VEM_all;
 
     // JAC - JAC Indicator - Range: [0,1] - high is good - scale INdependent
+    double JAC_mesh      = 0.0;
     double JAC_min       = 0.0;
     double JAC_max       = 0.0;
     double JAC_avg       = 0.0;
@@ -207,7 +218,8 @@ struct MeshMetrics
     uint   JAC_poly_max_id = UINT_MAX;
     std::vector<double> JAC_all;
 
-    // FRO - Frobenius Ratio - Range: [0,1] - high is good - scale INdependent
+    // FRO - Frobenius Norm - Range: [0,1] - high is good - scale INdependent
+    double FRO_mesh      = 0.0;
     double FRO_min       = 0.0;
     double FRO_max       = 0.0;
     double FRO_avg       = 0.0;
@@ -237,17 +249,17 @@ void save_to_file(const char *filename, const MeshMetrics & metrics);
 
 void compute_mesh_metrics(const cinolib::Polygonmesh<> &m, MeshMetrics &metrics);
 
-inline double compute_metric_INR(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_OUR(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_CIR(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_KRR(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_KAR(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_APR(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_MIA(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_MAA(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_ANR(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_VEM(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_JAC(const std::vector<cinolib::vec3d> &points);
-inline double compute_metric_FRO(const std::vector<cinolib::vec3d> &points);
+double compute_metric_INR(const std::vector<cinolib::vec3d> &points);
+double compute_metric_OUR(const std::vector<cinolib::vec3d> &points);
+double compute_metric_CIR(const std::vector<cinolib::vec3d> &points);
+double compute_metric_KRR(const std::vector<cinolib::vec3d> &points);
+double compute_metric_KAR(const std::vector<cinolib::vec3d> &points);
+double compute_metric_APR(const std::vector<cinolib::vec3d> &points);
+double compute_metric_MIA(const std::vector<cinolib::vec3d> &points);
+double compute_metric_MAA(const std::vector<cinolib::vec3d> &points);
+double compute_metric_ANR(const std::vector<cinolib::vec3d> &points);
+double compute_metric_VEM(const std::vector<cinolib::vec3d> &points);
+double compute_metric_JAC(const std::vector<cinolib::vec3d> &points);
+double compute_metric_FRO(const std::vector<cinolib::vec3d> &points);
 
 #endif
