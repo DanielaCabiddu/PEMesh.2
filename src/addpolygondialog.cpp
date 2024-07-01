@@ -41,20 +41,20 @@ AddPolygonDialog::AddPolygonDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::AddPolygonDialog) {
   ui->setupUi(this);
 
-  setWindowTitle(tr("Select Polygon Class"));
+  // setWindowTitle(tr("Select Polygon Class"));
 
-  update_img(getClassIndex());
+  // update_img(getClassIndex());
 
-  connect(ui->class_list, SIGNAL(currentIndexChanged(int)), this,
-          SLOT(load_mesh_and_update_image(int)));
+  // connect(ui->class_list, SIGNAL(currentIndexChanged(int)), this,
+  //         SLOT(load_mesh_and_update_image(int)));
 
-  ui->preview_canvas->hide();
-  ui->preview_filename->hide();
+  // ui->preview_canvas->hide();
+  // ui->preview_filename->hide();
 
-  ui->change_poly_btn->hide();
+  // ui->change_poly_btn->hide();
 
-  ui->deformation_label->hide();
-  ui->deformation_param->hide();
+  // ui->deformation_label->hide();
+  // ui->deformation_param->hide();
 }
 
 AddPolygonDialog::~AddPolygonDialog() { delete ui; }
@@ -73,24 +73,23 @@ double AddPolygonDialog::getDeformationParam() const {
 
 void AddPolygonDialog::update_img(int index)
 {
-    if (index == 8)
-    {
-        ui->preview_img->hide();
-        ui->preview_canvas->show();
-        ui->preview_filename->show();
-        ui->change_poly_btn->show();
+    // if (index == 8)
+    // {
+    //     ui->preview_img->hide();
+    //     ui->preview_canvas->show();
+    //     ui->preview_filename->show();
+    //     ui->change_poly_btn->show();
 
-        // ui->preview_canvas->pop_all_occurrences_of(cinolib::DRAWABLE_POLYGONMESH);
+    //     // ui->preview_canvas->pop_all_occurrences_of(cinolib::DRAWABLE_POLYGONMESH);
 
-        // ui->preview_canvas->push_obj(new cinolib::DrawablePolygonmesh<> (mesh->vector_verts(), mesh->vector_polys()));
-        ui->preview_canvas->clear();
+    //     // ui->preview_canvas->push_obj(new cinolib::DrawablePolygonmesh<> (mesh->vector_verts(), mesh->vector_polys()));
+    //     ui->preview_canvas->clear();
 
-        cinolib::Color c = cinolib::Color(1,0,0,1);
-        ui->preview_canvas->add_mesh(cinolib::Polygonmesh<> (mesh->vector_verts(), mesh->vector_polys()), c);
+    //     ui->preview_canvas->add_mesh(cinolib::Polygonmesh<> (mesh->vector_verts(), mesh->vector_polys()));
 
-        ui->preview_filename->setText(mesh->mesh_data().filename.c_str());
-        return;
-    }
+    //     ui->preview_filename->setText(mesh->mesh_data().filename.c_str());
+    //     return;
+    // }
 
     QPixmap pm;
 
@@ -128,8 +127,8 @@ void AddPolygonDialog::update_img(int index)
     ui->preview_filename->hide();
     ui->change_poly_btn->hide();
 
-    // QPixmap pms = pm.scaledToWidth(ui->preview_img->width());
-    ui->preview_img->setPixmap(pm);
+    QPixmap pms = pm.scaledToWidth(ui->preview_img->width());
+    ui->preview_img->setPixmap(pms);
 }
 
 void AddPolygonDialog::load_mesh_and_update_image (int index)
@@ -157,5 +156,5 @@ void AddPolygonDialog::load_mesh_and_update_image (int index)
 
 void AddPolygonDialog::on_change_poly_btn_clicked()
 {
-    load_mesh_and_update_image(8);
+    // load_mesh_and_update_image(8);
 }

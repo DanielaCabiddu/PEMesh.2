@@ -1038,10 +1038,14 @@ void GLcanvas::add_mesh (const Polygonmesh<> &m)
 }
 
 CINO_INLINE
-void GLcanvas::update_mesh (const Polygonmesh<> &m)
+void GLcanvas::update_mesh (const Polygonmesh<> &m, const uint i)
 {
     DrawablePolygonmesh<> *dm = new DrawablePolygonmesh<>  (m.vector_verts(), m.vector_polys());
-    push_obj(dm);
+
+    if (dm==NULL) return;
+    objects.at(i) = dm;
+    // if (refit_scene) fit_scene();
+    updateGL();
 }
 
 CINO_INLINE

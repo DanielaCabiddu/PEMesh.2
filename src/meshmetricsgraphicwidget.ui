@@ -229,15 +229,15 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
-    <widget class="genericVTKwidget" name="mesh_metrics_canvas" native="true"/>
+    <widget class="cinolib::GLcanvas" name="mesh_metrics_canvas" native="true"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>genericVTKwidget</class>
+   <class>cinolib::GLcanvas</class>
    <extends>QWidget</extends>
-   <header>genericvtkwidget.h</header>
+   <header location="global">gui-opengl/glcanvas.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

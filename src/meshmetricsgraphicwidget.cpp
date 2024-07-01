@@ -97,8 +97,7 @@ void MeshMetricsGraphicWidget::show_mesh (int i)
 
     clean_canvas();
 
-    cinolib::Color c = cinolib::Color (0.5,0.5,0.5,1);
-    ui->mesh_metrics_canvas->add_mesh(*d->get_parametric_mesh(i), c);
+    ui->mesh_metrics_canvas->add_mesh(*d->get_parametric_mesh(i));
     // d->get_parametric_mesh(static_cast<uint>(i))->updateGL();
     // ui->mesh_metrics_canvas->push_obj(d->get_parametric_mesh(static_cast<uint>(i)), update_scene);
     // ui->mesh_metrics_canvas->updateGL();

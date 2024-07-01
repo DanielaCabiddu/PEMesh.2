@@ -150,7 +150,7 @@ class GLcanvas : public QOpenGLWidget
         bool pop_all_occurrences_of (int type);
 
         void add_mesh (const Polygonmesh<> &m);
-        void update_mesh (const Polygonmesh<> &m);
+        void update_mesh (const Polygonmesh<> &m, const uint i);
         void clear ();
 
         //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

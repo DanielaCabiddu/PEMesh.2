@@ -79,10 +79,10 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="genericVTKwidget" name="solver_output" native="true"/>
+            <widget class="cinolib::GLcanvas" name="solver_output" native="true"/>
            </item>
            <item row="1" column="1">
-            <widget class="genericVTKwidget" name="groundtruth" native="true"/>
+            <widget class="cinolib::GLcanvas" name="groundtruth" native="true"/>
            </item>
            <item row="2" column="0" colspan="2">
             <widget class="QSlider" name="t_slider">
@@ -293,9 +293,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>genericVTKwidget</class>
+   <class>cinolib::GLcanvas</class>
    <extends>QWidget</extends>
-   <header>genericvtkwidget.h</header>
+   <header location="global">gui-opengl/glcanvas.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

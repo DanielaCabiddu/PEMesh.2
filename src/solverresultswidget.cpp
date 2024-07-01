@@ -180,9 +180,8 @@ void SolverResultsWidget::show_parametric_mesh(int index)
   ui->solver_output->clear();
   ui->groundtruth->clear();
 
-  cinolib::Color c = cinolib::Color(0,0,0,1);
-  ui->solver_output->add_mesh(*p_r,c);
-  ui->groundtruth->add_mesh(*p_gt,c);
+  ui->solver_output->add_mesh(*p_r);
+  ui->groundtruth->add_mesh(*p_gt);
 
   update_scene = false;
 

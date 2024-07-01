@@ -9,6 +9,8 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
+find_package (OpenGL)
+
 ## qt
 
 #find_package(Qt5 REQUIRED COMPONENTS Core Widgets OpenGL Network Charts)
@@ -21,41 +23,6 @@ else()
     set(CMAKE_AUTORCC ON)
     set(CMAKE_AUTOUIC ON)
 endif()
-
-## vtk
-
-set (VTK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../external/vtk)
-set (VTK_BUILD ${VTK_DIR}/build-${CMAKE_SYSTEM_NAME})
-set (VTK_INSTALL ${VTK_DIR}/install-${CMAKE_SYSTEM_NAME})
-
-if (APPLE)
-    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.dylib)
-elseif(MSVC)
-    set (VTK_LIB ${VTK_INSTALL}/lib/vtkGUISupportQt-9.3.lib)
-else()
-    set (VTK_LIB ${VTK_INSTALL}/lib/libvtkGUISupportQt-9.3.a)
-endif()
-
-file(MAKE_DIRECTORY ${VTK_BUILD})
-file(MAKE_DIRECTORY ${VTK_INSTALL})
-
-message (${Qt6_DIR})
-
-if (MSVC)
-    add_custom_command(
-        OUTPUT ${VTK_LIB}
-        COMMAND cmake -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES #[[-UQt5*]] -DQt6_DIR=${Qt6_DIR} -DVTK_MODULE_ENABLE_VTK_GuiSupportQt=YES .. && cmake --build . --config Release --parallel 16 && cmake --install .
-        WORKING_DIRECTORY ${VTK_BUILD}
-    )
-else()
-    add_custom_command(
-        OUTPUT ${VTK_LIB}
-        COMMAND cmake .. -DCMAKE_INSTALL_PREFIX=${VTK_INSTALL} -DVTK_GROUP_ENABLE_Qt=YES -UQt5* -DCMAKE_PREFIX_PATH=${Qt6_DIR}/.. -DCMAKE_BUILD_TYPE=Debug && cmake --build . --parallel 16 && cmake --install .
-        WORKING_DIRECTORY ${VTK_BUILD}
-    )
-endif()
-
-include_directories(${VTK_INSTALL}/include/vtk-9.3)
 
 ## boost
 
@@ -129,9 +96,13 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 add_definitions(-DCINOLIB_USES_BOOST)
 add_definitions(-DCINOLIB_USES_TRIANGLE)
+add_definitions(-DCINOLIB_USES_OPENGL)
+add_definitions(-DCINOLIB_USES_QT)
+add_definitions(-DCINOLIB_USES_OPENGL_GLFW_IMGUI)
 include_directories( ${CMAKE_SOURCE_DIR}/../external)
 include_directories( ${CMAKE_SOURCE_DIR}/../external/cinolib/include)
 include_directories( ${CMAKE_SOURCE_DIR}/../external/cinolib/external/eigen)
+include_directories( ${CMAKE_SOURCE_DIR}/../external/cinolib/external/imgui/glfw/include)
 
 ## triangle
 
@@ -173,21 +144,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 FILE (GLOB HEADERS *.h meshes/*.h)
 FILE (GLOB SOURCES *.cpp meshes/*.cpp)
-FILE (GLOB GUI *.ui )
+FILE (GLOB GUI *.ui *.qrc)
 
-qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB} ${VTK_LIB}
-    meshfullmetricswidget.h meshfullmetricswidget.cpp meshfullmetricswidget.ui)
-
-if (MSVC)
-    file(GLOB VTK_LIBs ${VTK_INSTALL}/lib/*.lib)
-else()
-    file(GLOB VTK_LIBs ${VTK_INSTALL}/lib/*.so)
-endif()
-if (APPLE)
-    file(GLOB VTK_LIBs ${VTK_INSTALL}/lib/*.dylib)
-endif()
+qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB})
 
 # qt5_use_modules(${PROJECT_NAME} Core Widgets OpenGL Network Charts)
 
-target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts ${VTK_LIBs} ${TRIANGLE_LIB} ${METIS_LIB} ${GKLIB_LIB})
+target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts OpenGL::GL OpenGL::GLU ${TRIANGLE_LIB} ${METIS_LIB} ${GKLIB_LIB})
 qt_finalize_executable(${PROJECT_NAME})

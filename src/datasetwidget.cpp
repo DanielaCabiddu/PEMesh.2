@@ -90,8 +90,8 @@ DatasetWidget::DatasetWidget(QWidget *parent) :
 
     cinolib::Polygonmesh<> polymesh (verts, polys);
 
-    cinolib::Color c = cinolib::Color(0,0,0,1);
-    ui->canvas->add_mesh(polymesh, c);
+    // cinolib::Color c = cinolib::Color(0,0,0,1);
+    ui->canvas->add_mesh(polymesh);
 
     // polymesh->updateGL();
     // ui->canvas->push_obj(polymesh, true);
@@ -308,8 +308,7 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const cin
 
     drawable_polys.push_back(polymesh);
 
-    cinolib::Color c = cinolib::Color(1,0,0,1);
-    ui->canvas->add_mesh(*polymesh, c);
+    ui->canvas->add_mesh(*polymesh);
 
     QWidget *scale_btn_box = new QWidget(this);
     QHBoxLayout *l = new QHBoxLayout(scale_btn_box);
@@ -417,8 +416,7 @@ void DatasetWidget::polygon_zoom_in()
         {
             polygon_zoom_in(drawable_polys.at(i));
 
-            cinolib::Color c = cinolib::Color (1,0,0,1);
-            ui->canvas->update_mesh(*drawable_polys.at(i), c, i+1);
+            ui->canvas->update_mesh(*drawable_polys.at(i), i+1);
 
             elems_scale_factors.at(i) /= minus_scale_factor;
 
@@ -438,7 +436,7 @@ void DatasetWidget::polygon_zoom_out()
             polygon_zoom_out(drawable_polys.at(i));
 
             cinolib::Color c = cinolib::Color (1,0,0,1);
-            ui->canvas->update_mesh(*drawable_polys.at(i), c, i+1);
+            ui->canvas->update_mesh(*drawable_polys.at(i), i+1);
 
             elems_scale_factors.at(i) *= minus_scale_factor;
 
@@ -459,8 +457,7 @@ void DatasetWidget::rotate_polygon(double angle)
 
             drawable_polys.at(i)->rotate(cinolib::vec3d(0,0,1), a);
 
-            cinolib::Color c = cinolib::Color (1,0,0,1);
-            ui->canvas->update_mesh(*drawable_polys.at(i), c, i+1);
+            ui->canvas->update_mesh(*drawable_polys.at(i), i+1);
 
             elems_rotation_angles.at(i) += a;
 
@@ -793,8 +790,7 @@ void DatasetWidget::show_parametric_mesh(int index)
 
     cinolib::Polygonmesh<> *m = dataset->get_parametric_mesh(static_cast<uint>(index));
 
-    cinolib::Color c = cinolib::Color(0.5, 0.5, 0.5, 1);
-    ui->canvas->add_mesh(*m, c, false);
+    ui->canvas->add_mesh(*m);
 
     reset_canvas = false;
 
@@ -1051,8 +1047,7 @@ void DatasetWidget::move_polygon_on_x(double new_pos)
 
             elems_centers.at(i).x() = new_pos;
 
-            cinolib::Color c = cinolib::Color (1,0,0,1);
-            ui->canvas->update_mesh(*m, c, i+1);
+            ui->canvas->update_mesh(*m, i+1);
 
             break;
         }
@@ -1081,8 +1076,7 @@ void DatasetWidget::move_polygon_on_y(double new_pos)
 
             elems_centers.at(i).y() = new_pos;
 
-            cinolib::Color c = cinolib::Color (1,0,0,1);
-            ui->canvas->update_mesh(*m, c, i+1);
+            ui->canvas->update_mesh(*m, i+1);
 
             break;
         }
@@ -1770,13 +1764,13 @@ void DatasetWidget::on_optimize_btn_clicked()
         ui->log_label->append(message.c_str());
 
         mesh = mesh_new;
-        cinolib::Color c = cinolib::Color::BLACK();
+
         // if (overwrite) {
         // } else {
         //     ui->canvas->add_mesh(*mesh, c);
         //     // dataset->add_parametric_mesh(mesh_new, 1., index);
         // }
-        ui->canvas->add_mesh(*mesh_new, c);
+        ui->canvas->add_mesh(*mesh);
 
         index++;
     }
