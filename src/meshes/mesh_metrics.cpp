@@ -438,7 +438,8 @@ double compute_metric_APR(const std::vector<cinolib::vec3d> &points) {
         perimeter += points.at(i).dist(points.at(j));
     }
 
-    double value = sqrt(area) / perimeter;
+    double value = (2. * M_PI * area) / (perimeter * perimeter);
+    // double value = sqrt(area) / perimeter;
     assert(0. <= value && value <= 1. + METRICS_TOLL);
     return value;
 }
