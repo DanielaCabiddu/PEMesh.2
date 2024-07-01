@@ -138,7 +138,7 @@
              <string>KAR</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -155,7 +155,7 @@
              <string>APR</string>
             </property>
             <property name="checked">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -172,7 +172,7 @@
              <string>MIA</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -206,7 +206,7 @@
              <string>ANR</string>
             </property>
             <property name="checked">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -283,7 +283,7 @@
              <string>Save Plots</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/icons/img/image_icon.png</normaloff>:/icons/img/image_icon.png</iconset>
             </property>
            </widget>
@@ -294,7 +294,7 @@
              <string>Save (.txt)</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/icons/img/save_icon.png</normaloff>:/icons/img/save_icon.png</iconset>
             </property>
            </widget>
@@ -308,6 +308,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -240,7 +240,6 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
             }
             ch->createDefaultAxes();
 
-
             ch->axes()[0]->setMax(maxX*1.001);
             ch->axes()[0]->setMin(minX*0.999);
             ch->axes()[1]->setMax(maxY*1.001);
