@@ -430,7 +430,7 @@ void GLcanvas::wheelEvent(QWheelEvent *event) // zoom
     if(callback_wheel) callback_wheel(this, event);
     if(skip_default_wheel_handler) return;
 
-    // zoom(event->delta()/8.f);
+    zoom(event->angleDelta().y()/8.f);
 }
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
