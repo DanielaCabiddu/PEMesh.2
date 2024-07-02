@@ -5,6 +5,10 @@ project (PEMesh)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
@@ -18,10 +22,6 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets OpenGLWidgets Gui Charts)
 
 if (MSVC)
     qt_standard_project_setup()
-else()
-    set(CMAKE_AUTOMOC ON)
-    set(CMAKE_AUTORCC ON)
-    set(CMAKE_AUTOUIC ON)
 endif()
 
 ## boost
