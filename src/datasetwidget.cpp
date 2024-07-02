@@ -1241,6 +1241,8 @@ void DatasetWidget::on_load_meshes_btn_clicked()
 
         cinolib::Polygonmesh<> *m = new cinolib::Polygonmesh<> (filename.c_str());
 
+        m->mesh_data().filename = f.toStdString();
+
         message = std::to_string(m->num_verts()) + "V / " + std::to_string(m->num_polys()) + "P ";
         ui->log_label->append(message.c_str());
 

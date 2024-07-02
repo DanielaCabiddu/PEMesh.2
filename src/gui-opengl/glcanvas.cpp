@@ -51,8 +51,15 @@
 #include <QMouseEvent>
 #include <QMimeData>
 
+#ifdef WIN32
 #include <GL/GLU.h>
 #include <GL/GL.h>
+#else
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glu.h>
+#endif
+
 
 namespace cinolib
 {

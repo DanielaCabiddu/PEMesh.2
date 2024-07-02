@@ -414,6 +414,8 @@ double compute_metric_KRR(const std::vector<cinolib::vec3d> &points) {
 }
 
 double compute_metric_KAR(const std::vector<cinolib::vec3d> &points) {
+    if (cinolib::polygon_is_convex(cinolib::vec2d_from_vec3d(points)))
+        return 1.;
     std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
     assert(kernel_area >= 0.);
@@ -436,7 +438,8 @@ double compute_metric_APR(const std::vector<cinolib::vec3d> &points) {
         perimeter += points.at(i).dist(points.at(j));
     }
 
-    double value = sqrt(area) / perimeter;
+    double value = (2. * M_PI * area) / (perimeter * perimeter);
+    // double value = sqrt(area) / perimeter;
     assert(0. <= value && value <= 1. + METRICS_TOLL);
     return value;
 }
@@ -491,13 +494,13 @@ double compute_metric_ANR(const std::vector<cinolib::vec3d> &points) {
     return value;
 }
 
-double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {
+double compute_metric_VEM(const std::vector<cinolib::vec3d> &points) {\
     std::vector<cinolib::vec3d> kernel_verts;
     double kernel_area = polygon_kernel(points, kernel_verts);
     assert(kernel_area >= 0.);
     std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
     double area = polygon_unsigned_area(points_2d);
-    double rho1 = kernel_area / area;
+    double rho1 = cinolib::polygon_is_convex(cinolib::vec2d_from_vec3d(points)) ? 1. : kernel_area / area;
 
     double min_edge = DBL_MAX;
     for(uint i=0; i<points.size(); ++i) {
@@ -555,7 +558,7 @@ double compute_metric_JAC(const std::vector<cinolib::vec3d> &points) {
     for (uint i = 0; i < points_2d.size(); ++i) {
         cinolib::vec2d p0 = points_2d.at(i);
         cinolib::vec2d p1 = points_2d.at((i + 1) % points_2d.size());
-        cinolib::vec2d p2 = points_2d.at((i + 2) % points_2d.size());
+        cinolib::vec2d p2 = points_2d.at((points_2d.size() + i - 1) % points_2d.size());
 
         cinolib::vec2d L0 = p1 - p0;
         cinolib::vec2d L1 = p2 - p0;
@@ -579,7 +582,7 @@ double compute_metric_FRO(const std::vector<cinolib::vec3d> &points) {
     for (uint i = 0; i < points_2d.size(); ++i) {
         cinolib::vec2d p0 = points_2d.at(i);
         cinolib::vec2d p1 = points_2d.at((i + 1) % points_2d.size());
-        cinolib::vec2d p2 = points_2d.at((i + 2) % points_2d.size());
+        cinolib::vec2d p2 = points_2d.at((points_2d.size() + i - 1) % points_2d.size());
 
         cinolib::vec2d L0 = p1 - p0;
         cinolib::vec2d L1 = p2 - p0;

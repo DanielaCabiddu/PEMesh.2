@@ -81,7 +81,7 @@ void MainWindow::show_mesh_metrics()
 
     for (uint i=0; i < n_metrics; i++)
     {
-        // if (!cinolib::CONTAINS_VEC(desired_metrics, i)) continue;
+        if (!cinolib::CONTAINS_VEC(desired_metrics, i)) continue;
 
         QLineSeries *series_min = new QLineSeries();
         QLineSeries *series_max = new QLineSeries();
@@ -732,6 +732,9 @@ void MainWindow::show_full_mesh_metrics()
     chart->legend()->show();
     chart->createDefaultAxes();
     chart->legend()->setAlignment(Qt::AlignRight);
+
+    // chart->axes()[1]->setMax(0.93*1.001);
+    // chart->axes()[1]->setMin(0.20*0.999);
 
     static_cast<QValueAxis *>(chart->axisX())->setLabelFormat("%i");
     static_cast<QValueAxis *>(chart->axisX())->setMinorTickCount(10);
