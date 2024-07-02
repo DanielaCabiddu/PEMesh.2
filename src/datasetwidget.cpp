@@ -1784,3 +1784,133 @@ void DatasetWidget::on_optimize_btn_clicked()
     ui->optimize_btn->setEnabled(true);
 }
 
+
+void DatasetWidget::on_load_mesh_btn_clicked()
+{
+
+    QString filters("OFF (*.off); OBJ (*.obj); STL (*.stl)");
+    QString filename;
+
+    do
+    {
+        filename = QFileDialog::getOpenFileName(this, tr("Select Mesh File"), "/tmp", filters);
+
+        if (filename.isNull() || filename.isEmpty())
+            return;
+    }
+    while (filename.isNull() || filename.isEmpty());
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    std::string message = "Loading " + filename.toStdString() + " ... ";
+    ui->log_label->append(message.c_str());
+
+    // check class
+    QString subString = filename;
+
+    if (filename.length() > 0 && filename.at(0).isDigit())
+    {
+        // subString = QStringRef(&f, f.indexOf("_")+1, f.length() - f.indexOf("_") - 1);
+    }
+
+    std:: cout << subString.toStdString() << std::endl;
+
+    uint class_id = UINT_MAX;
+
+    for (uint i=0; i < classPrefix.size(); i++)
+        if (subString.startsWith(classPrefix.at(i).c_str()) )
+        {
+            bool contains_other = false;
+
+            for (uint j=i+1; j < classPrefix.size(); j++)
+                if (subString.contains(classPrefix.at(j).c_str()))
+                    contains_other = true;
+
+            if (contains_other) continue;
+
+            class_id = i;
+            break;
+        }
+
+    cinolib::Polygonmesh<> *m = new cinolib::Polygonmesh<> (filename.toStdString().c_str());
+
+    m->mesh_data().filename = filename.toStdString();
+
+    message = std::to_string(m->num_verts()) + "V / " + std::to_string(m->num_polys()) + "P ";
+    ui->log_label->append(message.c_str());
+
+    for (uint pid=0; pid < m->num_polys(); pid++)
+    {
+        if (m->poly_verts(pid).size() > 3)
+        {
+            for (uint eid : m->adj_p2e(pid))
+                m->edge_data(eid).flags.set(0, true);
+
+            m->poly_data(pid).flags.set(1, true);
+        }
+
+        // m->show_marked_edge(true);
+    }
+
+    // save node/ele if not present - to enable pde solver
+    QFileInfo fileInfo(QString(filename.toStdString().c_str()));
+    QString basename = fileInfo.completeBaseName();
+
+    QString node_filename = fileInfo.absoluteDir().absolutePath() + QString(QDir::separator()) + basename + ".node";
+    QString ele_filename = fileInfo.absoluteDir().absolutePath() + QString(QDir::separator()) + basename + ".ele";
+
+    if (!QFile(node_filename).exists() || !QFile(ele_filename).exists())
+    {
+        const std::string node_ele_filename = fileInfo.absoluteDir().absolutePath().toStdString() + QString(QDir::separator()).toStdString() + basename.toStdString();
+
+        write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
+        message = "Saved NODE/ELE " + node_ele_filename;
+        ui->log_label->append(message.c_str());
+    }
+
+    dataset->add_parametric_mesh(m, DBL_MAX, class_id);
+
+    ui->log_label->append("\n");
+
+    id++;
+
+    QCoreApplication::processEvents();
+
+
+    QApplication::restoreOverrideCursor();
+
+    if (dataset->get_num_parametric_meshes() > 1)
+    {
+        ui->param_slider->setMaximum(static_cast<int>(dataset->get_num_parametric_meshes()-1));
+        ui->param_slider->setVisible(true);
+    }
+    else
+    {
+        ui->param_slider->setVisible(false);
+    }
+
+    ui->log_label->append("Dataset completed.");
+    ui->param_slider->show();
+    ui->mesh_number_label->show();
+
+    ui->highlight_polys_cb->setEnabled(true);
+
+    show_parametric_mesh(0);
+
+    //// Disable/enable buttons
+    ui->load_polys_btn->setEnabled(false);
+    ui->load_meshes_btn->setEnabled(false);
+    ui->add_btn->setEnabled(false);
+    ui->generate_dataset_btn->setEnabled(false);
+
+    ui->geom_qualities_btn->setEnabled(true);
+    ui->optimize_btn->setEnabled(true);
+
+    // ui->canvas->callback_mouse_press =
+    //         [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
+
+    ui->aggregate_btn->setEnabled(true);
+
+    // emit (saved_in (dir.toStdString()));
+}
+
