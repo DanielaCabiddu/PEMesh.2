@@ -18,6 +18,8 @@ MeshFullMetricsWidget::MeshFullMetricsWidget(QWidget *parent)
     , ui(new Ui::MeshFullMetricsWidget)
 {
     ui->setupUi(this);
+
+    ui->splitter->setStretchFactor(0, 4);
 }
 MeshFullMetricsWidget::~MeshFullMetricsWidget() { delete ui; }
 

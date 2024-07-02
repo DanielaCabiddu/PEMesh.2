@@ -19,19 +19,32 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QWidget" name="charts" native="true">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <layout class="QGridLayout" name="chart_grid_layout" rowminimumheight="0"/>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="0" column="1">
+    <widget class="QSplitter" name="splitter">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="charts" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QGridLayout" name="chart_grid_layout" rowminimumheight="0"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="righside" native="true">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QGroupBox" name="groupBox">
@@ -39,6 +52,132 @@
           <string>Quality Indicators</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="inr_cb">
+            <property name="text">
+             <string>INR</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="2">
+           <widget class="QToolButton" name="vem_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="2">
+           <widget class="QToolButton" name="fro_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QToolButton" name="kar_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QCheckBox" name="jac_cb">
+            <property name="text">
+             <string>JAC</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QCheckBox" name="mia_cb">
+            <property name="text">
+             <string>MIA</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="2">
+           <widget class="QToolButton" name="maa_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QToolButton" name="apr_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="0">
+           <widget class="QCheckBox" name="fro_cb">
+            <property name="text">
+             <string>FRO</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QCheckBox" name="apr_cb">
+            <property name="text">
+             <string>APR</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="2">
+           <widget class="QToolButton" name="anr_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QToolButton" name="our_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="our_cb">
+            <property name="text">
+             <string>OUR</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QToolButton" name="mia_color_cb">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QCheckBox" name="vem_cb">
+            <property name="text">
+             <string>VEM</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0" colspan="3">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
@@ -57,74 +196,6 @@
             </item>
            </layout>
           </item>
-          <item row="1" column="1">
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QCheckBox" name="inr_cb">
-            <property name="text">
-             <string>INR</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QToolButton" name="inr_color_cb">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="our_cb">
-            <property name="text">
-             <string>OUR</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QToolButton" name="our_color_cb">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QCheckBox" name="cir_cb">
-            <property name="text">
-             <string>CIR</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="2">
-           <widget class="QToolButton" name="cir_color_cb">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QCheckBox" name="krr_cb">
-            <property name="text">
-             <string>KRR</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
           <item row="5" column="2">
            <widget class="QToolButton" name="krr_color_cb">
             <property name="text">
@@ -132,54 +203,10 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
-           <widget class="QCheckBox" name="kar_cb">
-            <property name="text">
-             <string>KAR</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="2">
-           <widget class="QToolButton" name="kar_color_cb">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QCheckBox" name="apr_cb">
-            <property name="text">
-             <string>APR</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QToolButton" name="apr_color_cb">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QCheckBox" name="mia_cb">
-            <property name="text">
-             <string>MIA</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2">
-           <widget class="QToolButton" name="mia_color_cb">
-            <property name="text">
-             <string/>
+          <item row="1" column="1">
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -193,8 +220,8 @@
             </property>
            </widget>
           </item>
-          <item row="9" column="2">
-           <widget class="QToolButton" name="maa_color_cb">
+          <item row="4" column="2">
+           <widget class="QToolButton" name="cir_color_cb">
             <property name="text">
              <string/>
             </property>
@@ -210,37 +237,13 @@
             </property>
            </widget>
           </item>
-          <item row="10" column="2">
-           <widget class="QToolButton" name="anr_color_cb">
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="krr_cb">
             <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QCheckBox" name="vem_cb">
-            <property name="text">
-             <string>VEM</string>
+             <string>KRR</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="2">
-           <widget class="QToolButton" name="vem_color_cb">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QCheckBox" name="jac_cb">
-            <property name="text">
-             <string>JAC</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -251,20 +254,30 @@
             </property>
            </widget>
           </item>
-          <item row="13" column="0">
-           <widget class="QCheckBox" name="fro_cb">
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="kar_cb">
             <property name="text">
-             <string>FRO</string>
+             <string>KAR</string>
             </property>
             <property name="checked">
              <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="13" column="2">
-           <widget class="QToolButton" name="fro_color_cb">
+          <item row="2" column="2">
+           <widget class="QToolButton" name="inr_color_cb">
             <property name="text">
              <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="cir_cb">
+            <property name="text">
+             <string>CIR</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -283,7 +296,7 @@
              <string>Save Plots</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/icons/img/image_icon.png</normaloff>:/icons/img/image_icon.png</iconset>
             </property>
            </widget>
@@ -294,7 +307,7 @@
              <string>Save (.txt)</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="images.qrc">
               <normaloff>:/icons/img/save_icon.png</normaloff>:/icons/img/save_icon.png</iconset>
             </property>
            </widget>
@@ -303,11 +316,13 @@
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
