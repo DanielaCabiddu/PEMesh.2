@@ -1872,8 +1872,6 @@ void DatasetWidget::on_load_mesh_btn_clicked()
 
     ui->log_label->append("\n");
 
-    id++;
-
     QCoreApplication::processEvents();
 
 
