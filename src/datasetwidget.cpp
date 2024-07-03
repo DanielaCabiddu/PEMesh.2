@@ -1781,14 +1781,14 @@ void DatasetWidget::on_optimize_btn_clicked()
 
     QApplication::restoreOverrideCursor();
 
+    ui->geom_qualities_btn->setEnabled(true);
     ui->optimize_btn->setEnabled(true);
 }
 
 
 void DatasetWidget::on_load_mesh_btn_clicked()
 {
-
-    QString filters("OFF (*.off); OBJ (*.obj); STL (*.stl)");
+    QString filters("Meshes (*.off *.obj *.stl)");
     QString filename;
 
     do
@@ -1908,6 +1908,8 @@ void DatasetWidget::on_load_mesh_btn_clicked()
     //         [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
 
     ui->aggregate_btn->setEnabled(true);
+
+    ui->load_mesh_btn->setEnabled(false);
 
     // emit (saved_in (dir.toStdString()));
 }

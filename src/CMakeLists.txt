@@ -127,7 +127,7 @@ include_directories(${TRIANGLE_DIR})
 
 ## metis
 
-if(LINUX)
+if (LINUX)
     add_definitions(-DCINOLIB_USES_METIS)
     set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
     set(METIS_LIB /home/tommaso/local/lib/libmetis.so)

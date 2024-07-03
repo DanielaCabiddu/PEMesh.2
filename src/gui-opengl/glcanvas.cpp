@@ -54,6 +54,9 @@
 #ifdef WIN32
 #include <GL/GLU.h>
 #include <GL/GL.h>
+#elif __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 #else
 #define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
@@ -515,7 +518,7 @@ void GLcanvas::push_obj(const DrawableObject *obj, bool refit_scene)
 {
     if (obj==NULL) return;
     objects.push_back(obj);
-    if (refit_scene) fit_scene();
+    // if (refit_scene) fit_scene();
     updateGL();
 }
 
