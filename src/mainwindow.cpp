@@ -344,7 +344,7 @@ void MainWindow::show_mesh_metrics()
         chart->legend()->setAlignment(Qt::AlignRight);
 
         static_cast<QValueAxis *>(chart->axisX())->setLabelFormat("%i");
-        static_cast<QValueAxis *>(chart->axisX())->setMinorTickCount(10);
+        // static_cast<QValueAxis *>(chart->axisX())->setMinorTickCount(10);
 
         double min = get_metrics_min(i);
         double max = get_metrics_max(i);
@@ -363,9 +363,15 @@ void MainWindow::show_mesh_metrics()
         chart->setTitle(title.c_str());
 
         CustomizedChartView *chartView = new CustomizedChartView();
-        chartView->setChart(chart);
         chartView->setBackgroundBrush(QColor (230, 230, 230));
+
+        // chart->setAnimationOptions(QChart::SeriesAnimations);
         chartView->setRenderHint(QPainter::Antialiasing);
+        chartView->setChart(chart);
+        QValueAxis *axisX = static_cast<QValueAxis *>(chart->axes(Qt::Horizontal).at(0)); // <--
+        axisX->setTickCount(metrics.size());  // <--
+        axisX->setLabelFormat("%d"); // <--
+
 
         ui->metricsWidget->add_chart(chartView);
     }
@@ -661,15 +667,14 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
         chart->setTitle(metrics_names.at(i).c_str());
 
         CustomizedChartView *chartView = new CustomizedChartView();
-        chartView->setChart(chart);
+        chartView->setBackgroundBrush(QColor (230, 230, 230));
 
-        if (i == to_be_sort_id)
-            chartView->setBackgroundBrush(Qt::red);
-        else
-            chartView->setBackgroundBrush(QColor (230, 230, 230));
-
-
+        // chart->setAnimationOptions(QChart::SeriesAnimations);
         chartView->setRenderHint(QPainter::Antialiasing);
+        chartView->setChart(chart);
+        QValueAxis *axisX = static_cast<QValueAxis *>(chart->axisX(chart->series().at(0))); // <--
+        axisX->setTickCount(metrics.size());  // <--
+        axisX->setLabelFormat("%d"); // <--
 
         ui->metricsWidget->add_chart(chartView);
     }
@@ -737,7 +742,7 @@ void MainWindow::show_full_mesh_metrics()
     // chart->axes()[1]->setMin(0.20*0.999);
 
     static_cast<QValueAxis *>(chart->axisX())->setLabelFormat("%i");
-    static_cast<QValueAxis *>(chart->axisX())->setMinorTickCount(10);
+    // static_cast<QValueAxis *>(chart->axisX())->setMinorTickCount(10);
 
     std::string max_str = std::to_string(max);
     if (max == cinolib::max_double) max_str = "+inf";
@@ -751,10 +756,18 @@ void MainWindow::show_full_mesh_metrics()
     std::string title = "All Metrics ["+min_str+", "+max_str+"]";
     chart->setTitle(title.c_str());
 
+
     CustomizedChartView *chartView = new CustomizedChartView();
-    chartView->setChart(chart);
     chartView->setBackgroundBrush(QColor (230, 230, 230));
+
+    // chart->setAnimationOptions(QChart::SeriesAnimations);
     chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->setChart(chart);
+    QValueAxis *axisX = static_cast<QValueAxis *>(chart->axes(Qt::Horizontal).at(0)); // <--
+    axisX->setTickCount(metrics.size());  // <--
+    axisX->setLabelFormat("%d"); // <--
+
+    ui->metricsWidget->add_chart(chartView);
 
     ui->meshFullMetricsWidget->add_chart(chartView);
 
