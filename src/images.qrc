@@ -15,6 +15,8 @@
         <file>img/open_file_icon.ico</file>
         <file>img/mirroring.png</file>
         <file>img/aggregate.png</file>
+        <file>img/hospital-trash-can-icon.png</file>
+        <file>img/info-circle-icon.png</file>
     </qresource>
     <qresource prefix="/class_img">
         <file>img/zeta.png</file>

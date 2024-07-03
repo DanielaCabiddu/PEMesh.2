@@ -64,11 +64,13 @@ private slots:
 
     void update_solver_input_folder (const std::string folder);
 
-    void on_reset_btn_clicked();
-
     void on_tab_widgets_currentChanged(int index);
 
-    void on_save_all_btn_clicked();
+    void on_actionReset_triggered();
+
+    void on_actionSaveAll_triggered();
+
+    void on_actionAbout_triggered();
 
 private:
     Ui::MainWindow *ui;

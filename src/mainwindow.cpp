@@ -22,6 +22,7 @@
 #include <QFileDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QMessageBox>
 
 #include <QtCharts/QChartView>
 #include <QtCharts/QChart>
@@ -1026,7 +1027,65 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     ui->tab_widgets->setCurrentIndex(3);
 }
 
-void MainWindow::on_reset_btn_clicked()
+void MainWindow::on_tab_widgets_currentChanged(int index)
+{
+    if (index == 0)
+    {
+        if (dataset.get_parametric_meshes().size() == 0)
+            return;
+
+        // for (cinolib::Polygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
+        //     p->show_vert_color();
+    }
+    else
+    if (index == 1)
+    {
+        ui->graphicMeshMetricWidget->set_slider_max(static_cast<const uint>( dataset.get_parametric_meshes().size()-1));
+
+        // for (cinolib::Polygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
+        //     p->show_poly_color();
+    }
+    else
+    if (index == 2) // solver widget
+    {
+        // for (uint m=0; m < dataset.get_parametric_meshes().size(); m++)
+        // {
+        //     dataset.get_parametric_mesh(m)->poly_set_color(cinolib::Color(1,1,1));
+        //     dataset.get_parametric_mesh(m)->show_poly_color();
+        // }
+
+        ui->solverWidget->update();
+    }
+    else
+    if (index == 3) // solver results widget
+    {
+        ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
+    }
+}
+
+void MainWindow::update_solver_input_folder(const std::string folder)
+{
+    ui->solverWidget->update();
+
+    ui->tab_widgets->setTabEnabled(2, true);
+//    ui->tab_widgets->setCurrentIndex(2);
+
+    ui->solverWidget->set_input_folder(folder);
+    this->folder = folder;
+}
+
+
+void MainWindow::compute_GP_scatterplots ()
+{
+    if (metrics.empty())
+        ui->datasetWidget->compute_geometric_metrics();
+
+    ui->scatterPlotsGPWidget->create_scatterPlots(dataset, metrics, errsToScatterPlots);
+
+    ui->tabWidget->setCurrentIndex(3);
+}
+
+void MainWindow::on_actionReset_triggered()
 {
     delete ui->datasetWidget;
     delete ui->metricsWidget;
@@ -1082,69 +1141,20 @@ void MainWindow::on_reset_btn_clicked()
 
 }
 
-void MainWindow::on_tab_widgets_currentChanged(int index)
-{
-    if (index == 0)
-    {
-        if (dataset.get_parametric_meshes().size() == 0)
-            return;
 
-        // for (cinolib::Polygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
-        //     p->show_vert_color();
-    }
-    else
-    if (index == 1)
-    {
-        ui->graphicMeshMetricWidget->set_slider_max(static_cast<const uint>( dataset.get_parametric_meshes().size()-1));
-
-        // for (cinolib::Polygonmesh<> * p : ui->datasetWidget->get_dataset()->get_parametric_meshes())
-        //     p->show_poly_color();
-    }
-    else
-    if (index == 2) // solver widget
-    {
-        // for (uint m=0; m < dataset.get_parametric_meshes().size(); m++)
-        // {
-        //     dataset.get_parametric_mesh(m)->poly_set_color(cinolib::Color(1,1,1));
-        //     dataset.get_parametric_mesh(m)->show_poly_color();
-        // }
-
-        ui->solverWidget->update();
-    }
-    else
-    if (index == 3) // solver results widget
-    {
-        ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
-    }
-}
-
-void MainWindow::update_solver_input_folder(const std::string folder)
-{
-    ui->solverWidget->update();
-
-    ui->tab_widgets->setTabEnabled(2, true);
-//    ui->tab_widgets->setCurrentIndex(2);
-
-    ui->solverWidget->set_input_folder(folder);
-    this->folder = folder;
-}
-
-void MainWindow::on_save_all_btn_clicked()
+void MainWindow::on_actionSaveAll_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Save Project"), "",
-        tr("CHANGE Project (*.changeproj);;All Files (*)"));
+                                                    tr("Save Project"), "",
+                                                    tr("CHANGE Project (*.changeproj);;All Files (*)"));
 
     if (fileName.isNull() || fileName.isEmpty())
         return;
 }
 
-void MainWindow::compute_GP_scatterplots ()
+
+void MainWindow::on_actionAbout_triggered()
 {
-    if (metrics.empty())
-        ui->datasetWidget->compute_geometric_metrics();
-
-    ui->scatterPlotsGPWidget->create_scatterPlots(dataset, metrics, errsToScatterPlots);
-
-    ui->tabWidget->setCurrentIndex(3);
+    QMessageBox::information(this, tr("About"), tr("About.\n To be completed...."), QMessageBox::Discard);
 }
+
