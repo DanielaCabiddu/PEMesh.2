@@ -1062,9 +1062,11 @@ CINO_INLINE
 void GLcanvas::clear ()
 {
     std::cout << "before: " << objects.size() << std::endl;
-    for(std::vector<const DrawableObject*>::iterator it=objects.begin(); it!=objects.end(); /*it++*/)
+
+    for (int i=objects.size()-1; i>=0; i--)
+    // for(std::vector<const DrawableObject*>::iterator it=objects.begin(); it!=objects.end(); /*it++*/)
     {
-        const DrawableObject *obj = *it;
+        std::vector<const DrawableObject*>::iterator it = objects.begin()+i;//*it;
         objects.erase(it);
 
         std::cout << "removed" << std::endl;

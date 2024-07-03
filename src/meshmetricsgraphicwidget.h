@@ -57,6 +57,8 @@ public:
     void set_metrics (std::vector<MeshMetrics> *m);
 
     void set_slider_max (const uint max);
+    void set_slider_value (const uint val);
+
 
 public slots:
 

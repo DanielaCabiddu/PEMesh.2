@@ -73,6 +73,7 @@ void MainWindow::show_mesh_metrics()
     metrics = ui->datasetWidget->get_parametric_meshes_metrics();
     ui->graphicMeshMetricWidget->set_metrics(&metrics);
     ui->graphicMeshMetricWidget->set_slider_max(dataset.get_parametric_meshes().size()-1);
+    ui->graphicMeshMetricWidget->set_slider_value(0);
 
     ui->graphicMeshMetricWidget->show_mesh(0);
     ui->metricsWidget->reset();
@@ -1029,7 +1030,9 @@ void MainWindow::on_reset_btn_clicked()
 {
     delete ui->datasetWidget;
     delete ui->metricsWidget;
-    delete ui->graphicMeshMetricWidget;
+    // delete ui->graphicMeshMetricWidget;
+    delete ui->meshFullMetricsWidget;
+    delete ui->scatterPlotsGGWidget;
     delete ui->solverWidget;
     delete ui->solverResultsWidget;
 
@@ -1041,11 +1044,18 @@ void MainWindow::on_reset_btn_clicked()
     ui->datasetWidget->set_dataset(&dataset);
     ui->dataset_tab->layout()->addWidget(ui->datasetWidget);
 
-    ui->metricsWidget = new MeshMetricsWidget(this);
-    ui->mesh_metrics_tab->layout()->addWidget(ui->metricsWidget);
+    ui->meshFullMetricsWidget = new MeshFullMetricsWidget(this);
+    ui->tab_6->layout()->addWidget(ui->meshFullMetricsWidget);
 
-    ui->graphicMeshMetricWidget = new MeshMetricsGraphicWidget(this);
+    ui->metricsWidget = new MeshMetricsWidget(this);
+    ui->tab->layout()->addWidget(ui->metricsWidget);
+
+    ui->scatterPlotsGGWidget = new GeometryGeometryScatterPlotsWidget(this);
+    ui->tab_2->layout()->addWidget(ui->scatterPlotsGGWidget);
+
+    // ui->graphicMeshMetricWidget = new MeshMetricsGraphicWidget(this);
     ui->graphicMeshMetricWidget->set_dataset(&dataset);
+    // ui->tab_3->layout()->addWidget(ui->graphicMeshMetricWidget);
 
     ui->solverWidget = new SolverWidget (this);
     ui->solverWidget->set_dataset(&dataset);

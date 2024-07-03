@@ -197,7 +197,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap>:/logo/img/erc_logo.png</pixmap>
+             <pixmap resource="images.qrc">:/logo/img/erc_logo.png</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>
@@ -228,7 +228,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>false</bool>
@@ -261,7 +261,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
         <item row="0" column="0">
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
@@ -368,7 +368,7 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
   </action>
   <action name="actionCompute">
    <property name="icon">
-    <iconset>
+    <iconset resource="images.qrc">
      <normaloff>:/logo/img/erc_logo.png</normaloff>:/logo/img/erc_logo.png</iconset>
    </property>
    <property name="text">
@@ -427,6 +427,8 @@ the interplay of ANalysis and GEometry &lt;br&gt; &lt;a href=&quot;https://cordi
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

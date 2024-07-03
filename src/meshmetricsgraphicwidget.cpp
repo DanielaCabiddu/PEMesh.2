@@ -97,6 +97,8 @@ void MeshMetricsGraphicWidget::show_mesh (int i)
 
     clean_canvas();
 
+    std::cout << "V: " << (*d->get_parametric_mesh(i)).num_verts() << std::endl;
+
     ui->mesh_metrics_canvas->add_mesh(*d->get_parametric_mesh(i));
     // d->get_parametric_mesh(static_cast<uint>(i))->updateGL();
     // ui->mesh_metrics_canvas->push_obj(d->get_parametric_mesh(static_cast<uint>(i)), update_scene);
@@ -1666,6 +1668,12 @@ void MeshMetricsGraphicWidget::set_slider_max(const uint max)
 {
     ui->mesh_metrics_slider->setMaximum(static_cast<int>(max));
 }
+
+void MeshMetricsGraphicWidget::set_slider_value(const uint val)
+{
+    ui->mesh_metrics_slider->setValue(static_cast<int>(val));
+}
+
 
 void MeshMetricsGraphicWidget::on_mesh_metrics_slider_valueChanged(int value)
 {
