@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->scatterPlotsGPWidget, SIGNAL(compute_GP_scatterplots()), this, SLOT(compute_GP_scatterplots()));
 
-    setWindowIcon(QIcon(":/logo/img/erc_logo.png"));
+    setWindowIcon(QIcon(":/logo/img/logo.png"));
 }
 
 MainWindow::~MainWindow()
