@@ -149,7 +149,7 @@ class GLcanvas : public QOpenGLWidget
         bool pop_first_occurrence_of(int type);
         bool pop_all_occurrences_of (int type);
 
-        void add_mesh (const Polygonmesh<> &m);
+        void add_mesh (const Polygonmesh<> &m, bool show_poly_color = true);
         void update_mesh (const Polygonmesh<> &m, const uint i);
         void clear ();
 

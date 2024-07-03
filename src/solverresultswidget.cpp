@@ -180,8 +180,8 @@ void SolverResultsWidget::show_parametric_mesh(int index)
   ui->solver_output->clear();
   ui->groundtruth->clear();
 
-  ui->solver_output->add_mesh(*p_r);
-  ui->groundtruth->add_mesh(*p_gt);
+  ui->solver_output->add_mesh(*p_r, false);
+  ui->groundtruth->add_mesh(*p_gt, false);
 
   update_scene = false;
 

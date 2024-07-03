@@ -1032,14 +1032,20 @@ void GLcanvas::reset_trackball()
 }
 
 CINO_INLINE
-void GLcanvas::add_mesh (const Polygonmesh<> &m)
+void GLcanvas::add_mesh (const Polygonmesh<> &m, bool show_poly_color)
 {
     DrawablePolygonmesh<> *dm = new DrawablePolygonmesh<>  (m.vector_verts(), m.vector_polys());
 
     for (uint pid=0; pid < m.num_polys(); pid++)
         dm->poly_data(pid).color = m.poly_data(pid).color;
 
-    dm->show_poly_color();
+    for (uint vid=0; vid < m.num_verts(); vid++)
+        dm->vert_data(vid).color = m.vert_data(vid).color;
+
+    if (show_poly_color)
+        dm->show_poly_color();
+    else
+        dm->show_vert_color();
 
     dm->updateGL();
     push_obj(dm, true);
