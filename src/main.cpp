@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::ApplicationAttribute::AA_DisableHighDpiScaling, true);
 
     QApplication a(argc, argv);
-    a.setWindowIcon(QIcon(":/logo/img/erc_logo.png"));
+    a.setWindowIcon(QIcon(":/logo/img/logo.png"));
 
     MainWindow w;
     w.setWindowTitle("PEMesh");

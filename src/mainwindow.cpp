@@ -16,6 +16,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "licence_dialog.h"
+
 #include <cinolib/scalar_field.h>
 
 #include <QDir>
@@ -1155,6 +1157,7 @@ void MainWindow::on_actionSaveAll_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::information(this, tr("About"), tr("About.\n To be completed...."), QMessageBox::Discard);
+    LicenceDialog dialog;
+    dialog.exec();
 }
 

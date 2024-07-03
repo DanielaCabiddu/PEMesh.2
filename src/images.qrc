@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/logo">
         <file>img/erc_logo.png</file>
+        <file>img/logo.png</file>
     </qresource>
     <qresource prefix="/icons">
         <file>img/color_icon.png</file>
