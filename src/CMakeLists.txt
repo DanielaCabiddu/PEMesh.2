@@ -127,16 +127,20 @@ include_directories(${TRIANGLE_DIR})
 
 ## metis
 
-if (LINUX)
-    add_definitions(-DCINOLIB_USES_METIS)
+add_definitions(-DCINOLIB_USES_METIS)
+if(LINUX)
     set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
     set(METIS_LIB /home/tommaso/local/lib/libmetis.so)
-    include_directories (BEFORE ${METIS_DIR})
-
     set(GKLIB_DIR /home/tommaso/local/include)
     set(GKLIB_LIB /home/tommaso/local/lib/libGKlib.a)
-    include_directories (BEFORE ${GKLIB_DIR})
+elseif(APPLE)
+    set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
+    set(METIS_LIB /Users/tommy/local/lib/libmetis.a)
+    set(GKLIB_DIR /Users/tommy/local/include)
+    set(GKLIB_LIB /Users/tommy/local/lib/libGKlib.a)
 endif()
+include_directories (BEFORE ${METIS_DIR})
+include_directories (BEFORE ${GKLIB_DIR})
 
 ## includes
 

@@ -1747,25 +1747,25 @@ void DatasetWidget::on_optimize_btn_clicked()
         message += ", found: " + std::to_string(n_labels);
         ui->log_label->append(message.c_str());
 
-        cinolib::Polygonmesh<> *mesh_new = mesh;
-        mesh_agglomerate_wrt_labels(*mesh_new);
-        message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh_new->num_polys());
+        cinolib::Polygonmesh<> mesh_new = *mesh;
+        mesh_agglomerate_wrt_labels(mesh_new);
+        message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh_new.num_polys());
         ui->log_label->append(message.c_str());
 
         cinolib::Hierarchy agglomeration_hierarchy;
-        agglomeration_hierarchy.compute(*mesh, *mesh_new);
-        assert(agglomeration_hierarchy.check(*mesh, *mesh_new) && "ERROR: hierarchy check failed");
+        agglomeration_hierarchy.compute(*mesh, mesh_new);
+        assert(agglomeration_hierarchy.check(*mesh, mesh_new) && "ERROR: hierarchy check failed");
         std::string output_h  = "_hierarchy.txt";
         agglomeration_hierarchy.print(output_h);
         message = "Computed Hierarchy";
         ui->log_label->append(message.c_str());
 
         message = "Optimization done: " +
-                  std::to_string(mesh->num_verts() - mesh_new->num_verts()) + " removed verts, " +
-                  std::to_string(mesh->num_polys() - mesh_new->num_polys()) + " merged polys.\n" ;
+                  std::to_string(mesh->num_verts() - mesh_new.num_verts()) + " removed verts, " +
+                  std::to_string(mesh->num_polys() - mesh_new.num_polys()) + " merged polys.\n" ;
         ui->log_label->append(message.c_str());
 
-        mesh = mesh_new;
+        *mesh = mesh_new;
 
         // if (overwrite) {
         // } else {
