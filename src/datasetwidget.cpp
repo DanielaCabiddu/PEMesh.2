@@ -1777,7 +1777,7 @@ void DatasetWidget::on_optimize_btn_clicked()
         index++;
     }
 
-    // ui->canvas->updateGL();
+    ui->canvas->updateGL();
 
     QApplication::restoreOverrideCursor();
 
