@@ -1783,6 +1783,7 @@ void DatasetWidget::on_optimize_btn_clicked()
 
     ui->geom_qualities_btn->setEnabled(true);
     ui->optimize_btn->setEnabled(true);
+    ui->save_btn->setEnabled(true);
 }
 
 
