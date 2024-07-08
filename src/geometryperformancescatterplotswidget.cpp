@@ -89,11 +89,13 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
     ui->groupBox_2->show();
     ui->groupBox_3->show();
 
-    for(int i = ui->stackedWidget->count(); i >= 0; i--)
-    {
-        QWidget* widget = ui->stackedWidget->widget(i);
-        ui->stackedWidget->removeWidget(widget);
-        widget->deleteLater();
+    if (ui->stackedWidget->count() > 0) {
+        for(int i = ui->stackedWidget->count(); i >= 0; i--)
+        {
+            QWidget* widget = ui->stackedWidget->widget(i);
+            ui->stackedWidget->removeWidget(widget);
+            widget->deleteLater();
+        }
     }
 
     for (QChartView *chv : chart_views)

@@ -153,7 +153,9 @@ void MeshMetricsGraphicWidget::set_all_color(const double min, const double max,
     for (uint pid=0; pid < n_polys; ++pid) {
         double quality = all.at(pid);
         double scaled_quality = max != min ? (quality - min) / (max - min) : min;
-        mesh_with_metrics.at(0)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(scaled_quality);
+        // cinolib::Color c = cinolib::Color::parula_ramp(n_polys+1, scaled_quality * n_polys);
+        cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(scaled_quality);
+        mesh_with_metrics.at(0)->poly_data(pid).color = c;
     }
 }
 
@@ -162,7 +164,6 @@ void MeshMetricsGraphicWidget::show_inr()
     mesh_with_metrics.at(0)->poly_set_color(cinolib::Color::WHITE());
 
     std::string message = "";
-
 
     uint id_min = metrics->at(curr_mesh_id).INR_min_id;
     uint id_max = metrics->at(curr_mesh_id).INR_max_id;

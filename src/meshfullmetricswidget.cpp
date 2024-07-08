@@ -59,18 +59,18 @@ void MeshFullMetricsWidget::add_chart(CustomizedChartView *chart)
         last_col++;
     }
 
-    show_series(0,  ui->inr_cb->checkState());
-    show_series(1,  ui->our_cb->checkState());
-    show_series(2,  ui->cir_cb->checkState());
-    show_series(3,  ui->krr_cb->checkState());
-    show_series(4,  ui->kar_cb->checkState());
-    show_series(5,  ui->apr_cb->checkState());
-    show_series(6,  ui->mia_cb->checkState());
-    show_series(7,  ui->maa_cb->checkState());
-    show_series(8,  ui->anr_cb->checkState());
-    show_series(9,  ui->vem_cb->checkState());
-    show_series(10, ui->jac_cb->checkState());
-    show_series(11, ui->fro_cb->checkState());
+    // show_series(0,  ui->inr_cb->checkState());
+    // show_series(1,  ui->our_cb->checkState());
+    // show_series(2,  ui->cir_cb->checkState());
+    // show_series(3,  ui->krr_cb->checkState());
+    // show_series(4,  ui->kar_cb->checkState());
+    // show_series(5,  ui->apr_cb->checkState());
+    // show_series(6,  ui->mia_cb->checkState());
+    // show_series(7,  ui->maa_cb->checkState());
+    // show_series(8,  ui->anr_cb->checkState());
+    // show_series(9,  ui->vem_cb->checkState());
+    // show_series(10, ui->jac_cb->checkState());
+    // show_series(11, ui->fro_cb->checkState());
 }
 
 void MeshFullMetricsWidget::on_inr_cb_stateChanged(int checked) { show_series(0, checked); }

@@ -85,7 +85,7 @@ void MainWindow::show_mesh_metrics()
 
     for (uint i=0; i < n_metrics; i++)
     {
-        if (!cinolib::CONTAINS_VEC(desired_metrics, i)) continue;
+        // if (!cinolib::CONTAINS_VEC(desired_metrics, i)) continue;
 
         QLineSeries *series_min = new QLineSeries();
         QLineSeries *series_max = new QLineSeries();
