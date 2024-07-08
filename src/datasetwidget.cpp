@@ -714,6 +714,10 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
                 for (uint eid : dm->adj_p2e(pid))
                     dm->edge_data(eid).flags.set(0, true);
 
+                // constrain polygon edges to be preserved during optimization
+                for (uint eid : dm->adj_p2e(pid))
+                    dm->edge_data(eid).flags[cinolib::CONSTRAINED] = true;
+
                 // dm->poly_data(pid).color = cinolib::Color::RED();
             }
 
