@@ -46,22 +46,29 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="indicator_cb"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QCheckBox" name="overwrite_cb">
+      <property name="text">
+       <string>Overwrite Mesh</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="parameter_label">
+      <property name="text">
+       <string>Percentage</string>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="1">
      <widget class="QDoubleSpinBox" name="parameter_cb">
       <property name="value">
        <double>40.000000000000000</double>
       </property>
      </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="weights_label">
-      <property name="text">
-       <string>Weights</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QComboBox" name="indicator_cb"/>
     </item>
     <item row="2" column="1">
      <widget class="QComboBox" name="weights_cb">
@@ -87,17 +94,17 @@
       </item>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="parameter_label">
+    <item row="2" column="0">
+     <widget class="QLabel" name="weights_label">
       <property name="text">
-       <string>Percentage</string>
+       <string>Weights</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QCheckBox" name="overwrite_cb">
+     <widget class="QCheckBox" name="preserve_cb">
       <property name="text">
-       <string>Overwrite Mesh</string>
+       <string>Preserve Polys</string>
       </property>
      </widget>
     </item>

@@ -392,6 +392,7 @@ void DatasetWidget::on_add_btn_clicked()
     add_polygon(selected_poly, cinolib::vec2d(0.5, 0.5));
 
     ui->load_meshes_btn->setEnabled(false);
+    ui->load_mesh_btn->setEnabled(false);
 }
 
 void DatasetWidget::polygon_zoom_in(cinolib::Polygonmesh<> *m)
@@ -713,11 +714,6 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
             {
                 for (uint eid : dm->adj_p2e(pid))
                     dm->edge_data(eid).flags.set(0, true);
-
-                // constrain polygon edges to be preserved during optimization
-                for (uint eid : dm->adj_p2e(pid))
-                    dm->edge_data(eid).flags[cinolib::CONSTRAINED] = true;
-
                 // dm->poly_data(pid).color = cinolib::Color::RED();
             }
 
@@ -821,7 +817,8 @@ void DatasetWidget::on_save_btn_clicked()
         {
             QMessageBox *m = new QMessageBox (this);
 
-            m->setText("The folder is not empty."
+            m->setText(""
+                       "The folder is not empty."
                        "\n\nPlease select an empty folder.");
 
             m->exec();
@@ -1302,6 +1299,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
 
     //// Disable/enable buttons
     ui->load_polys_btn->setEnabled(false);
+    ui->load_mesh_btn->setEnabled(false);
     ui->load_meshes_btn->setEnabled(false);
     ui->add_btn->setEnabled(false);
     ui->generate_dataset_btn->setEnabled(false);
@@ -1313,6 +1311,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
     //         [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
 
     ui->aggregate_btn->setEnabled(true);
+    ui->mirroring_btn->setEnabled(true);
 
     emit (saved_in (dir.toStdString()));
 }
@@ -1703,6 +1702,7 @@ void DatasetWidget::on_optimize_btn_clicked()
     double (*indicator)(const std::vector<cinolib::vec3d>&);
     bool   node_weights = false, arc_weights = false;
     double parameter = 100.;
+    bool   preserve  = false;
     bool   overwrite = false;
 
     if (dialog->exec() == 1)
@@ -1725,6 +1725,7 @@ void DatasetWidget::on_optimize_btn_clicked()
         }
         dialog->get_weights(node_weights, arc_weights);
         dialog->get_parameter(parameter);
+        dialog->get_preserve (preserve);
         dialog->get_overwrite(overwrite);
     }
     else
@@ -1745,6 +1746,17 @@ void DatasetWidget::on_optimize_btn_clicked()
                               std::to_string(mesh->num_verts()) + "V|" +
                               std::to_string(mesh->num_polys()) + "P" ;
         ui->log_label->append(message.c_str());
+
+        if (preserve) {
+            // constrain polygon edges to be preserved during optimization
+            for (uint pid = 0; pid<mesh->num_polys(); ++pid) {
+                if (mesh->verts_per_poly(pid) > 3) {
+                    for (uint eid : mesh->adj_p2e(pid)) {
+                        mesh->edge_data(eid).flags[cinolib::CONSTRAINED] = true;
+                    }
+                }
+            }
+        }
 
         message = "--> Metis Labelling, required: " + std::to_string((uint)(mesh->num_polys() * parameter / 100.));
         int n_labels = metis_wrap_dual(*mesh, parameter, indicator, node_weights, arc_weights);

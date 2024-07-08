@@ -200,7 +200,7 @@
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string> Save Polygon Set</string>
+                <string> Save Polygons</string>
                </property>
                <property name="icon">
                 <iconset resource="images.qrc">
@@ -214,7 +214,7 @@
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string> Save &amp;&amp; Run Solver</string>
+                <string> Save Meshes</string>
                </property>
                <property name="icon">
                 <iconset resource="images.qrc">

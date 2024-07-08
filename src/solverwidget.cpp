@@ -45,6 +45,8 @@ SolverWidget::SolverWidget(QWidget *parent) :
 
     process = new QProcess();
     connect(process, SIGNAL(readyRead()), this, SLOT(update_log()));
+
+    ui->log_text->hide();
 }
 
 SolverWidget::~SolverWidget()

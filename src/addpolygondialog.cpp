@@ -41,12 +41,12 @@ AddPolygonDialog::AddPolygonDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::AddPolygonDialog) {
   ui->setupUi(this);
 
-  // setWindowTitle(tr("Select Polygon Class"));
+  setWindowTitle(tr("Select Polygon Class"));
 
-  // update_img(getClassIndex());
+  update_img(getClassIndex());
 
-  // connect(ui->class_list, SIGNAL(currentIndexChanged(int)), this,
-  //         SLOT(load_mesh_and_update_image(int)));
+  connect(ui->class_list, SIGNAL(currentIndexChanged(int)), this,
+          SLOT(load_mesh_and_update_image(int)));
 
   // ui->preview_canvas->hide();
   // ui->preview_filename->hide();

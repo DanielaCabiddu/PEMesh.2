@@ -150,10 +150,11 @@ void MeshMetricsGraphicWidget::set_max_color(const uint i)
 void MeshMetricsGraphicWidget::set_all_color(const double min, const double max, const std::vector<double> all)
 {
     uint n_polys = mesh_with_metrics.at(0)->num_polys();
+    uint n_colors = n_polys < 100 ? n_polys : 100;
     for (uint pid=0; pid < n_polys; ++pid) {
         double quality = all.at(pid);
         double scaled_quality = max != min ? (quality - min) / (max - min) : min;
-        cinolib::Color c = cinolib::Color::parula_ramp(n_polys+1, scaled_quality * n_polys);
+        cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(scaled_quality * (n_colors-1)));
         // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(scaled_quality);
         mesh_with_metrics.at(0)->poly_data(pid).color = c;
     }

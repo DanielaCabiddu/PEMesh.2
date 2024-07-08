@@ -73,6 +73,11 @@ void OptimizeDialog::get_parameter ( double &parameter ) const
     parameter = ui->parameter_cb->value();
 }
 
+void OptimizeDialog::get_preserve ( bool &preserve ) const
+{
+    preserve = ui->preserve_cb->checkState();
+}
+
 void OptimizeDialog::get_overwrite ( bool &overwrite ) const
 {
     overwrite = ui->overwrite_cb->checkState();
