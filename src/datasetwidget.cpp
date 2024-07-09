@@ -1739,9 +1739,10 @@ void DatasetWidget::on_optimize_btn_clicked()
 
     ui->canvas->clear();
 
-    uint index=0;
-    for (cinolib::Polygonmesh<> *m : dataset->get_parametric_meshes())
+    uint num_meshes = dataset->get_num_parametric_meshes();
+    for (uint index=0; index < num_meshes; index++)
     {
+        cinolib::Polygonmesh<> *m = dataset->get_parametric_meshes().at(index);
         cinolib::Polygonmesh<> *mesh = new cinolib::Polygonmesh<> (m->vector_verts(), m->vector_polys());
 
         std::string message = "Optimizing mesh " + std::to_string(index) + ": " +
@@ -1765,25 +1766,25 @@ void DatasetWidget::on_optimize_btn_clicked()
         message += ", found: " + std::to_string(n_labels);
         ui->log_label->append(message.c_str());
 
-        cinolib::Polygonmesh<> mesh_new = *mesh;
-        mesh_agglomerate_wrt_labels(mesh_new);
-        message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh_new.num_polys());
+        // cinolib::Polygonmesh<> mesh_new = *mesh;
+        uint n_verts = mesh->num_verts();
+        uint n_polys = mesh->num_polys();
+        mesh_agglomerate_wrt_labels(*mesh);
+        message = "--> Mesh Agglomeration, n_polys: " + std::to_string(mesh->num_polys());
         ui->log_label->append(message.c_str());
 
-        cinolib::Hierarchy agglomeration_hierarchy;
-        agglomeration_hierarchy.compute(*mesh, mesh_new);
-        assert(agglomeration_hierarchy.check(*mesh, mesh_new) && "ERROR: hierarchy check failed");
-        std::string output_h  = "_hierarchy.txt";
-        agglomeration_hierarchy.print(output_h);
-        message = "Computed Hierarchy";
-        ui->log_label->append(message.c_str());
+        // cinolib::Hierarchy agglomeration_hierarchy;
+        // agglomeration_hierarchy.compute(*mesh, mesh_new);
+        // assert(agglomeration_hierarchy.check(*mesh, mesh_new) && "ERROR: hierarchy check failed");
+        // std::string output_h  = "_hierarchy.txt";
+        // agglomeration_hierarchy.print(output_h);
+        // message = "Computed Hierarchy";
+        // ui->log_label->append(message.c_str());
 
         message = "Optimization done: " +
-                  std::to_string(mesh->num_verts() - mesh_new.num_verts()) + " removed verts, " +
-                  std::to_string(mesh->num_polys() - mesh_new.num_polys()) + " merged polys.\n" ;
+                  std::to_string(n_verts - mesh->num_verts()) + " removed verts, " +
+                  std::to_string(n_polys - mesh->num_polys()) + " merged polys.\n" ;
         ui->log_label->append(message.c_str());
-
-        *mesh = mesh_new;
 
         if (overwrite)
         {
@@ -1831,8 +1832,6 @@ void DatasetWidget::on_optimize_btn_clicked()
         ui->highlight_polys_cb->setEnabled(true);
 
         emit (computed_parametric_dataset());
-
-        index++;
     }
 
     ui->canvas->updateGL();
