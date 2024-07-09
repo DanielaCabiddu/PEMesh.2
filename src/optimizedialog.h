@@ -22,6 +22,7 @@ public:
     void get_parameter ( double &parameter ) const;
     void get_preserve  ( bool &preserve  ) const;
     void get_overwrite ( bool &overwrite ) const;
+    void get_optimize_all ( bool &optimize_all ) const;
 
 private:
     Ui::OptimizeDialog *ui;

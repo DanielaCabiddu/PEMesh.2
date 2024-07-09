@@ -1704,6 +1704,7 @@ void DatasetWidget::on_optimize_btn_clicked()
     double parameter = 100.;
     bool   preserve  = false;
     bool   overwrite = false;
+    bool   optimize_all = false;
 
     if (dialog->exec() == 1)
     {
@@ -1727,6 +1728,7 @@ void DatasetWidget::on_optimize_btn_clicked()
         dialog->get_parameter(parameter);
         dialog->get_preserve (preserve);
         dialog->get_overwrite(overwrite);
+        dialog->get_optimize_all(optimize_all);
     }
     else
     {
@@ -1742,6 +1744,9 @@ void DatasetWidget::on_optimize_btn_clicked()
     uint num_meshes = dataset->get_num_parametric_meshes();
     for (uint index=0; index < num_meshes; index++)
     {
+        if (!optimize_all && (index != ui->param_slider->value()))
+            continue;
+
         cinolib::Polygonmesh<> *m = dataset->get_parametric_meshes().at(index);
         cinolib::Polygonmesh<> *mesh = new cinolib::Polygonmesh<> (m->vector_verts(), m->vector_polys());
 

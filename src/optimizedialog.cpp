@@ -82,3 +82,8 @@ void OptimizeDialog::get_overwrite ( bool &overwrite ) const
 {
     overwrite = ui->overwrite_cb->checkState();
 }
+
+void OptimizeDialog::get_optimize_all ( bool &optimize_all ) const
+{
+    optimize_all = ui->optimize_all_cb->isChecked();
+}
