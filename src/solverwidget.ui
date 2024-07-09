@@ -144,7 +144,7 @@
             <string> Run Solver</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="images.qrc">
              <normaloff>:/icons/img/run_icon.png</normaloff>:/icons/img/run_icon.png</iconset>
            </property>
           </widget>
@@ -180,6 +180,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>

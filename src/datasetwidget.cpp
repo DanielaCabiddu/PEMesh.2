@@ -1740,8 +1740,10 @@ void DatasetWidget::on_optimize_btn_clicked()
     ui->canvas->clear();
 
     uint index=0;
-    for (cinolib::Polygonmesh<> *mesh : dataset->get_parametric_meshes())
+    for (cinolib::Polygonmesh<> *m : dataset->get_parametric_meshes())
     {
+        cinolib::Polygonmesh<> *mesh = new cinolib::Polygonmesh<> (m->vector_verts(), m->vector_polys());
+
         std::string message = "Optimizing mesh " + std::to_string(index) + ": " +
                               std::to_string(mesh->num_verts()) + "V|" +
                               std::to_string(mesh->num_polys()) + "P" ;
@@ -1783,12 +1785,52 @@ void DatasetWidget::on_optimize_btn_clicked()
 
         *mesh = mesh_new;
 
-        // if (overwrite) {
-        // } else {
-        //     ui->canvas->add_mesh(*mesh, c);
-        //     // dataset->add_parametric_mesh(mesh_new, 1., index);
-        // }
-        ui->canvas->add_mesh(*mesh);
+        if (overwrite)
+        {
+            dataset->overwrite_parametric_mesh(index, mesh, 1., index);
+        }
+        else
+        {
+            // ui->canvas->add_mesh(*mesh);
+            dataset->add_parametric_mesh(mesh, 1., index);
+        }
+
+        ui->param_slider->setMaximum(static_cast<int>(dataset->get_num_parametric_meshes()-1));
+
+        if (dataset->get_num_parametric_meshes() == 1)
+            ui->param_slider->setVisible(false);
+
+        if (!overwrite)
+            ui->param_slider->setValue(dataset->get_num_parametric_meshes()-1);
+        else
+            ui->param_slider->setValue(index);
+
+        // ui->log_label->append("Dataset completed.");
+        ui->param_slider->show();
+        ui->mesh_number_label->show();
+
+        ui->add_btn->setEnabled(false);
+        ui->generate_dataset_btn->setEnabled(false);
+
+        ui->geom_qualities_btn->setEnabled(true);
+        ui->optimize_btn->setEnabled(true);
+        ui->save_btn->setEnabled(true);
+
+        ui->load_polys_btn->setEnabled(false);
+
+        // ui->frame->setGeometry(frame_rect);
+        // ui->frame_2->setGeometry(frame2_rect);
+
+        ui->polygon_list->setEnabled(false);
+
+        enable_add_polygon = false;
+
+        ui->aggregate_btn->setEnabled(true);
+        ui->mirroring_btn->setEnabled(true);
+
+        ui->highlight_polys_cb->setEnabled(true);
+
+        emit (computed_parametric_dataset());
 
         index++;
     }

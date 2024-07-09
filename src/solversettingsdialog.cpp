@@ -162,7 +162,7 @@ void SolverSettingsDialog::on_solver_directory_btn_clicked()
 
     if (!dir.isNull())
     {
-        ui->solver_script->setText(dir);
+        ui->solver_script->setText(dir  + "/VEM2D_poisson_convtest_NEW.m");
 
         solver_folder = dir.toStdString();
         check_solver_folder_ok();

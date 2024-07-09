@@ -103,6 +103,13 @@ void Dataset::add_parametric_mesh (cinolib::Polygonmesh<> *m, const double t, co
     parametric_meshes_class_ids.push_back(class_id);
 }
 
+void Dataset::overwrite_parametric_mesh (const uint index, cinolib::Polygonmesh<> *m, const double t, const uint class_id)
+{
+    parametric_meshes.at(index) = m;
+    parametric_meshes_t.at(index) = t;
+    parametric_meshes_class_ids.at(index) = class_id;
+}
+
 bool Dataset::is_on_disk () const
 {
     if (parametric_meshes.empty())
