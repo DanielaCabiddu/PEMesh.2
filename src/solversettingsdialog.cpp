@@ -42,6 +42,10 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->matlab_folder_label->setVisible(false);
+    ui->matlab_directory_btn->setVisible(false);
+    ui->matlab_folder->setVisible(false);
+
     #ifdef WIN32
         matlab_exe_name = "matlab.exe";
     #else
@@ -53,7 +57,7 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
         ui->solver_script->setText(QDir::homePath().append("/QT-Projects/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
     #else
         ui->matlab_folder->setText(QDir::homePath().append("/matlab/bin/"));
-        ui->solver_script->setText(QDir::homePath().append("/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
+        ui->solver_script->setText("VEM_2D_SOLVER");
     #endif
 
     ui->matlab_folder_error->hide();
@@ -155,17 +159,22 @@ void SolverSettingsDialog::disable_input_folder_selection()
 
 void SolverSettingsDialog::on_solver_directory_btn_clicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                "",
-                                                QFileDialog::ShowDirsOnly
-                                                | QFileDialog::DontResolveSymlinks);
+    QString file = QFileDialog::getOpenFileName(this, tr("Select Solver"),
+                                                "");
 
-    if (!dir.isNull())
+    if (!file.isNull())
     {
-        ui->solver_script->setText(dir  + "/VEM2D_poisson_convtest_NEW.m");
+        ui->solver_script->setText(file);
 
-        solver_folder = dir.toStdString();
-        check_solver_folder_ok();
+        // solver_folder = dir.toStdString();
+        // check_solver_folder_ok();
+
+        if (file.endsWith(".m"))
+        {
+            ui->matlab_folder_label->setVisible(true);
+            ui->matlab_directory_btn->setVisible(true);
+            ui->matlab_folder->setVisible(true);
+        }
     }
 }
 
@@ -187,6 +196,9 @@ void SolverSettingsDialog::on_matlab_directory_btn_clicked()
 
 bool SolverSettingsDialog::check_matlab_folder_ok()
 {
+    if (!ui->matlab_folder->isVisible())
+        return true;
+
     QString dir = ui->matlab_folder->text();
 
     QDir folder (dir);
@@ -221,6 +233,9 @@ bool SolverSettingsDialog::check_matlab_folder_ok()
 bool SolverSettingsDialog::check_solver_folder_ok()
 {
     QString script_path = ui->solver_script->text();
+
+    if (!script_path.endsWith(".m"))
+        return true;
 
     if (!QFile::exists(script_path))
     {

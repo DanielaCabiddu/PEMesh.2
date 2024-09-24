@@ -25,6 +25,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QMessageBox>
+#include <QDirIterator>
 
 #include <QtCharts/QChartView>
 #include <QtCharts/QChart>
@@ -783,10 +784,117 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     ui->solverResultsWidget->set_dataset(&dataset);
     ui->solverResultsWidget->clean_charts();
 
-    ui->solverResultsWidget->set_solution_id(solution_id);
-    ui->scatterPlotsGPWidget->set_solution_id(solution_id);
+    if (solution_id < UINT_MAX)
+    {
+        ui->solverResultsWidget->set_solution_id(solution_id);
+        ui->scatterPlotsGPWidget->set_solution_id(solution_id);
+    }
+
+    const std::string postfix_sol = "-VEM-sol.txt";
+    const std::string postfix_gt = "-GROUND-TRUTH-sol.txt";
 
     const std::string filepath = folder + QString(QDir::separator()).toStdString() + filename;
+
+    if (solution_id == UINT_MAX)
+    {
+        std::ofstream ofile;
+        ofile.open(filepath);
+
+        QDir oDir(folder.c_str());
+        QStringList oDirList = oDir.entryList(QDir::Dirs|QDir::NoDotAndDotDot);
+
+        for (QString subf : oDirList)
+        {
+            std::cout << "NEXT" << std::endl;
+            std::string folder_name = folder + QDir::separator().toLatin1() + subf.toStdString();
+
+            std::cout << folder_name << std::endl;
+
+            std::string solution_folder = folder_name + QDir::separator().toLatin1() + "Solution";
+            std::string output_filename = solution_folder + QDir::separator().toLatin1() + "Errors.csv";
+
+            std::ifstream efile;
+            efile.open(output_filename);
+
+            std::string line;
+            std::getline(efile, line); // header
+            std::getline(efile, line); // values
+
+            std::stringstream lline (line);
+
+            std::string esegment;
+            std::vector<std::string> seglist;
+
+            while (std::getline(lline, esegment, ';'))
+            {
+                seglist.push_back(esegment);
+                std::cout << "ES" << esegment << std::endl;
+            }
+
+            double VemOrder, Cell2Ds, Dofs, h, errorL2, errorH1, normL2, normH1, nnzA, condA;
+            VemOrder = std::stod(seglist.at(0));
+            Cell2Ds = std::stod(seglist.at(1));
+            Dofs = std::stod(seglist.at(2));
+            h = std::stod(seglist.at(3));
+            errorL2 = std::stod(seglist.at(4));
+            errorH1 = std::stod(seglist.at(5));
+            normL2 = std::stod(seglist.at(6));
+            normH1 = std::stod(seglist.at(7));
+            nnzA = std::stod(seglist.at(8));
+            condA = std::stod(seglist.at(9));;
+
+            efile.close();
+
+            ofile << errorH1/normH1 << " 0 " << errorL2 / normL2 << " " << h << " " << condA << std::endl;
+
+            std::string solution_filename = solution_folder + QDir::separator().toLatin1() + "Solution_Cell0Ds.csv";
+            std::ifstream sfile;
+            sfile.open(solution_filename);
+            std::getline(sfile, line);
+
+            const std::string vem_filepath = folder + QString(QDir::separator()).toStdString() + folder_name.substr(folder_name.find_last_of(QDir::separator().toLatin1())+1) + postfix_sol;
+            std::ofstream vemfile;
+            vemfile.open(vem_filepath);
+
+            std::cout << vem_filepath << std::endl;
+
+            const std::string gt_filepath = folder + QString(QDir::separator()).toStdString() + folder_name.substr(folder_name.find_last_of(QDir::separator().toLatin1())+1) + postfix_gt;
+            std::ofstream gtfile;
+            gtfile.open(gt_filepath);
+
+            std::cout << gt_filepath << std::endl;
+
+            // double Id, X, Y, Z, num_solution, ext_solution;
+
+            while (std::getline(sfile , line))
+            {
+                std::stringstream lline (line);
+
+                std::string sssegment;
+                std::vector<std::string> ssseglist;
+
+                std::cout << "line - " << line << std::endl;
+
+                while (std::getline(lline, sssegment, ';'))
+                {
+                    ssseglist.push_back(sssegment);
+                    std::cout << "ESss" << sssegment << std::endl;
+                }
+
+                vemfile << ssseglist.at(4) << std::endl;
+                gtfile << ssseglist.at(5) << std::endl;
+            }
+
+            sfile.close();
+            vemfile.close();
+            gtfile.close();
+        }
+
+        ofile.close();
+    }
+
+    std::cout << "processing " << filepath << std::endl;
+
 
     std::ifstream in;
     in.open(filepath.c_str());
@@ -914,7 +1022,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         ui->solverResultsWidget->add_chart(chartView, labels.at(i).c_str());
     }
 
-    const std::string postfix_sol = "-VEM-sol.txt";
+    std::cout << "processing solution " << std::endl;
 
     for (uint i=0; i < dataset.get_parametric_meshes().size(); i++)
     {       
@@ -968,7 +1076,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         in.close();
     }
 
-    const std::string postfix_gt = "-GROUND-TRUTH-sol.txt";
+    std::cout << "processing groundtruth " << std::endl;
 
     for (uint i=0; i < dataset.get_parametric_meshes().size(); i++)
     {
@@ -977,7 +1085,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         basename = basename.substr(0, basename.find_last_of("."));
 
         std::string filepath = folder + QString(QDir::separator()).toStdString() +
-                               basename + postfix_sol;
+                               basename + postfix_gt;
 
         std::cout << "Parsing file " << filepath << std::endl;
 
@@ -1026,7 +1134,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
 
     ui->tab_widgets->setTabEnabled(3, true);
-    ui->tab_widgets->setCurrentIndex(3);
+    // ui->tab_widgets->setCurrentIndex(3);
 }
 
 void MainWindow::on_tab_widgets_currentChanged(int index)

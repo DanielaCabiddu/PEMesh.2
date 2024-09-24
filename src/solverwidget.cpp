@@ -127,52 +127,111 @@ void SolverWidget::on_run_btn_clicked()
         const std::string out_filename = dialog->get_output_filename();
         const std::string out_filepath = out_folder + path_sep.toStdString() + out_filename;
 
-        const unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
-        const unsigned int solution_order = static_cast<uint>(ui->solver_order_cb->value());
-
-        const std::string matlab_folder = dialog->get_matlab_folder();
-        const std::string matlab_exe = matlab_folder + QString(QDir::separator()).toStdString() + dialog->get_matlab_exe_name();
+        std::cout << in_folder << std::endl;
+        std::cout << out_folder << std::endl;
+        std::cout << out_filename << std::endl;
 
         const std::string solver_script_path = dialog->get_solver_script_full_path();
+
+        std::cout << solver_script_path << std::endl;
+
         const std::string scripts_folder = solver_script_path.substr(0, solver_script_path.find_last_of(QDir::separator().unicode()));
 
-        const std::string cd_cmd = std::string ("cd ") + std::string(scripts_folder);
+        std::cout << scripts_folder << std::endl;
 
         std::string solver_script_name = solver_script_path.substr(solver_script_path.find_last_of(QDir::separator().unicode())+1);
-        solver_script_name = solver_script_name.substr(0, solver_script_name.find_last_of("."));
-        const std::string matlab_script = solver_script_name + std::string(" ('")
-                                            + in_folder + "','" + out_filepath + "'," + std::to_string(solution_id) + "," + std::to_string(solution_order) +");exit;";
 
-        std::cout << "RUNNING : " << matlab_script << std::endl;
+        std::cout << solver_script_name << std::endl;
 
-        const std::string matlab_args = "-nodisplay -nosplash -nodesktop -r \"" + matlab_script + "\";";
+        std::cout << solver_script_name.find('.') << std::endl;
 
-        process->setWorkingDirectory(scripts_folder.c_str());
-
-        process->moveToThread(QCoreApplication::instance()->thread());
-
-        process->start(
-            QString(matlab_exe.c_str()),
-            QStringList() << QString( (matlab_args).c_str() ));
-
-        std::string file_finished = out_filepath + "_DONE";
-
-        while (!QFile::exists(file_finished.c_str()))
+        if (solver_script_name.find('.') != std::string::npos &&
+            solver_script_name.substr(solver_script_name.find_last_of(".")).compare(".m") == 0)
         {
-            QCoreApplication::processEvents();
+
+            std::cout << "matlab ... " << std::endl;
+            const unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
+            const unsigned int solution_order = static_cast<uint>(ui->solver_order_cb->value());
+
+            const std::string matlab_folder = dialog->get_matlab_folder();
+            const std::string matlab_exe = matlab_folder + QString(QDir::separator()).toStdString() + dialog->get_matlab_exe_name();
+
+            const std::string cd_cmd = std::string ("cd ") + std::string(scripts_folder);
+
+            solver_script_name = solver_script_name.substr(0, solver_script_name.find_last_of("."));
+            const std::string matlab_script = solver_script_name + std::string(" ('")
+                                                + in_folder + "','" + out_filepath + "'," + std::to_string(solution_id) + "," + std::to_string(solution_order) +");exit;";
+
+            std::cout << "RUNNING : " << matlab_script << std::endl;
+
+            const std::string matlab_args = "-nodisplay -nosplash -nodesktop -r \"" + matlab_script + "\";";
+
+
+            process->setWorkingDirectory(scripts_folder.c_str());
+
+            process->moveToThread(QCoreApplication::instance()->thread());
+
+            process->start(
+                QString(matlab_exe.c_str()),
+                QStringList() << QString( (matlab_args).c_str() ));
+
+            emit (solver_completed (solution_id, out_folder, out_filename));
+
+            QApplication::restoreOverrideCursor();
+
+        }
+        else
+        {
+            std::cout << "exe ... " << std::endl;
+            QApplication::setOverrideCursor(Qt::WaitCursor);
+
+            process->setWorkingDirectory(scripts_folder.c_str());
+
+            process->moveToThread(QCoreApplication::instance()->thread());
+
+            QDir directory(in_folder.c_str());
+            QStringList meshes = directory.entryList(QStringList() << "*.off" << "*.OFF",QDir::Files);
+
+            foreach(QString filename, meshes)
+            {
+                std::string out_mesh_folder = out_folder + path_sep.toStdString() + filename.toStdString().substr(0,filename.lastIndexOf("."));
+                std::string mesh_args = "MeshOFF_Original_FilePath:string=" + in_folder + path_sep.toStdString() + filename.toStdString();
+                std::string out_args = "ExportFolder:string=" + out_mesh_folder;
+                std::string cond_args = "ComputeConditionNumber:bool=1";
+
+                std::cout << "running ... " << solver_script_path << " " <<  mesh_args << " " << out_args << " " << cond_args << std::endl;
+
+                process->execute(
+                    QString(solver_script_path.c_str()),
+                    QStringList() << QString( (mesh_args).c_str() ) << QString( (out_args).c_str() ) << QString( (out_args).c_str() ));
+
+                process->waitForFinished();
+
+                QString output(process->readAllStandardOutput());
+
+                std::cout << process->exitCode() << std::endl << output.toStdString() << std::endl;
+            }
+
+            QApplication::restoreOverrideCursor();
+
+
+            emit (solver_completed (UINT_MAX, out_folder, out_filename));
         }
 
-        remove(file_finished.c_str());
+        // std::string file_finished = out_filepath + "_DONE";
 
-        std::cout << process->exitStatus() << std::endl;
-        std::cout << process->readAllStandardError().toStdString() << std::endl;
-        std::cout << process->readAllStandardOutput().toStdString() << std::endl;
+        // while (!QFile::exists(file_finished.c_str()))
+        // {
+        // QCoreApplication::processEvents();
+        // }
+
+        // remove(file_finished.c_str());
+
+        // std::cout << process->exitStatus() << std::endl;
+        // std::cout << process->readAllStandardError().toStdString() << std::endl;
+        // std::cout << process->readAllStandardOutput().toStdString() << std::endl;
 
         std::cout << "DONE" << std::endl;
-
-        QApplication::restoreOverrideCursor();
-
-        emit (solver_completed (solution_id, out_folder, out_filename));
     }
 
     delete dialog;

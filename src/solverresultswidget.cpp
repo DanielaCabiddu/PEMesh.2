@@ -82,6 +82,10 @@ void SolverResultsWidget::set_dataset(Dataset *d)
 void SolverResultsWidget::show_mesh_solution_and_groundtruth() const
 {
   for (uint i = 0; i < results.size(); i++) {
+
+    //ui->solver_output->add_mesh(*results.at(i), true);
+    //ui->solver_output->add_mesh(*groundtruth.at(i), true);
+
     // const int tex_type = cinolib::TEXTURE_1D_HSV;
     // results.at(i)->show_texture1D(tex_type);
     // groundtruth.at(i)->show_texture1D(tex_type);
