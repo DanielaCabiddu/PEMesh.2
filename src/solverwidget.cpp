@@ -195,21 +195,26 @@ void SolverWidget::on_run_btn_clicked()
             foreach(QString filename, meshes)
             {
                 std::string out_mesh_folder = out_folder + path_sep.toStdString() + filename.toStdString().substr(0,filename.lastIndexOf("."));
-                std::string mesh_args = "MeshOFF_Original_FilePath:string=" + in_folder + path_sep.toStdString() + filename.toStdString();
+                std::string mesh_gen_args = "MeshGenerator:uint=1";
+                std::string mesh_args = "MeshOFF_Aggregated_FilePath:string=" + in_folder + path_sep.toStdString() + filename.toStdString();
                 std::string out_args = "ExportFolder:string=" + out_mesh_folder;
                 std::string cond_args = "ComputeConditionNumber:bool=1";
 
-                std::cout << "running ... " << solver_script_path << " " <<  mesh_args << " " << out_args << " " << cond_args << std::endl;
+                std::cout << "running ... " << solver_script_path << " " << mesh_gen_args << " " <<  mesh_args << " " << out_args << " " << cond_args << std::endl;
 
-                process->execute(
-                    QString(solver_script_path.c_str()),
-                    QStringList() << QString( (mesh_args).c_str() ) << QString( (out_args).c_str() ) << QString( (out_args).c_str() ));
+                QProcess *lprocess = new QProcess();
+
+                QStringList args { mesh_gen_args.c_str(), mesh_args.c_str(), out_args.c_str(), cond_args.c_str() };
+
+                for (const auto& s : args) std::cout << " -- " << s.toStdString() << std::endl;
+
+                lprocess->execute(QString(solver_script_path.c_str()), args);
 
                 process->waitForFinished();
 
-                QString output(process->readAllStandardOutput());
+                // QString output(lprocess->readAllStandardOutput());
 
-                std::cout << process->exitCode() << std::endl << output.toStdString() << std::endl;
+                std::cout << lprocess->exitCode() << std::endl;// << output.toStdString() << std::endl;
             }
 
             QApplication::restoreOverrideCursor();

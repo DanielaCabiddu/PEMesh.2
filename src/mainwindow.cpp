@@ -805,7 +805,6 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
         for (QString subf : oDirList)
         {
-            std::cout << "NEXT" << std::endl;
             std::string folder_name = folder + QDir::separator().toLatin1() + subf.toStdString();
 
             std::cout << folder_name << std::endl;
@@ -828,7 +827,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             while (std::getline(lline, esegment, ';'))
             {
                 seglist.push_back(esegment);
-                std::cout << "ES" << esegment << std::endl;
+                // std::cout << "ES" << esegment << std::endl;
             }
 
             double VemOrder, Cell2Ds, Dofs, h, errorL2, errorH1, normL2, normH1, nnzA, condA;
@@ -873,12 +872,12 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                 std::string sssegment;
                 std::vector<std::string> ssseglist;
 
-                std::cout << "line - " << line << std::endl;
+                // std::cout << "line - " << line << std::endl;
 
                 while (std::getline(lline, sssegment, ';'))
                 {
                     ssseglist.push_back(sssegment);
-                    std::cout << "ESss" << sssegment << std::endl;
+                    // std::cout << "ESss" << sssegment << std::endl;
                 }
 
                 vemfile << ssseglist.at(4) << std::endl;
@@ -1131,10 +1130,10 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         in.close();
     }
 
-    ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
+    // ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
 
     ui->tab_widgets->setTabEnabled(3, true);
-    // ui->tab_widgets->setCurrentIndex(3);
+    ui->tab_widgets->setCurrentIndex(3);
 }
 
 void MainWindow::on_tab_widgets_currentChanged(int index)
