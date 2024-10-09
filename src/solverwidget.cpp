@@ -145,13 +145,14 @@ void SolverWidget::on_run_btn_clicked()
 
         std::cout << solver_script_name.find('.') << std::endl;
 
+        const unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
+        const unsigned int solution_order = static_cast<uint>(ui->solver_order_cb->value());
+
         if (solver_script_name.find('.') != std::string::npos &&
             solver_script_name.substr(solver_script_name.find_last_of(".")).compare(".m") == 0)
         {
 
             std::cout << "matlab ... " << std::endl;
-            const unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
-            const unsigned int solution_order = static_cast<uint>(ui->solver_order_cb->value());
 
             const std::string matlab_folder = dialog->get_matlab_folder();
             const std::string matlab_exe = matlab_folder + QString(QDir::separator()).toStdString() + dialog->get_matlab_exe_name();
@@ -176,14 +177,10 @@ void SolverWidget::on_run_btn_clicked()
                 QStringList() << QString( (matlab_args).c_str() ));
 
             emit (solver_completed (solution_id, out_folder, out_filename));
-
-            QApplication::restoreOverrideCursor();
-
         }
         else
         {
             std::cout << "exe ... " << std::endl;
-            QApplication::setOverrideCursor(Qt::WaitCursor);
 
             process->setWorkingDirectory(scripts_folder.c_str());
 
@@ -199,12 +196,20 @@ void SolverWidget::on_run_btn_clicked()
                 std::string mesh_args = "MeshOFF_Aggregated_FilePath:string=" + in_folder + path_sep.toStdString() + filename.toStdString();
                 std::string out_args = "ExportFolder:string=" + out_mesh_folder;
                 std::string cond_args = "ComputeConditionNumber:bool=1";
+                std::string solution_args = "ProgramType:uint=" + std::to_string(solution_id);
+                std::string order_args = "VemOrder:uint=" + std::to_string(solution_order);
 
-                std::cout << "running ... " << solver_script_path << " " << mesh_gen_args << " " <<  mesh_args << " " << out_args << " " << cond_args << std::endl;
+                std::cout << "running ... " << solver_script_path << " "
+                                            << mesh_gen_args << " "
+                                            << mesh_args << " "
+                                            << out_args << " "
+                                            << cond_args << " "
+                                            << solution_args << " "
+                                            << order_args << std::endl;
 
                 QProcess *lprocess = new QProcess();
 
-                QStringList args { mesh_gen_args.c_str(), mesh_args.c_str(), out_args.c_str(), cond_args.c_str() };
+                QStringList args { mesh_gen_args.c_str(), mesh_args.c_str(), out_args.c_str(), cond_args.c_str(), solution_args.c_str(), order_args.c_str() };
 
                 for (const auto& s : args) std::cout << " -- " << s.toStdString() << std::endl;
 
@@ -217,11 +222,11 @@ void SolverWidget::on_run_btn_clicked()
                 std::cout << lprocess->exitCode() << std::endl;// << output.toStdString() << std::endl;
             }
 
-            QApplication::restoreOverrideCursor();
-
-
             emit (solver_completed (UINT_MAX, out_folder, out_filename));
         }
+
+        QApplication::restoreOverrideCursor();
+
 
         // std::string file_finished = out_filepath + "_DONE";
 

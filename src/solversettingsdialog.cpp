@@ -56,8 +56,9 @@ SolverSettingsDialog::SolverSettingsDialog(QWidget *parent) :
         ui->matlab_folder->setText("/Applications/MATLAB_R2023b.app/bin/");
         ui->solver_script->setText(QDir::homePath().append("/QT-Projects/vem_benchmark_2d/matlab/Scripts/VEM2D_poisson_convtest_NEW.m"));
     #else
+        std::string solver_path = QCoreApplication::applicationDirPath().toStdString() + QDir::separator().toLatin1() + "VEM_2D_SOLVER";
         ui->matlab_folder->setText(QDir::homePath().append("/matlab/bin/"));
-        ui->solver_script->setText("VEM_2D_SOLVER");
+        ui->solver_script->setText(QString(solver_path.c_str()));
     #endif
 
     ui->matlab_folder_error->hide();
