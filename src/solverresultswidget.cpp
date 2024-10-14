@@ -61,8 +61,8 @@ void SolverResultsWidget::set_dataset(Dataset *d)
     cinolib::Polygonmesh<> *m_gt =
         new cinolib::Polygonmesh<>(m->vector_verts(), m->vector_polys());
 
-    results.push_back(m);
-    groundtruth.push_back(m_gt);
+    meshes_canvas1.push_back(m);
+    meshes_canvas2.push_back(m_gt);
 
     for (uint pid=0; pid < m_gt->num_polys(); pid++)
         if (m_gt->adj_p2e(pid).size() > 3)
@@ -81,7 +81,7 @@ void SolverResultsWidget::set_dataset(Dataset *d)
 
 void SolverResultsWidget::show_mesh_solution_and_groundtruth() const
 {
-  for (uint i = 0; i < results.size(); i++) {
+  for (uint i = 0; i < meshes_canvas1.size(); i++) {
 
     //ui->solver_output->add_mesh(*results.at(i), true);
     //ui->solver_output->add_mesh(*groundtruth.at(i), true);
@@ -168,9 +168,8 @@ void SolverResultsWidget::show_parametric_mesh(int index)
 {
   clean_canvas();
 
-  cinolib::Polygonmesh<> *p_r = results.at(static_cast<uint>(index));
-  cinolib::Polygonmesh<> *p_gt =
-      groundtruth.at(static_cast<uint>(index));
+  cinolib::Polygonmesh<> *p_r = meshes_canvas1.at(static_cast<uint>(index));
+  cinolib::Polygonmesh<> *p_gt = meshes_canvas2.at(static_cast<uint>(index));
 
   // p_r->updateGL();
   // p_gt->updateGL();
@@ -181,11 +180,11 @@ void SolverResultsWidget::show_parametric_mesh(int index)
   // ui->groundtruth->push_obj(p_gt, update_scene);
   // ui->groundtruth->updateGL();
 
-  ui->solver_output->clear();
-  ui->groundtruth->clear();
+  ui->canvas1->clear();
+  ui->canvas2->clear();
 
-  ui->solver_output->add_mesh(*p_r, false);
-  ui->groundtruth->add_mesh(*p_gt, false);
+  ui->canvas1->add_mesh(*p_r, false);
+  ui->canvas2->add_mesh(*p_gt, false);
 
   update_scene = false;
 
@@ -347,5 +346,97 @@ void SolverResultsWidget::on_meshsize_cb_stateChanged(int checked)
 
 cinolib::Polygonmesh<> *SolverResultsWidget::get_gt_mesh(const uint i)
 {
-  return groundtruth.at(i);
+  return meshes_canvas2.at(i);
 }
+
+void SolverResultsWidget::on_canvas1_cb_currentIndexChanged(int index)
+{
+    bool show_poly_color= true;
+
+    switch (index)
+    {
+    case 0:
+        for (uint m=0; m < meshes_canvas1.size(); m++)
+        {
+            solutions.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+        }
+        show_poly_color=false;
+        break;
+    case 1:
+        for (uint m=0; m < meshes_canvas1.size(); m++)
+        {
+            groundtruths.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+        }
+        show_poly_color=false;
+        break;
+    case 2:
+        for (uint m=0; m < meshes_canvas1.size(); m++)
+        {
+            errH1s.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+        }
+        show_poly_color = true;
+        break;
+    case 3:
+        for (uint m=0; m < meshes_canvas1.size(); m++)
+        {
+            errL2s.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+        }
+        show_poly_color = true;
+        break;
+    default:
+        break;
+    }
+
+    ui->canvas1->clear();
+
+    ui->canvas1->add_mesh(*meshes_canvas1.at(ui->t_slider->value()), show_poly_color);
+
+    ui->canvas1->updateGL();
+}
+
+
+void SolverResultsWidget::on_canvas2_cb_currentIndexChanged(int index)
+{
+    bool show_poly_color= true;
+
+    switch (index)
+    {
+    case 0:
+        for (uint m=0; m < meshes_canvas2.size(); m++)
+        {
+            solutions.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+        }
+        show_poly_color = false;
+        break;
+    case 1:
+        for (uint m=0; m < meshes_canvas2.size(); m++)
+        {
+            groundtruths.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+        }
+        show_poly_color = false;
+        break;
+    case 2:
+        for (uint m=0; m < meshes_canvas2.size(); m++)
+        {
+            errH1s.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+        }
+        show_poly_color = true;
+        break;
+    case 3:
+        for (uint m=0; m < meshes_canvas2.size(); m++)
+        {
+            errL2s.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+        }
+        show_poly_color = true;
+        break;
+    default:
+        break;
+    }
+
+    ui->canvas2->clear();
+
+    ui->canvas2->add_mesh(*meshes_canvas2.at(ui->t_slider->value()), show_poly_color);
+
+    ui->canvas2->updateGL();
+}
+

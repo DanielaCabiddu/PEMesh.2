@@ -1064,6 +1064,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
         sf.copy_to_mesh(*dataset.get_parametric_mesh(i));
 
+        ui->solverResultsWidget->add_solution_scalar_filed(sf);
+
         for (uint vid=0; vid < dataset.get_parametric_mesh(i)->num_verts(); vid++ )
         {
             dataset.get_parametric_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf[vid]);
@@ -1118,6 +1120,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
         sf.copy_to_mesh(*ui->solverResultsWidget->get_gt_mesh(i));
 
+        ui->solverResultsWidget->add_gt_scalar_filed(sf);
 
         for (uint vid=0; vid < ui->solverResultsWidget->get_gt_mesh(i)->num_verts(); vid++ )
         {
