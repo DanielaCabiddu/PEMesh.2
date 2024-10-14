@@ -830,7 +830,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                 // std::cout << "ES" << esegment << std::endl;
             }
 
-            double VemOrder, Cell2Ds, Dofs, h, errorL2, errorH1, normL2, normH1, nnzA, condA;
+            double VemOrder, Cell2Ds, Dofs, h, errorL2, errorH1, normL2, normH1, errInf, nnzA, condA;
             VemOrder = std::stod(seglist.at(0));
             Cell2Ds = std::stod(seglist.at(1));
             Dofs = std::stod(seglist.at(2));
@@ -839,12 +839,13 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             errorH1 = std::stod(seglist.at(5));
             normL2 = std::stod(seglist.at(6));
             normH1 = std::stod(seglist.at(7));
-            nnzA = std::stod(seglist.at(8));
-            condA = std::stod(seglist.at(9));;
+            errInf = std::stod(seglist.at(8));
+            nnzA = std::stod(seglist.at(9));
+            condA = std::stod(seglist.at(10));;
 
             efile.close();
 
-            ofile << errorH1/normH1 << " 0 " << errorL2 / normL2 << " " << h << " " << condA << std::endl;
+            ofile << errorH1/normH1 << " " << errInf << " " << errorL2 / normL2 << " " << h << " " << condA << std::endl;
 
             std::string solution_filename = solution_folder + QDir::separator().toLatin1() + "Solution_Cell0Ds.csv";
             std::ifstream sfile;
@@ -872,12 +873,9 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                 std::string sssegment;
                 std::vector<std::string> ssseglist;
 
-                // std::cout << "line - " << line << std::endl;
-
                 while (std::getline(lline, sssegment, ';'))
                 {
                     ssseglist.push_back(sssegment);
-                    // std::cout << "ESss" << sssegment << std::endl;
                 }
 
                 vemfile << ssseglist.at(4) << std::endl;
@@ -908,7 +906,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     double e0,e1,e2,e3,e4;
 
     std::vector<std::string> labels
-        {"errS", "errInf", "errL2", "hEmax", "condVect"};
+        {"errH1", "errInf", "errL2", "hEmax", "condVect"};
 
     while ( in >> e0 >> e1 >> e2 >> e3 >> e4)
     {

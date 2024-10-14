@@ -9,9 +9,17 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(USE_METIS ON)
+
+if (USE_METIS)
+    add_definitions(-DUSE_METIS)
+endif()
+
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../solver/VEM_2D_SOLVER ${CMAKE_CURRENT_BINARY_DIR}/VEM_2D_SOLVER COPYONLY)
 
 find_package (OpenGL)
 
@@ -127,20 +135,22 @@ include_directories(${TRIANGLE_DIR})
 
 ## metis
 
-add_definitions(-DCINOLIB_USES_METIS)
-if(LINUX)
-    set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
-    set(METIS_LIB /home/tommaso/local/lib/libmetis.so)
-    set(GKLIB_DIR /home/tommaso/local/include)
-    set(GKLIB_LIB /home/tommaso/local/lib/libGKlib.a)
-elseif(APPLE)
-    set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
-    set(METIS_LIB /Users/tommy/local/lib/libmetis.a)
-    set(GKLIB_DIR /Users/tommy/local/include)
-    set(GKLIB_LIB /Users/tommy/local/lib/libGKlib.a)
+if (USE_METIS)
+    add_definitions(-DCINOLIB_USES_METIS)
+    if(LINUX)
+        set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
+        set(METIS_LIB /home/tommaso/local/lib/libmetis.so)
+        set(GKLIB_DIR /home/tommaso/local/include)
+        set(GKLIB_LIB /home/tommaso/local/lib/libGKlib.a)
+    elseif(APPLE)
+        set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
+        set(METIS_LIB /Users/tommy/local/lib/libmetis.a)
+        set(GKLIB_DIR /Users/tommy/local/include)
+        set(GKLIB_LIB /Users/tommy/local/lib/libGKlib.a)
+    endif()
+    include_directories (BEFORE ${METIS_DIR})
+    include_directories (BEFORE ${GKLIB_DIR})
 endif()
-include_directories (BEFORE ${METIS_DIR})
-include_directories (BEFORE ${GKLIB_DIR})
 
 ## includes
 
