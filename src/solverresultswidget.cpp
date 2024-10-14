@@ -358,28 +358,32 @@ void SolverResultsWidget::on_canvas1_cb_currentIndexChanged(int index)
     case 0:
         for (uint m=0; m < meshes_canvas1.size(); m++)
         {
-            solutions.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+            for (uint vid=0; vid < meshes_canvas1.at(m)->num_verts(); vid++)
+                meshes_canvas1.at(m)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(solutions.at(m).data()[vid]);
         }
         show_poly_color=false;
         break;
     case 1:
         for (uint m=0; m < meshes_canvas1.size(); m++)
         {
-            groundtruths.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+            for (uint vid=0; vid < meshes_canvas1.at(m)->num_verts(); vid++)
+                meshes_canvas1.at(m)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(groundtruths.at(m).data()[vid]);
         }
         show_poly_color=false;
         break;
     case 2:
         for (uint m=0; m < meshes_canvas1.size(); m++)
         {
-            errH1s.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+            for (uint pid=0; pid < meshes_canvas1.at(m)->num_polys(); pid++)
+                meshes_canvas1.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(errH1s.at(m).data()[pid]);
         }
         show_poly_color = true;
         break;
     case 3:
         for (uint m=0; m < meshes_canvas1.size(); m++)
         {
-            errL2s.at(m).copy_to_mesh(*meshes_canvas1.at(m));
+            for (uint pid=0; pid < meshes_canvas1.at(m)->num_polys(); pid++)
+                meshes_canvas1.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
         }
         show_poly_color = true;
         break;
@@ -404,28 +408,32 @@ void SolverResultsWidget::on_canvas2_cb_currentIndexChanged(int index)
     case 0:
         for (uint m=0; m < meshes_canvas2.size(); m++)
         {
-            solutions.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+            for (uint vid=0; vid < meshes_canvas2.at(m)->num_verts(); vid++)
+                meshes_canvas2.at(m)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(solutions.at(m).data()[vid]);
         }
         show_poly_color = false;
         break;
     case 1:
         for (uint m=0; m < meshes_canvas2.size(); m++)
         {
-            groundtruths.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+            for (uint vid=0; vid < meshes_canvas2.at(m)->num_verts(); vid++)
+                meshes_canvas2.at(m)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(groundtruths.at(m).data()[vid]);
         }
         show_poly_color = false;
         break;
     case 2:
         for (uint m=0; m < meshes_canvas2.size(); m++)
         {
-            errH1s.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+            for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
+                meshes_canvas2.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(errH1s.at(m).data()[pid]);
         }
         show_poly_color = true;
         break;
     case 3:
         for (uint m=0; m < meshes_canvas2.size(); m++)
         {
-            errL2s.at(m).copy_to_mesh(*meshes_canvas2.at(m));
+            for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
+                meshes_canvas2.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
         }
         show_poly_color = true;
         break;
