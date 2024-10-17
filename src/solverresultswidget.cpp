@@ -183,8 +183,17 @@ void SolverResultsWidget::show_parametric_mesh(int index)
   ui->canvas1->clear();
   ui->canvas2->clear();
 
-  ui->canvas1->add_mesh(*p_r, false);
-  ui->canvas2->add_mesh(*p_gt, false);
+  bool canvas1_show_color_on_polys = true;
+  bool canvas2_show_color_on_polys = true;
+
+  if (ui->canvas1_cb->currentText().endsWith("(V)"))
+      canvas1_show_color_on_polys = false;
+
+  if (ui->canvas2_cb->currentText().endsWith("(V)") )
+      canvas2_show_color_on_polys = false;
+
+  ui->canvas1->add_mesh(*p_r, canvas1_show_color_on_polys);
+  ui->canvas2->add_mesh(*p_gt, canvas2_show_color_on_polys);
 
   update_scene = false;
 
@@ -433,7 +442,10 @@ void SolverResultsWidget::on_canvas2_cb_currentIndexChanged(int index)
         for (uint m=0; m < meshes_canvas2.size(); m++)
         {
             for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
+            {
+                std::cout << errL2s.at(m).data()[pid] << std::endl;
                 meshes_canvas2.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
+            }
         }
         show_poly_color = true;
         break;

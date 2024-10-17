@@ -885,6 +885,44 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             sfile.close();
             vemfile.close();
             gtfile.close();
+
+            solution_filename = solution_folder + QDir::separator().toLatin1() + "Solution_Cell2Ds.csv";
+            sfile.open(solution_filename);
+            std::getline(sfile, line);
+
+            // double Id, errL2, errH1, normL2, normH1;
+
+            std::vector<double> errH1_normH1s, errL2_normL2s;
+
+            while (std::getline(sfile , line))
+            {
+                std::stringstream lline (line);
+
+                std::string sssegment;
+                std::vector<std::string> ssseglist;
+
+                while (std::getline(lline, sssegment, ';'))
+                {
+                    ssseglist.push_back(sssegment);
+                }
+
+                double errL2 = std::stod(ssseglist.at(1));
+                double errH1 = std::stod(ssseglist.at(2));
+                double normL2 = std::stod(ssseglist.at(3));
+                double normH1 = std::stod(ssseglist.at(4));
+
+                errH1_normH1s.push_back(errH1 / normH1);
+                errL2_normL2s.push_back(errL2 / normL2);
+            }
+
+            sfile.close();
+
+            cinolib::ScalarField sf_errH1 (errH1_normH1s), sf_errL2 (errL2_normL2s);
+            sf_errH1.normalize_in_01();
+            sf_errL2.normalize_in_01();
+
+            ui->solverResultsWidget->add_errh1_scalar_filed(sf_errH1);
+            ui->solverResultsWidget->add_errl2_scalar_filed(sf_errL2);
         }
 
         ofile.close();
