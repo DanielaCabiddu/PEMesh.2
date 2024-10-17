@@ -46,7 +46,7 @@ SolverWidget::SolverWidget(QWidget *parent) :
     process = new QProcess();
     connect(process, SIGNAL(readyRead()), this, SLOT(update_log()));
 
-    ui->log_text->hide();
+    // ui->log_text->hide();
 }
 
 SolverWidget::~SolverWidget()
@@ -207,19 +207,20 @@ void SolverWidget::on_run_btn_clicked()
                                             << solution_args << " "
                                             << order_args << std::endl;
 
-                QProcess *lprocess = new QProcess();
 
                 QStringList args { mesh_gen_args.c_str(), mesh_args.c_str(), out_args.c_str(), cond_args.c_str(), solution_args.c_str(), order_args.c_str() };
 
                 for (const auto& s : args) std::cout << " -- " << s.toStdString() << std::endl;
 
-                lprocess->execute(QString(solver_script_path.c_str()), args);
+                process->moveToThread(QCoreApplication::instance()->thread());
+
+                process->start(QString(solver_script_path.c_str()), args);
 
                 process->waitForFinished();
 
                 // QString output(lprocess->readAllStandardOutput());
 
-                std::cout << lprocess->exitCode() << std::endl;// << output.toStdString() << std::endl;
+                std::cout << process->exitCode() << std::endl;// << output.toStdString() << std::endl;
             }
 
             emit (solver_completed (UINT_MAX, out_folder, out_filename));
@@ -251,4 +252,6 @@ void SolverWidget::update_log()
 {
     QString appendText(process->readAll());
     ui->log_text->append(appendText);
+
+    std::cout << appendText.toStdString() << std::endl;
 }
