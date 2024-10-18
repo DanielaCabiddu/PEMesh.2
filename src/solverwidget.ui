@@ -32,10 +32,10 @@
       </size>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
@@ -58,7 +58,7 @@
              <widget class="QComboBox" name="solver_cb">
               <item>
                <property name="text">
-                <string>0 - Constant ground-truth solution</string>
+                <string>0 - Polynomial ground-truth solution</string>
                </property>
               </item>
               <item>
@@ -68,27 +68,7 @@
               </item>
               <item>
                <property name="text">
-                <string>2 - Quadratic ground-truth solution</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>3 - Cubic ground-truth solution</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>4 - C-inf, homogeneous Dirichlet BC</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>5 - C-inf, non homogeneous Dirichlet BC</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>6 - C-inf, non homogeneous Franke function</string>
+                <string>2 - Trigonometric ground-truth solution</string>
                </property>
               </item>
              </widget>
@@ -106,10 +86,10 @@
             <item row="4" column="0" colspan="2">
              <widget class="QFrame" name="frame">
               <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
+               <enum>QFrame::Shape::StyledPanel</enum>
               </property>
               <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
+               <enum>QFrame::Shadow::Raised</enum>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout">
                <item>
@@ -158,7 +138,7 @@
    <item row="1" column="0">
     <widget class="QSlider" name="t_slider">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
