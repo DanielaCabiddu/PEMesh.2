@@ -144,7 +144,7 @@ private:
     std::vector<QDoubleSpinBox *> y_poses;
 
     //double last_angle = 0.0;
-    const double minus_scale_factor = 0.98;
+    const double minus_scale_factor = 0.8;
 
     Dataset *dataset = nullptr;
 
