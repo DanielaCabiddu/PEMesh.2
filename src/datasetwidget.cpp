@@ -961,31 +961,21 @@ cinolib::Polygonmesh<> DatasetWidget::deform_with_canvas(const std::vector<cinol
         }
         while(curr_v!=start_v);
 
-        for (uint vid : poly)
-            std::cout << m_with_canvas.vert(vid) << std::endl;
-
         uint pid = m_with_canvas.poly_add(poly);
 
-        bool is_CCW = true;
-
-        cinolib::vec3d tri_norm, poly_norm;
-
+        cinolib::vec3d mesh_norm, poly_norm;
         for (uint p=0; p < m_with_canvas.num_polys(); p++)
             if (m_with_canvas.verts_per_poly(p) == 3)
             {
-                tri_norm = m_with_canvas.vector_poly_normals().at(p);
+                mesh_norm = m_with_canvas.vector_poly_normals().at(p);
                 break;
             }
-
         poly_norm = m_with_canvas.vector_poly_normals().at(pid);
 
-        if (poly_norm.dot(tri_norm) < 0)
-            is_CCW = false;
-
-        if(!is_CCW/*! m_with_canvas.poly_verts_are_CCW(pid, m_with_canvas.poly_vert_id(pid, 0), m_with_canvas.poly_vert_id(pid, 1))*/)
-        {
+        if (poly_norm.dot(mesh_norm) < 0)
+        { // the new element is oriented differently from the rest of the mesh, invert it
             m_with_canvas.poly_remove(pid);
-            std::reverse(poly.begin(),poly.end());
+            std::reverse(poly.begin(), poly.end());
             m_with_canvas.poly_add(poly);
         }
 
@@ -1288,7 +1278,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
         {
             const std::string node_ele_filename = dir.toStdString() + QString(QDir::separator()).toStdString() + basename.toStdString();
 
-            write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
+            // write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
             message = "Saved NODE/ELE " + node_ele_filename;
             ui->log_label->append(message.c_str());
         }
@@ -1943,7 +1933,7 @@ void DatasetWidget::on_load_mesh_btn_clicked()
     {
         const std::string node_ele_filename = fileInfo.absoluteDir().absolutePath().toStdString() + QString(QDir::separator()).toStdString() + basename.toStdString();
 
-        write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
+        // write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
         message = "Saved NODE/ELE " + node_ele_filename;
         ui->log_label->append(message.c_str());
     }

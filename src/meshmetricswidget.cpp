@@ -99,6 +99,7 @@ void MeshMetricsWidget::add_chart(CustomizedChartView *chart)
     {
         last_col++;
     }
+    update_cb_stateChanged();
 }
 
 
@@ -373,6 +374,17 @@ void MeshMetricsWidget::on_mesh_cb_stateChanged(int checked)
     show_series(6, checked);
 }
 
+void MeshMetricsWidget::update_cb_stateChanged()
+{
+    on_min_cb_stateChanged(ui->min_cb->checkState());
+    on_max_cb_stateChanged(ui->max_cb->checkState());
+    on_avg_cb_stateChanged(ui->avg_cb->checkState());
+    on_poly_min_cb_stateChanged(ui->poly_min_cb->checkState());
+    on_poly_max_cb_stateChanged(ui->poly_max_cb->checkState());
+    on_poly_avg_cb_stateChanged(ui->poly_avg_cb->checkState());
+    on_mesh_cb_stateChanged(ui->mesh_cb->checkState());
+}
+
 void MeshMetricsWidget::on_all_btn_clicked()
 {
     ui->min_cb->setCheckState(Qt::Checked);
@@ -383,7 +395,6 @@ void MeshMetricsWidget::on_all_btn_clicked()
     ui->poly_avg_cb->setCheckState(Qt::Checked);
     ui->mesh_cb->setCheckState(Qt::Checked);
 }
-
 
 void MeshMetricsWidget::on_none_btn_clicked()
 {

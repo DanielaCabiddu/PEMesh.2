@@ -58,7 +58,7 @@ GeometryPerformanceScatterPlotsWidget::GeometryPerformanceScatterPlotsWidget(QWi
 
     connect(ui->x_axis_cb, SIGNAL (currentIndexChanged(int)), this, SLOT (show_scatterplot_x(int)));
 
-    ui->y_axis_cb->addItem("errS");
+    ui->y_axis_cb->addItem("errH1");
     ui->y_axis_cb->addItem("errInf");
     ui->y_axis_cb->addItem("errL2");
     ui->y_axis_cb->addItem("condVect");

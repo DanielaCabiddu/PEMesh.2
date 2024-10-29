@@ -260,7 +260,7 @@ void SolverResultsWidget::change_series_color(const uint series_id)
   series->setPen(pen);
 }
 
-void SolverResultsWidget::on_errS_color_btn_clicked()
+void SolverResultsWidget::on_errH1_color_btn_clicked()
 {
   change_series_color(0);
 }

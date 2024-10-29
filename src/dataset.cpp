@@ -74,7 +74,7 @@ void Dataset::save_on_disk(const std::string directory)
 
             std::cout << "Saving " << filepath << std::endl;
 
-            write_NODE_ELE_2D(filepath.c_str(), polymesh->vector_verts(), polymesh->vector_polys());
+            // write_NODE_ELE_2D(filepath.c_str(), polymesh->vector_verts(), polymesh->vector_polys());
 
             filepath += ".off";
             polymesh->save((filepath).c_str());

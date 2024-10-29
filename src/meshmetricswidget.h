@@ -92,6 +92,7 @@ private slots:
     void on_poly_max_cb_stateChanged(int arg1);
     void on_poly_avg_cb_stateChanged(int arg1);
     void on_mesh_cb_stateChanged(int arg1);
+    void update_cb_stateChanged();
 
     void on_all_btn_clicked();
     void on_none_btn_clicked();

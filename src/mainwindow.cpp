@@ -82,12 +82,8 @@ void MainWindow::show_mesh_metrics()
     ui->graphicMeshMetricWidget->show_mesh(0);
     ui->metricsWidget->reset();
 
-    std::vector<uint> desired_metrics {0, 4, 6, 9, 10, 11};
-
     for (uint i=0; i < n_metrics; i++)
     {
-        // if (!cinolib::CONTAINS_VEC(desired_metrics, i)) continue;
-
         QLineSeries *series_min = new QLineSeries();
         QLineSeries *series_max = new QLineSeries();
         QLineSeries *series_avg = new QLineSeries();

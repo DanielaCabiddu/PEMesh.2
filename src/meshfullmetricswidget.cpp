@@ -59,6 +59,7 @@ void MeshFullMetricsWidget::add_chart(CustomizedChartView *chart)
         last_col++;
     }
 
+    update_cb_stateChanged();
     // show_series(0,  ui->inr_cb->checkState());
     // show_series(1,  ui->our_cb->checkState());
     // show_series(2,  ui->cir_cb->checkState());
@@ -193,6 +194,22 @@ void MeshFullMetricsWidget::show_series(const uint series_id, const bool checked
         if (checked) series->show();
         else series->hide();
     }
+}
+
+void MeshFullMetricsWidget::update_cb_stateChanged()
+{
+    on_inr_cb_stateChanged(ui->inr_cb->checkState());
+    on_our_cb_stateChanged(ui->our_cb->checkState());
+    on_cir_cb_stateChanged(ui->cir_cb->checkState());
+    on_krr_cb_stateChanged(ui->krr_cb->checkState());
+    on_kar_cb_stateChanged(ui->kar_cb->checkState());
+    on_apr_cb_stateChanged(ui->apr_cb->checkState());
+    on_mia_cb_stateChanged(ui->mia_cb->checkState());
+    on_maa_cb_stateChanged(ui->maa_cb->checkState());
+    on_anr_cb_stateChanged(ui->anr_cb->checkState());
+    on_vem_cb_stateChanged(ui->vem_cb->checkState());
+    on_jac_cb_stateChanged(ui->jac_cb->checkState());
+    on_fro_cb_stateChanged(ui->fro_cb->checkState());
 }
 
 void MeshFullMetricsWidget::on_all_btn_clicked()

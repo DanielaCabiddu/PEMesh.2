@@ -58,8 +58,8 @@ private slots:
     void on_save_txt_btn_clicked();
     void on_save_plots_btn_clicked();
 
+    void update_cb_stateChanged();
     void on_all_btn_clicked();
-
     void on_none_btn_clicked();
 
 private:
