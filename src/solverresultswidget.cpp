@@ -396,6 +396,14 @@ void SolverResultsWidget::on_canvas1_cb_currentIndexChanged(int index)
         }
         show_poly_color = true;
         break;
+    case 4:
+        for (uint m=0; m < meshes_canvas1.size(); m++)
+        {
+            for (uint pid=0; pid < meshes_canvas1.at(m)->num_polys(); pid++)
+                meshes_canvas1.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(Conds.at(m).data()[pid]);
+        }
+        show_poly_color = true;
+        break;
     default:
         break;
     }
@@ -442,10 +450,15 @@ void SolverResultsWidget::on_canvas2_cb_currentIndexChanged(int index)
         for (uint m=0; m < meshes_canvas2.size(); m++)
         {
             for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
-            {
-                std::cout << errL2s.at(m).data()[pid] << std::endl;
                 meshes_canvas2.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
-            }
+        }
+        show_poly_color = true;
+        break;
+    case 4:
+        for (uint m=0; m < meshes_canvas2.size(); m++)
+        {
+            for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
+                meshes_canvas2.at(m)->poly_data(pid).color = cinolib::Color::red_white_blue_ramp_01(Conds.at(m).data()[pid]);
         }
         show_poly_color = true;
         break;

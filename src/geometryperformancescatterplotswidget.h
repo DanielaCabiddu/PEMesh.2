@@ -79,6 +79,8 @@ private slots:
 
     void on_compute_btn_clicked();
 
+    void on_y_axis_cb_currentIndexChanged(int index);
+
 private:
     Ui::GeometryPerformanceScatterplotsWidget *ui;
 

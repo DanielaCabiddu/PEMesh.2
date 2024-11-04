@@ -76,6 +76,7 @@ public:
     void add_gt_scalar_filed (const cinolib::ScalarField &f) {groundtruths.push_back(f);}
     void add_errh1_scalar_filed (const cinolib::ScalarField &f) {errH1s.push_back(f);}
     void add_errl2_scalar_filed (const cinolib::ScalarField &f) {errL2s.push_back(f);}
+    void add_Cond_scalar_filed (const cinolib::ScalarField &f) {Conds.push_back(f);}
 
 public slots:
 
@@ -131,6 +132,7 @@ private:
     std::vector<cinolib::ScalarField> groundtruths;
     std::vector<cinolib::ScalarField> errH1s;
     std::vector<cinolib::ScalarField> errL2s;
+    std::vector<cinolib::ScalarField> Conds;
 
 
     bool update_scene = true;

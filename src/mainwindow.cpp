@@ -795,6 +795,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     {
         std::ofstream ofile;
         ofile.open(filepath);
+        ofile << "errorH1/normH1, errInf, errorL2/normL2, h, condA" << std::endl;
 
         QDir oDir(folder.c_str());
         QStringList oDirList = oDir.entryList(QDir::Dirs|QDir::NoDotAndDotDot);
@@ -907,8 +908,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                 double normL2 = std::stod(ssseglist.at(3));
                 double normH1 = std::stod(ssseglist.at(4));
 
-                errH1_normH1s.push_back(errH1 / normH1);
-                errL2_normL2s.push_back(errL2 / normL2);
+                errH1_normH1s.push_back(errH1/* / normH1*/);
+                errL2_normL2s.push_back(errL2/* / normL2*/);
             }
 
             sfile.close();
@@ -919,6 +920,37 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
             ui->solverResultsWidget->add_errh1_scalar_filed(sf_errH1);
             ui->solverResultsWidget->add_errl2_scalar_filed(sf_errL2);
+
+            solution_filename = solution_folder + QDir::separator().toLatin1() + "Cell2Ds_VEMPerformance.csv";
+            sfile.open(solution_filename);
+            std::getline(sfile, line);
+
+            std::vector<double> PIN_conds, PIZ_conds;
+
+            while (std::getline(sfile , line))
+            {
+                std::stringstream lline (line);
+
+                std::string sssegment;
+                std::vector<std::string> ssseglist;
+
+                while (std::getline(lline, sssegment, ';'))
+                {
+                    ssseglist.push_back(sssegment);
+                }
+
+                double PiNabla_Cond = std::stod(ssseglist.at(3));
+                double Pi0k_Cond = std::stod(ssseglist.at(4));
+
+                PIN_conds.push_back(PiNabla_Cond);
+                PIZ_conds.push_back(Pi0k_Cond);
+            }
+
+            sfile.close();
+
+            cinolib::ScalarField sf_Cond (PIN_conds);
+            sf_Cond.normalize_in_01();
+            ui->solverResultsWidget->add_Cond_scalar_filed(sf_Cond);
         }
 
         ofile.close();
@@ -935,6 +967,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         std::cerr << "Error opening " << filename << std::endl;
         return;
     }
+    std::string name;
+    std::getline(in, name); // skip header line
 
     std::vector<std::vector<double>> errs (5);
     double e0,e1,e2,e3,e4;
@@ -1226,7 +1260,8 @@ void MainWindow::compute_GP_scatterplots ()
 
     ui->scatterPlotsGPWidget->create_scatterPlots(dataset, metrics, errsToScatterPlots);
 
-    ui->tabWidget->setCurrentIndex(3);
+    ui->tab_widgets->setCurrentIndex(3);
+    ui->tabWidget->setCurrentIndex(1);
 }
 
 void MainWindow::on_actionReset_triggered()

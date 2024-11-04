@@ -106,12 +106,36 @@ void SolverWidget::on_t_slider_valueChanged(int value)
     show_parametric_mesh(value);
 }
 
+/* create the directory if it does not exist, otherwise delete its content */
+void open_directory(const std::string &path, bool erase = true) {
+    if (!std::filesystem::exists(path)) {
+        // if the folder does not exist, create it
+        try {
+            std::filesystem::create_directories(path);
+        } catch (const std::exception &e) {
+            std::cerr << "Error creating folder: " << e.what() << std::endl;
+            assert(false);
+        }
+    } else if (erase) {
+        // if the folder already exists, delete its content
+        for (const auto &entry : std::filesystem::directory_iterator(path)) {
+            if (entry.is_regular_file()) {
+                std::filesystem::remove(entry.path());
+            } else if (entry.is_directory()) {
+                std::filesystem::remove_all(entry.path());
+            }
+        }
+    }
+}
+
 void SolverWidget::on_run_btn_clicked()
 {
     SolverSettingsDialog *dialog = new SolverSettingsDialog();
 
     dialog->set_input_folder(input_folder);
-    dialog->set_output_folder(input_folder);
+    std::string output_folder = input_folder + "/out";
+    open_directory(output_folder, true);
+    dialog->set_output_folder(output_folder);
     dialog->disable_input_folder_selection();
 
     if (dialog->exec() == 1)

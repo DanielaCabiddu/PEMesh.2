@@ -1672,6 +1672,7 @@ void DatasetWidget::on_mirroring_btn_clicked()
     QApplication::restoreOverrideCursor();
 
     ui->mirroring_btn->setEnabled(true);
+    ui->save_btn->setEnabled(true);
 }
 
 void DatasetWidget::on_show_coords_cb_stateChanged(int checked)

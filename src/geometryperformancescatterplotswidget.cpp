@@ -442,3 +442,9 @@ void GeometryPerformanceScatterPlotsWidget::on_compute_btn_clicked()
 {
     emit compute_GP_scatterplots();
 }
+
+void GeometryPerformanceScatterPlotsWidget::on_y_axis_cb_currentIndexChanged(int index)
+{
+
+}
+
