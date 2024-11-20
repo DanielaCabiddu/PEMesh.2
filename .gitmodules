@@ -19,3 +19,6 @@
 [submodule "external/vtk"]
 	path = external/vtk
 	url = https://github.com/Kitware/VTK.git
+[submodule "solver"]
+	path = solver
+	url = https://github.com/fvicini/SIGGRAPH_2024_SOLVER
