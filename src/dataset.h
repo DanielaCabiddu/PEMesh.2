@@ -54,6 +54,7 @@ public:
     void add_parametric_mesh_metrics (const MeshMetrics &m) { parametric_meshes_metrics.push_back(m); }
 
     void overwrite_parametric_mesh (const uint index, cinolib::Polygonmesh<> *m, const double t, const uint class_id);
+    void overwrite_parametric_mesh_metrics (const uint index, const MeshMetrics &m) { parametric_meshes_metrics.at(index) = m; }
 
     const std::vector<cinolib::Polygonmesh<> *> & get_parametric_meshes  ()             const { return parametric_meshes; }
                       cinolib::Polygonmesh<> *    get_parametric_mesh    (const uint i) const { return parametric_meshes.at(i); }

@@ -682,15 +682,98 @@ void MainWindow::show_sorted_mesh_metrics(const uint to_be_sort_id)
 
 }
 
+void get_min_max(const std::vector<double> &list, double &min, double &max)
+{
+    if (list.empty()) return;
+    std::vector<double> tmp = list;
+    sort(tmp.begin(), tmp.end());
+    min = tmp.front();
+    max = tmp.back();
+}
+
+void rescale_mesh_metrics(std::vector<MeshMetrics> &metrics)
+{
+    std::vector<double> INR_vals;
+    std::vector<double> OUR_vals;
+    std::vector<double> CIR_vals;
+    std::vector<double> KRR_vals;
+    std::vector<double> KAR_vals;
+    std::vector<double> APR_vals;
+    std::vector<double> MIA_vals;
+    std::vector<double> MAA_vals;
+    std::vector<double> ANR_vals;
+    std::vector<double> VEM_vals;
+    std::vector<double> JAC_vals;
+    std::vector<double> FRO_vals;
+    for (const MeshMetrics &metric : metrics)
+    {
+        INR_vals.push_back(metric.INR_mesh);
+        OUR_vals.push_back(metric.OUR_mesh);
+        CIR_vals.push_back(metric.CIR_mesh);
+        KRR_vals.push_back(metric.KRR_mesh);
+        KAR_vals.push_back(metric.KAR_mesh);
+        APR_vals.push_back(metric.APR_mesh);
+        MIA_vals.push_back(metric.MIA_mesh);
+        MAA_vals.push_back(metric.MAA_mesh);
+        ANR_vals.push_back(metric.ANR_mesh);
+        VEM_vals.push_back(metric.VEM_mesh);
+        JAC_vals.push_back(metric.JAC_mesh);
+        FRO_vals.push_back(metric.FRO_mesh);
+    }
+    double INR_min, INR_max;
+    double OUR_min, OUR_max;
+    double CIR_min, CIR_max;
+    double KRR_min, KRR_max;
+    double KAR_min, KAR_max;
+    double APR_min, APR_max;
+    double MIA_min, MIA_max;
+    double MAA_min, MAA_max;
+    double ANR_min, ANR_max;
+    double VEM_min, VEM_max;
+    double JAC_min, JAC_max;
+    double FRO_min, FRO_max;
+    get_min_max(INR_vals, INR_min, INR_max);
+    get_min_max(OUR_vals, OUR_min, OUR_max);
+    get_min_max(CIR_vals, CIR_min, CIR_max);
+    get_min_max(KRR_vals, KRR_min, KRR_max);
+    get_min_max(KAR_vals, KAR_min, KAR_max);
+    get_min_max(APR_vals, APR_min, APR_max);
+    get_min_max(MIA_vals, MIA_min, MIA_max);
+    get_min_max(MAA_vals, MAA_min, MAA_max);
+    get_min_max(ANR_vals, ANR_min, ANR_max);
+    get_min_max(VEM_vals, VEM_min, VEM_max);
+    get_min_max(JAC_vals, JAC_min, JAC_max);
+    get_min_max(FRO_vals, FRO_min, FRO_max);
+
+    for (MeshMetrics &metric : metrics)
+    {
+        metric.INR_mesh = (metric.INR_mesh - INR_min) / (INR_max - INR_min);
+        metric.OUR_mesh = (metric.OUR_mesh - OUR_min) / (OUR_max - OUR_min);
+        metric.CIR_mesh = (metric.CIR_mesh - CIR_min) / (CIR_max - CIR_min);
+        metric.KRR_mesh = (metric.KRR_mesh - KRR_min) / (KRR_max - KRR_min);
+        metric.KAR_mesh = (metric.KAR_mesh - KAR_min) / (KAR_max - KAR_min);
+        metric.APR_mesh = (metric.APR_mesh - APR_min) / (APR_max - APR_min);
+        metric.MIA_mesh = (metric.MIA_mesh - MIA_min) / (MIA_max - MIA_min);
+        metric.MAA_mesh = (metric.MAA_mesh - MAA_min) / (MAA_max - MAA_min);
+        metric.ANR_mesh = (metric.ANR_mesh - ANR_min) / (ANR_max - ANR_min);
+        metric.VEM_mesh = (metric.VEM_mesh - VEM_min) / (VEM_max - VEM_min);
+        metric.JAC_mesh = (metric.JAC_mesh - JAC_min) / (JAC_max - JAC_min);
+        metric.FRO_mesh = (metric.FRO_mesh - FRO_min) / (FRO_max - FRO_min);
+    }
+}
+
 void MainWindow::show_full_mesh_metrics()
 {
     ui->tab_widgets->setCurrentIndex(1);
+    ui->tabWidget->setCurrentIndex(0);
     ui->tab_widgets->setTabEnabled(1, true);
     ui->meshFullMetricsWidget->set_dataset(&dataset);
     ui->meshFullMetricsWidget->set_metrics(&metrics);
     ui->graphicMeshMetricWidget->clean_canvas();
 
     metrics = ui->datasetWidget->get_parametric_meshes_metrics();
+    rescale_mesh_metrics(metrics);
+
     ui->graphicMeshMetricWidget->set_metrics(&metrics);
     ui->graphicMeshMetricWidget->set_slider_max(dataset.get_parametric_meshes().size()-1);
 
@@ -795,7 +878,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     {
         std::ofstream ofile;
         ofile.open(filepath);
-        ofile << "errorH1/normH1, errInf, errorL2/normL2, h, condA" << std::endl;
+        ofile << "errorH1, errInf, errorL2, h, condA" << std::endl;
 
         QDir oDir(folder.c_str());
         QStringList oDirList = oDir.entryList(QDir::Dirs|QDir::NoDotAndDotDot);
