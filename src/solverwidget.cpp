@@ -146,7 +146,7 @@ void SolverWidget::on_run_btn_clicked()
 
         QString path_sep = QString(QDir::separator());
 
-        const std::string in_folder = dialog->get_input_folder() + path_sep.toStdString();
+        const std::string in_folder = dialog->get_input_folder();
         const std::string out_folder = dialog->get_output_folder();
         const std::string out_filename = dialog->get_output_filename();
         const std::string out_filepath = out_folder + path_sep.toStdString() + out_filename;
@@ -213,40 +213,64 @@ void SolverWidget::on_run_btn_clicked()
             QDir directory(in_folder.c_str());
             QStringList meshes = directory.entryList(QStringList() << "*.off" << "*.OFF",QDir::Files);
 
+            std::string docker_exe = "docker";
+
             foreach(QString filename, meshes)
             {
-                std::string out_mesh_folder = out_folder + path_sep.toStdString() + filename.toStdString().substr(0,filename.lastIndexOf("."));
+                std::string out_mesh_folder = "/shared_out/" + filename.toStdString().substr(0,filename.lastIndexOf("."));
                 std::string mesh_gen_args = "MeshGenerator:uint=1";
                 std::string concavity_args = "ConcavityType:uint=1";
-                std::string mesh_args = "MeshOFF_Aggregated_FilePath:string=" + in_folder + path_sep.toStdString() + filename.toStdString();
+                std::string mesh_args = "MeshOFF_Aggregated_FilePath:string=/shared/" + filename.toStdString();
                 std::string out_args = "ExportFolder:string=" + out_mesh_folder;
                 std::string cond_args = "ComputeConditionNumber:bool=1";
                 std::string solution_args = "ProgramType:uint=" + std::to_string(solution_id);
                 std::string order_args = "VemOrder:uint=" + std::to_string(solution_order);
 
-                std::cout << "running ... " << solver_script_path << " "
-                                            << mesh_gen_args << " "
-                                            << concavity_args << " "
-                                            << mesh_args << " "
-                                            << out_args << " "
-                                            << cond_args << " "
-                                            << solution_args << " "
-                                            << order_args << std::endl;
+                std::string docker_params = "run --rm -it -v";
+                std::string shared_in_folder = in_folder + ":/shared";
+                std::string shared_out_folder = out_folder + ":/shared_out";
+                std::string docker_image = "siggraph_2024_solver:1.0.0";
 
+                // docker build --no-cache -f Dockerfile --target siggraph_2024_solver . -t siggraph_2024_solver:1.0.0
 
-                QStringList args { mesh_gen_args.c_str(), concavity_args.c_str(), mesh_args.c_str(), out_args.c_str(), cond_args.c_str(), solution_args.c_str(), order_args.c_str() };
+                // run --rm -it -v .\simulations:/shared siggraph_2024_solver:1.0.0
+                // /bin/bash -c "./VEM_2D_SOLVER MeshGenerator:uint=1 MeshOFF_Aggregated_FilePath:string=/shared/meshes/mesh.off ExportFolder:string=/shared/Run ComputeConditionNumber:bool=1 ProgramType:uint=0"
 
-                for (const auto& s : args) std::cout << " -- " << s.toStdString() << std::endl;
+                std::string cmd = "\"./VEM_2D_SOLVER " + mesh_gen_args + " " + concavity_args + " " + mesh_args + " " +
+                                  out_args + " " + cond_args + " " + solution_args + " " + order_args + "\"";
+
+                cmd =  "docker run --rm -v " + shared_in_folder + " -v " + shared_out_folder + " " + docker_image.c_str() + " " + "/bin/bash " +  "-c " + cmd;
+
+                std::cout << cmd << std::endl;
+
+                // QStringList args
+                // {
+                //     "run",
+                //     "--rm",
+                //     "-it",
+                //     "-v",
+                //     shard_folder.c_str(),
+                //     docker_image.c_str(),
+                //     "/bin/bash",
+                //     "-c",
+                //     cmd.c_str()
+                //     //mesh_gen_args.c_str(), concavity_args.c_str(), mesh_args.c_str(), out_args.c_str(), cond_args.c_str(), solution_args.c_str(), order_args.c_str()
+                // };
+
+                // for (const auto& s : args) std::cout << " -- " << s.toStdString() << std::endl;
 
                 process->moveToThread(QCoreApplication::instance()->thread());
 
-                process->start(QString(solver_script_path.c_str()), args);
+                process->startCommand(QString(cmd.c_str()));
 
                 process->waitForFinished();
 
-                // QString output(lprocess->readAllStandardOutput());
+                QString output(process->readAllStandardOutput());
+                QString error(process->readAllStandardError());
 
-                std::cout << process->exitCode() << std::endl;// << output.toStdString() << std::endl;
+                std::cout << process->exitCode() << std::endl;
+                std::cout << error.toStdString() << std::endl;
+                std::cout << output.toStdString() << std::endl;
             }
 
             emit (solver_completed (UINT_MAX, out_folder, out_filename));
