@@ -131,7 +131,7 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
                     class_name = d.get_parametric_mesh_class_name(d.get_parametric_mesh_class_id(class_chages.at(cc))).c_str();
 
                 QScatterSeries *s = new QScatterSeries();
-                s->setName(class_name.c_str());
+                // s->setName(class_name.c_str());
 
                 if (cc > 4)
                     s->setColor(extra_colors.at(cc-5));
