@@ -225,7 +225,7 @@ void SolverWidget::on_run_btn_clicked()
                 std::string concavity_args = "ConcavityType:uint=1";
                 std::string mesh_args = "MeshOFF_Aggregated_FilePath:string=/shared/" + filename.toStdString();
                 std::string out_args = "ExportFolder:string=" + out_mesh_folder;
-                std::string cond_args = "ComputeConditionNumber:bool=1";
+                std::string cond_args = "ComputeConditionNumber:bool=0";
                 std::string solution_args = "ProgramType:uint=" + std::to_string(solution_id);
                 std::string order_args = "VemOrder:uint=" + std::to_string(solution_order);
 
@@ -276,10 +276,14 @@ void SolverWidget::on_run_btn_clicked()
 
                 std::cout << process->exitCode() << std::endl;
                 std::cout << error.toStdString() << std::endl;
-                std::cout << output.toStdString() << std::endl;
+                std::cout << output.toStdString() << std::endl << std::flush;
 
                 if (error.length()>0)
                     ui->log_text->append(error);
+                else {
+                    std::cerr << "Error: solver crashed!" << std::endl;
+                    exit(0);
+                }
 
                 if (output.length()>0)
                     ui->log_text->append(output);

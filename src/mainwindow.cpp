@@ -837,7 +837,8 @@ void MainWindow::show_full_mesh_metrics()
     if      (min == 0) min_str = "0";
     else if (min == 1) min_str = "1";
 
-    std::string title = "All Metrics ["+min_str+", "+max_str+"]";
+    std::string title = "Metrics Rescaled in [0,1]";
+    // std::string title = "All Metrics ["+min_str+", "+max_str+"]";
     chart->setTitle(title.c_str());
 
 
@@ -925,7 +926,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
             efile.close();
 
-            ofile << errorH1/normH1 << " " << errInf << " " << errorL2 / normL2 << " " << h << " " << condA << std::endl;
+            ofile << errorH1 / normH1 << " " << errInf << " " << errorL2 / normL2 << " " << h << " " << condA << std::endl;
 
             std::string solution_filename = solution_folder + QDir::separator().toLatin1() + "Solution_Cell0Ds.csv";
             std::ifstream sfile;
@@ -1170,7 +1171,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         ui->solverResultsWidget->add_chart(chartView, labels.at(i).c_str());
     }
 
-    std::cout << "processing solution " << std::endl;
+    std::cout << "processing solution and groundtruth" << std::endl;
 
     for (uint i=0; i < dataset.get_parametric_meshes().size(); i++)
     {       
@@ -1178,108 +1179,73 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         basename = basename.substr(basename.find_last_of(QDir::separator().toLatin1())+1);
         basename = basename.substr(0, basename.find_last_of("."));
 
-        std::string filepath = folder + QString(QDir::separator()).toStdString() +
-                               basename + postfix_sol;
+        std::string filepath_gt  = folder + QString(QDir::separator()).toStdString() +
+                                   basename + postfix_gt;
+        std::string filepath_sol = folder + QString(QDir::separator()).toStdString() +
+                                   basename + postfix_sol;
 
-        std::cout << "Parsing file " << filepath << std::endl;
+        std::cout << "Parsing files " << filepath_gt << " and " << filepath_sol << std::endl;
 
-        std::ifstream in;
-        in.open(filepath.c_str());
+        std::ifstream in_gt, in_sol;
+        in_gt.open(filepath_gt.c_str());
+        in_sol.open(filepath_sol.c_str());
 
-        if (!in.is_open())
+        if (!in_gt.is_open() || !in_sol.is_open())
         {
-            std::cerr << "Error opening " << filepath << std::endl;
+            std::cerr << "Error opening " << filepath_gt << " or " << filepath_sol << std::endl;
             continue;
         }
 
-        std::vector<double> vals;
-        double val;
-
+        std::vector<double> vals_gt, vals_sol;
+        double val_gt, val_sol;
         for (uint vid=0; vid < dataset.get_parametric_mesh(i)->num_verts(); vid++)
         {
-            in >> val;
-            vals.push_back(val);
+            in_gt >> val_gt;
+            vals_gt.push_back(val_gt);
+            in_sol >> val_sol;
+            vals_sol.push_back(val_sol);
         }
 
-        cinolib::ScalarField sf (vals);
+        cinolib::ScalarField sf_gt (vals_gt);
+        cinolib::ScalarField sf_sol (vals_sol);
 
         double min = DBL_MAX, max = -DBL_MAX;
-        for (uint ii=0; ii < sf.size(); ii++)
+        for (uint ii=0; ii < sf_gt.size(); ii++)
         {
-            if (sf[ii] < min) min = sf[ii];
-            if (sf[ii] > max) max = sf[ii];
+            if (sf_gt[ii] < min)  min = sf_gt[ii];
+            if (sf_sol[ii] < min) min = sf_sol[ii];
+            if (sf_gt[ii] > max)  max = sf_gt[ii];
+            if (sf_sol[ii] > max) max = sf_sol[ii];
         }
-
         if (min != max)
-            sf.normalize_in_01();
-
-        sf.copy_to_mesh(*dataset.get_parametric_mesh(i));
-
-        ui->solverResultsWidget->add_solution_scalar_filed(sf);
-
-        for (uint vid=0; vid < dataset.get_parametric_mesh(i)->num_verts(); vid++ )
         {
-            dataset.get_parametric_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf[vid]);
-            // std::cout << dataset.get_parametric_mesh(i)->vert(vid) <<  " -- " << sf[vid] << std::endl;
+            double delta = max - min;
+            for(int i=0; i<sf_gt.rows(); ++i)
+            {
+                sf_gt[i]  = (sf_gt[i] - min) / delta;
+                sf_sol[i] = (sf_sol[i] - min) / delta;
+            }
         }
 
-        in.close();
-    }
+        sf_gt.copy_to_mesh(*ui->solverResultsWidget->get_gt_mesh(i));
+        sf_sol.copy_to_mesh(*dataset.get_parametric_mesh(i));
 
-    std::cout << "processing groundtruth " << std::endl;
-
-    for (uint i=0; i < dataset.get_parametric_meshes().size(); i++)
-    {
-        std::string basename = dataset.get_parametric_mesh_filename(i);
-        basename = basename.substr(basename.find_last_of(QDir::separator().toLatin1())+1);
-        basename = basename.substr(0, basename.find_last_of("."));
-
-        std::string filepath = folder + QString(QDir::separator()).toStdString() +
-                               basename + postfix_gt;
-
-        std::cout << "Parsing file " << filepath << std::endl;
-
-        std::ifstream in;
-        in.open(filepath.c_str());
-
-        if (!in.is_open())
-        {
-            std::cerr << "Error opening " << filepath << std::endl;
-            continue;
-        }
-
-        std::vector<double> vals;
-        double val;
-
-        for (uint vid=0; vid < dataset.get_parametric_mesh(i)->num_verts(); vid++)
-        {
-            in >> val;
-            vals.push_back(val);
-        }
-
-        cinolib::ScalarField sf (vals);
-
-        double min = DBL_MAX, max = -DBL_MAX;
-        for (uint ii=0; ii < sf.size(); ii++)
-        {
-            if (sf[ii] < min) min = sf[ii];
-            if (sf[ii] > max) max = sf[ii];
-        }
-
-        if (min != max)
-            sf.normalize_in_01();
-
-        sf.copy_to_mesh(*ui->solverResultsWidget->get_gt_mesh(i));
-
-        ui->solverResultsWidget->add_gt_scalar_filed(sf);
+        ui->solverResultsWidget->add_gt_scalar_filed(sf_gt);
+        ui->solverResultsWidget->add_solution_scalar_filed(sf_sol);
 
         for (uint vid=0; vid < ui->solverResultsWidget->get_gt_mesh(i)->num_verts(); vid++ )
         {
-            ui->solverResultsWidget->get_gt_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf[vid]);
-            // std::cout << ui->solverResultsWidget->get_gt_mesh(i)->vert(vid) <<  " -- " << sf[vid] << std::endl;
+            ui->solverResultsWidget->get_gt_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf_gt[vid]);
+            // std::cout << ui->solverResultsWidget->get_gt_mesh(i)->vert(vid) <<  " -- " << sf_gt[vid] << std::endl;
+        }
+        for (uint vid=0; vid < dataset.get_parametric_mesh(i)->num_verts(); vid++ )
+        {
+            dataset.get_parametric_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf_sol[vid]);
+            // std::cout << dataset.get_parametric_mesh(i)->vert(vid) <<  " -- " << sf_sol[vid] << std::endl;
         }
 
-        in.close();
+        in_gt.close();
+        in_sol.close();
     }
 
     // ui->solverResultsWidget->show_mesh_solution_and_groundtruth();

@@ -19,8 +19,6 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../solver/VEM_2D_SOLVER ${CMAKE_CURRENT_BINARY_DIR}/VEM_2D_SOLVER COPYONLY)
-
 find_package (OpenGL)
 
 ## qt
