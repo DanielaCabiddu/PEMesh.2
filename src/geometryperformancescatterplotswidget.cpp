@@ -267,23 +267,23 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
             std::cout << chart_views.size() << " : " << metrics_names.at(cbID2metricsID.at(i)) <<
                                                " - " << ui->y_axis_cb->itemText(j).toStdString() << std::endl;
 
-            if (ui->y_axis_cb->itemText(j).toStdString().compare("condVect") == 0)
-            {
-                QLogValueAxis *axisYlog = new QLogValueAxis();
-//                axisYlog->setBase(8.0);
-//                axisYlog->setMinorTickCount(-1);
-                axisYlog->setLabelFormat("%e");
-                axisYlog->setTitleText(ui->y_axis_cb->itemText(j).toStdString().c_str());
-                axisYlog->setMax(*std::max_element(performances.at(j).begin(), performances.at(j).end()) * 10);
+//             if (ui->y_axis_cb->itemText(j).toStdString().compare("condVect") == 0)
+//             {
+//                 QLogValueAxis *axisYlog = new QLogValueAxis();
+// //                axisYlog->setBase(8.0);
+// //                axisYlog->setMinorTickCount(-1);
+//                 axisYlog->setLabelFormat("%e");
+//                 axisYlog->setTitleText(ui->y_axis_cb->itemText(j).toStdString().c_str());
+//                 axisYlog->setMax(*std::max_element(performances.at(j).begin(), performances.at(j).end()) * 10);
 
-                std::cout << "MAX CONDVECT : " << axisYlog->max() << std::endl;
+//                 std::cout << "MAX CONDVECT : " << axisYlog->max() << std::endl;
 
-                ch->removeAxis(ch->axes().at(1));
-                ch->addAxis(axisYlog, Qt::AlignLeft);
+//                 ch->removeAxis(ch->axes().at(1));
+//                 ch->addAxis(axisYlog, Qt::AlignLeft);
 
-                for (QAbstractSeries *s : ch->series())
-                    s->attachAxis(axisYlog);
-            }
+//                 for (QAbstractSeries *s : ch->series())
+//                     s->attachAxis(axisYlog);
+//             }
 
 
             CustomizedChartView *ch_view = new CustomizedChartView();
