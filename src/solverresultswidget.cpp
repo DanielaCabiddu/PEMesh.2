@@ -228,50 +228,50 @@ void SolverResultsWidget::on_save_plots_btn_clicked()
 
 void SolverResultsWidget::change_series_color(const uint series_id)
 {
-  QLineSeries *series = static_cast<QLineSeries *>(
+    QLineSeries *series = static_cast<QLineSeries *>(
       chart_views.at(series_id)->chart()->series().at(0));
-  QPen pen = series->pen();
-  QColor prev_color = pen.brush().color();
+    QPen pen = series->pen();
+    QColor prev_color = pen.brush().color();
 
-  // QColorDialog *colorDialog = new QColorDialog(this);
-  // QColor color = colorDialog->getColor(prev_color, this, "Effect Color",
-  //                                      QColorDialog::DontUseNativeDialog);
+    // QColorDialog *colorDialog = new QColorDialog(this);
+    // QColor color = colorDialog->getColor(prev_color, this, "Effect Color",
+    //                                      QColorDialog::DontUseNativeDialog);
 
-  // if (color == nullptr)
-  //   return;
+    // if (color == nullptr)
+    //   return;
 
-  // pen.setBrush(QBrush(color)); // or just pen.setColor("red");
-  series->setPen(pen);
+    // pen.setBrush(QBrush(color)); // or just pen.setColor("red");
+    series->setPen(pen);
 }
 
 void SolverResultsWidget::on_errH1_color_btn_clicked()
 {
-  change_series_color(0);
+    change_series_color(0);
 }
 
 void SolverResultsWidget::on_errInf_color_btn_clicked()
 {
-  change_series_color(1);
+    change_series_color(1);
 }
 
 void SolverResultsWidget::on_errL2_color_btn_clicked()
 {
-  change_series_color(2);
+    change_series_color(2);
 }
 
 void SolverResultsWidget::on_hEmax_color_btn_clicked() {
-  change_series_color(3);
+    change_series_color(3);
 }
 
 void SolverResultsWidget::on_condVect_color_btn_clicked()
 {
-  change_series_color(4);
+    change_series_color(4);
 }
 
 void SolverResultsWidget::on_all_color_btn_clicked()
 {
-  for (uint i = 0; i < chart_views.size(); i++)
-    change_series_color(i);
+    for (uint i = 0; i < chart_views.size(); i++)
+        change_series_color(i);
 }
 
 void SolverResultsWidget::on_track_t_cb_stateChanged(int checked)
