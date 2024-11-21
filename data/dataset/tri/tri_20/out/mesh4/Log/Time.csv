@@ -1,0 +1,11 @@
+TotProc Type Time
+1 CreateMesh 1.44760000e-02
+1 SetVariables 1.30000000e-05
+1 ComputeGeometricProperties 2.00500000e-02
+1 CreateVEMSpace 2.53300000e-03
+1 AssembleSystem 3.21490000e-02
+1 ComputeVEMPerformance 1.11140000e-01
+1 Factorize 5.74700000e-03
+1 Solve 2.39000000e-04
+1 ComputeErrors 5.78224060e+01
+1 ExportSolution 2.21182000e-01
