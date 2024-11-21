@@ -21,6 +21,8 @@ endif()
 
 find_package (OpenGL)
 
+file(COPY ${CMAKE_SOURCE_DIR}/../data/ DESTINATION ${CMAKE_BINARY_DIR})
+
 ## qt
 
 #find_package(Qt5 REQUIRED COMPONENTS Core Widgets OpenGL Network Charts)
