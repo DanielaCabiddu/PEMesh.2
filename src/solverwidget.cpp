@@ -174,6 +174,7 @@ void SolverWidget::on_run_btn_clicked()
 
         const unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
         const unsigned int solution_order = static_cast<uint>(ui->solver_order_cb->value());
+        const bool compute_cond_number =ui->cond_number_cb->isChecked();
 
         if (solver_script_name.find('.') != std::string::npos &&
             solver_script_name.substr(solver_script_name.find_last_of(".")).compare(".m") == 0)
@@ -225,7 +226,13 @@ void SolverWidget::on_run_btn_clicked()
                 std::string concavity_args = "ConcavityType:uint=1";
                 std::string mesh_args = "MeshOFF_Aggregated_FilePath:string=/shared/" + filename.toStdString();
                 std::string out_args = "ExportFolder:string=" + out_mesh_folder;
-                std::string cond_args = "ComputeConditionNumber:bool=0";
+                std::string cond_args = "ComputeConditionNumber:bool=";
+
+                if (compute_cond_number)
+                    cond_args += std::to_string(0);
+                else
+                    cond_args += std::to_string(1);
+
                 std::string solution_args = "ProgramType:uint=" + std::to_string(solution_id);
                 std::string order_args = "VemOrder:uint=" + std::to_string(solution_order);
 
