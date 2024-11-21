@@ -234,8 +234,8 @@ void MeshMetricsGraphicWidget::show_inr()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -300,8 +300,8 @@ void MeshMetricsGraphicWidget::show_our()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -366,8 +366,8 @@ void MeshMetricsGraphicWidget::show_cir ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -432,8 +432,8 @@ void MeshMetricsGraphicWidget::show_krr ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -498,8 +498,8 @@ void MeshMetricsGraphicWidget::show_kar ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -564,8 +564,8 @@ void MeshMetricsGraphicWidget::show_apr ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -630,8 +630,8 @@ void MeshMetricsGraphicWidget::show_mia ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -696,8 +696,8 @@ void MeshMetricsGraphicWidget::show_maa ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -762,8 +762,8 @@ void MeshMetricsGraphicWidget::show_anr ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -828,8 +828,8 @@ void MeshMetricsGraphicWidget::show_vem ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -894,8 +894,8 @@ void MeshMetricsGraphicWidget::show_jac ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -960,8 +960,8 @@ void MeshMetricsGraphicWidget::show_fro ()
         set_all_color(min, max, all);
     }
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -1052,8 +1052,8 @@ void MeshMetricsGraphicWidget::show_min()
 
     set_min_color(id);
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     message = "<br><font color=\"red\">" + message + "</font>";
 
@@ -1145,8 +1145,8 @@ void MeshMetricsGraphicWidget::show_max()
 
     set_max_color(id);
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     message = "<br><font color=\"blue\">" + message + "</font>";
 
@@ -1275,8 +1275,8 @@ void MeshMetricsGraphicWidget::show_avg()
     set_min_color(id_min);
     set_max_color(id_max);
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -1404,8 +1404,8 @@ void MeshMetricsGraphicWidget::show_tri()
     set_min_color(id_min);
     set_max_color(id_max);
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -1533,8 +1533,8 @@ void MeshMetricsGraphicWidget::show_poly()
     set_min_color(id_min);
     set_max_color(id_max);
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
@@ -1674,8 +1674,8 @@ void MeshMetricsGraphicWidget::show_all()
 
     set_all_color(min, max, all);
 
-    // d->get_parametric_mesh(static_cast<uint>(curr_mesh_id))->updateGL();
-    ui->mesh_metrics_canvas->updateGL();
+    ui->mesh_metrics_canvas->clear();
+    ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
 }
