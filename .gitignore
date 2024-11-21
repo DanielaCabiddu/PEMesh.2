@@ -46,4 +46,4 @@ external/triangle/build
 solver/Parameters.ini
 solver/VEM_2D_SOLVER
 solver/VEM_2D_SOLVER
-out/
+*/out/
