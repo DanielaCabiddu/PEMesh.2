@@ -19,8 +19,6 @@ if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../solver/VEM_2D_SOLVER ${CMAKE_CURRENT_BINARY_DIR}/VEM_2D_SOLVER COPYONLY)
-
 find_package (OpenGL)
 
 ## qt
@@ -91,8 +89,13 @@ if (NOT BOOST_FOUND AND MSVC)
             COMMAND ${VCPKG_EXEC} install boost --triplet x64-windows-static --recurse
             WORKING_DIRECTORY ${VCPKG_ROOT})
 
+        execute_process(
+            COMMAND ${VCPKG_EXEC} install metis --triplet x64-windows-static --recurse
+            WORKING_DIRECTORY ${VCPKG_ROOT})
+
         message ("Setting Boost MACROS")
-        set (Boost_INCLUDE_DIRS "${VCPKG_ROOT}/installed/x64-windows/include" )
+        set (Boost_INCLUDE_DIRS "${VCPKG_ROOT}/installed/x64-windows-static/include" )
+        set (Metis_INCLUDE_DIRS "${VCPKG_ROOT}/installed/x64-windows-static/include" )
         message (${Boost_INCLUDE_DIRS})
 
     endif()
@@ -147,6 +150,12 @@ if (USE_METIS)
         set(METIS_LIB /Users/tommy/local/lib/libmetis.a)
         set(GKLIB_DIR /Users/tommy/local/include)
         set(GKLIB_LIB /Users/tommy/local/lib/libGKlib.a)
+    else() ## MSVC
+        set(METIS_DIR ${Metis_INCLUDE_DIRS})
+        set(METIS_LIB ${Metis_INCLUDE_DIRS}/../lib/metis.lib)
+        set(GKLIB_DIR ${Metis_INCLUDE_DIRS}/GKlib/)
+        set(GKLIB_LIB ${Metis_INCLUDE_DIRS}/../lib/GKlib.lib)
+
     endif()
     include_directories (BEFORE ${METIS_DIR})
     include_directories (BEFORE ${GKLIB_DIR})
@@ -156,8 +165,8 @@ endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-FILE (GLOB HEADERS *.h meshes/*.h)
-FILE (GLOB SOURCES *.cpp meshes/*.cpp)
+FILE (GLOB HEADERS *.h meshes/*.h #[[gui-opengl/*.h]])
+FILE (GLOB SOURCES *.cpp meshes/*.cpp #[[gui-opengl/*.cpp]])
 FILE (GLOB GUI *.ui *.qrc)
 
 qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB})
