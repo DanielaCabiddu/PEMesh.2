@@ -374,7 +374,6 @@ void MainWindow::show_mesh_metrics()
         axisX->setTickCount(metrics.size());  // <--
         axisX->setLabelFormat("%d"); // <--
 
-
         ui->metricsWidget->add_chart(chartView);
     }
 
@@ -873,8 +872,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
     const std::string postfix_sol = "-VEM-sol.txt";
     const std::string postfix_gt = "-GROUND-TRUTH-sol.txt";
-
-    const std::string filepath = folder + QString(QDir::separator()).toStdString() + filename;
+    const std::string filepath = folder + QString(QDir::separator()).toStdString() + filename; // global_stats.txt
 
     if (solution_id == UINT_MAX)
     {
@@ -888,70 +886,61 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         for (QString subf : oDirList)
         {
             std::string folder_name = folder + QDir::separator().toLatin1() + subf.toStdString();
-
             std::cout << folder_name << std::endl;
+            std::string solution_folder = folder_name     + QDir::separator().toLatin1() + "Solution";
 
-            std::string solution_folder = folder_name + QDir::separator().toLatin1() + "Solution";
+            // print the content of "Errors.csv" to "global_stats.txt"
+
             std::string output_filename = solution_folder + QDir::separator().toLatin1() + "Errors.csv";
 
             std::ifstream efile;
             efile.open(output_filename);
-
             std::string line;
             std::getline(efile, line); // header
             std::getline(efile, line); // values
 
             std::stringstream lline (line);
-
             std::string esegment;
             std::vector<std::string> seglist;
 
             while (std::getline(lline, esegment, ';'))
             {
                 seglist.push_back(esegment);
-                // std::cout << "ES" << esegment << std::endl;
             }
 
-            double VemOrder, Cell2Ds, Dofs, h, errorL2, errorH1, normL2, normH1, errInf, nnzA, condA;
-            VemOrder = std::stod(seglist.at(0));
-            Cell2Ds = std::stod(seglist.at(1));
-            Dofs = std::stod(seglist.at(2));
-            h = std::stod(seglist.at(3));
-            errorL2 = std::stod(seglist.at(4));
-            errorH1 = std::stod(seglist.at(5));
-            normL2 = std::stod(seglist.at(6));
-            normH1 = std::stod(seglist.at(7));
-            errInf = std::stod(seglist.at(8));
-            nnzA = std::stod(seglist.at(9));
-            condA = std::stod(seglist.at(10));;
+            double global_h      = std::stod(seglist.at(3));
+            double global_errL2  = std::stod(seglist.at(4));
+            double global_errH1  = std::stod(seglist.at(5));
+            double global_normL2 = std::stod(seglist.at(6));
+            double global_normH1 = std::stod(seglist.at(7));
+            double global_errInf = std::stod(seglist.at(8));
+            double global_condA  = std::stod(seglist.at(10));
 
             efile.close();
 
-            ofile << errorH1 / normH1 << " " << errInf << " " << errorL2 / normL2 << " " << h << " " << condA << std::endl;
+            ofile << global_errH1 / global_normH1 << " " << global_errInf << " "
+                  << global_errL2 / global_normL2 << " " << global_h << " " << global_condA << std::endl;
+
+            // print the content of "Solution_Cell0Ds.csv" to sol_file and gt_file
 
             std::string solution_filename = solution_folder + QDir::separator().toLatin1() + "Solution_Cell0Ds.csv";
             std::ifstream sfile;
             sfile.open(solution_filename);
             std::getline(sfile, line);
 
-            const std::string vem_filepath = folder + QString(QDir::separator()).toStdString() + folder_name.substr(folder_name.find_last_of(QDir::separator().toLatin1())+1) + postfix_sol;
-            std::ofstream vemfile;
-            vemfile.open(vem_filepath);
-
-            std::cout << vem_filepath << std::endl;
+            const std::string sol_filepath = folder + QString(QDir::separator()).toStdString() + folder_name.substr(folder_name.find_last_of(QDir::separator().toLatin1())+1) + postfix_sol;
+            std::ofstream solfile;
+            solfile.open(sol_filepath);
+            std::cout << sol_filepath << std::endl;
 
             const std::string gt_filepath = folder + QString(QDir::separator()).toStdString() + folder_name.substr(folder_name.find_last_of(QDir::separator().toLatin1())+1) + postfix_gt;
             std::ofstream gtfile;
             gtfile.open(gt_filepath);
-
             std::cout << gt_filepath << std::endl;
-
-            // double Id, X, Y, Z, num_solution, ext_solution;
 
             while (std::getline(sfile , line))
             {
                 std::stringstream lline (line);
-
                 std::string sssegment;
                 std::vector<std::string> ssseglist;
 
@@ -960,41 +949,39 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                     ssseglist.push_back(sssegment);
                 }
 
-                vemfile << ssseglist.at(4) << std::endl;
+                solfile << ssseglist.at(4) << std::endl;
                 gtfile << ssseglist.at(5) << std::endl;
             }
 
             sfile.close();
-            vemfile.close();
+            solfile.close();
             gtfile.close();
+
+            // copy the content of "Solution_Cell2Ds.csv" to errh1_scalar_field and errl2_scalar_field
 
             solution_filename = solution_folder + QDir::separator().toLatin1() + "Solution_Cell2Ds.csv";
             sfile.open(solution_filename);
             std::getline(sfile, line);
 
-            // double Id, errL2, errH1, normL2, normH1;
-
             std::vector<double> errH1_normH1s, errL2_normL2s;
-
             while (std::getline(sfile , line))
             {
                 std::stringstream lline (line);
-
                 std::string sssegment;
                 std::vector<std::string> ssseglist;
-
                 while (std::getline(lline, sssegment, ';'))
                 {
                     ssseglist.push_back(sssegment);
                 }
 
-                double errL2 = std::stod(ssseglist.at(1));
-                double errH1 = std::stod(ssseglist.at(2));
-                double normL2 = std::stod(ssseglist.at(3));
-                double normH1 = std::stod(ssseglist.at(4));
+                double local_errL2  = std::stod(ssseglist.at(1));
+                double local_errH1  = std::stod(ssseglist.at(2));
+                // double local_normL2 = std::stod(ssseglist.at(3));
+                // double local_normH1 = std::stod(ssseglist.at(4));
 
-                errH1_normH1s.push_back(errH1/* / normH1*/);
-                errL2_normL2s.push_back(errL2/* / normL2*/);
+                errH1_normH1s.push_back(local_errH1/* / local_normH1*/);
+                errL2_normL2s.push_back(local_errL2/* / local_normL2*/);
+                // I do not normalize the errors because I am normalizing the whole field in [0,1] later
             }
 
             sfile.close();
@@ -1003,8 +990,10 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             sf_errH1.normalize_in_01();
             sf_errL2.normalize_in_01();
 
-            ui->solverResultsWidget->add_errh1_scalar_filed(sf_errH1);
-            ui->solverResultsWidget->add_errl2_scalar_filed(sf_errL2);
+            ui->solverResultsWidget->add_errh1_scalar_field(sf_errH1);
+            ui->solverResultsWidget->add_errl2_scalar_field(sf_errL2);
+
+            // copy the content of "Cell2Ds_VEMPerformance.csv" to Cond_scalar_field
 
             solution_filename = solution_folder + QDir::separator().toLatin1() + "Cell2Ds_VEMPerformance.csv";
             sfile.open(solution_filename);
@@ -1015,34 +1004,31 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             while (std::getline(sfile , line))
             {
                 std::stringstream lline (line);
-
                 std::string sssegment;
                 std::vector<std::string> ssseglist;
-
                 while (std::getline(lline, sssegment, ';'))
                 {
                     ssseglist.push_back(sssegment);
                 }
 
-                double PiNabla_Cond = std::stod(ssseglist.at(3));
-                double Pi0k_Cond = std::stod(ssseglist.at(4));
+                double local_PiNabla_Cond = std::stod(ssseglist.at(3));
+                double local_Pi0k_Cond    = std::stod(ssseglist.at(4));
 
-                PIN_conds.push_back(PiNabla_Cond);
-                PIZ_conds.push_back(Pi0k_Cond);
+                PIN_conds.push_back(local_PiNabla_Cond);
+                PIZ_conds.push_back(local_Pi0k_Cond);
             }
 
             sfile.close();
 
             cinolib::ScalarField sf_Cond (PIN_conds);
             sf_Cond.normalize_in_01();
-            ui->solverResultsWidget->add_Cond_scalar_filed(sf_Cond);
+            ui->solverResultsWidget->add_Cond_scalar_field(sf_Cond);
         }
 
         ofile.close();
     }
 
     std::cout << "processing " << filepath << std::endl;
-
 
     std::ifstream in;
     in.open(filepath.c_str());
@@ -1231,8 +1217,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         sf_gt.copy_to_mesh(*ui->solverResultsWidget->get_gt_mesh(i));
         sf_sol.copy_to_mesh(*dataset.get_parametric_mesh(i));
 
-        ui->solverResultsWidget->add_gt_scalar_filed(sf_gt);
-        ui->solverResultsWidget->add_solution_scalar_filed(sf_sol);
+        ui->solverResultsWidget->add_gt_scalar_field(sf_gt);
+        ui->solverResultsWidget->add_solution_scalar_field(sf_sol);
 
         for (uint vid=0; vid < ui->solverResultsWidget->get_gt_mesh(i)->num_verts(); vid++ )
         {
