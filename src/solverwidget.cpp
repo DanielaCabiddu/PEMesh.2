@@ -243,6 +243,9 @@ void SolverWidget::on_run_btn_clicked()
 
                 std::cout << cmd << std::endl;
 
+                ui->log_text->append(cmd.c_str());
+
+
                 // QStringList args
                 // {
                 //     "run",
@@ -271,6 +274,14 @@ void SolverWidget::on_run_btn_clicked()
                 std::cout << process->exitCode() << std::endl;
                 std::cout << error.toStdString() << std::endl;
                 std::cout << output.toStdString() << std::endl;
+
+                if (error.length()>0)
+                    ui->log_text->append(error);
+
+                if (output.length()>0)
+                    ui->log_text->append(output);
+
+                QApplication::processEvents();
             }
 
             emit (solver_completed (UINT_MAX, out_folder, out_filename));
