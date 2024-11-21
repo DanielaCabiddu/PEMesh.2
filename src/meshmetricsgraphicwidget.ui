@@ -6,22 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>808</width>
-    <height>816</height>
+    <width>814</width>
+    <height>740</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="1">
+   <item row="3" column="0">
+    <widget class="QLabel" name="mesh_number_label">
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="margin">
+      <number>8</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
     <widget class="QSlider" name="mesh_metrics_slider">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
+   <item row="0" column="2" rowspan="4">
     <widget class="QFrame" name="frame">
      <property name="minimumSize">
       <size>
@@ -215,23 +231,14 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="mesh_number_label">
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="scaledContents">
+   <item row="2" column="0" colspan="2">
+    <widget class="QLineEdit" name="colorbar">
+     <property name="readOnly">
       <bool>true</bool>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="margin">
-      <number>8</number>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="0" column="0" rowspan="2" colspan="2">
     <widget class="cinolib::GLcanvasOld" name="mesh_metrics_canvas" native="true"/>
    </item>
   </layout>

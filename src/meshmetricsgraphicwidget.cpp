@@ -78,6 +78,7 @@ MeshMetricsGraphicWidget::MeshMetricsGraphicWidget(QWidget *parent) :
     ui->min_rb->hide();
     ui->max_rb->hide();
     ui->avg_rb->hide();
+
 }
 
 MeshMetricsGraphicWidget::~MeshMetricsGraphicWidget()
@@ -149,6 +150,11 @@ void MeshMetricsGraphicWidget::set_max_color(const uint i)
 
 void MeshMetricsGraphicWidget::set_all_color(const double min, const double max, const std::vector<double> all)
 {
+
+    QRectF rect = QRectF (ui->colorbar->rect());
+
+    QLinearGradient colorGradient = QLinearGradient(rect.topLeft(), rect.topRight());
+
     uint n_polys = mesh_with_metrics.at(0)->num_polys();
     uint n_colors = n_polys < 100 ? n_polys : 100;
     for (uint pid=0; pid < n_polys; ++pid) {
@@ -157,7 +163,15 @@ void MeshMetricsGraphicWidget::set_all_color(const double min, const double max,
         cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(scaled_quality * (n_colors-1)));
         // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(scaled_quality);
         mesh_with_metrics.at(0)->poly_data(pid).color = c;
+
+        colorGradient.setColorAt(scaled_quality, QColor(c.r * 255, c.g * 255, c.b * 255));
     }
+
+    QBrush colorGradiantBrush = QBrush(colorGradient);
+
+    QPalette palette = ui->colorbar->palette();
+    palette.setBrush(QPalette::Base, colorGradiantBrush);
+    ui->colorbar->setPalette(palette);
 }
 
 void MeshMetricsGraphicWidget::show_inr()

@@ -1248,10 +1248,11 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         in_sol.close();
     }
 
-    // ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
-
     ui->tab_widgets->setTabEnabled(3, true);
     ui->tab_widgets->setCurrentIndex(3);
+
+    ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
+
 }
 
 void MainWindow::on_tab_widgets_currentChanged(int index)
