@@ -72,6 +72,8 @@ private slots:
 
     void on_actionAbout_triggered();
 
+    void disable_all_tabs();
+
 private:
     Ui::MainWindow *ui;
 

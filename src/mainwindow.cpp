@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_mesh_metrics()));
     connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_full_mesh_metrics()));
+    connect(ui->datasetWidget, SIGNAL (mirrored()), this, SLOT(disable_all_tabs()));
     connect(ui->metricsWidget, SIGNAL (sort_geometric_qualities(const uint)), this, SLOT(show_sorted_mesh_metrics(const uint)));
     connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_mesh_metrics()));
     connect(ui->metricsWidget, SIGNAL (show_unsorted_metrics()), this, SLOT(show_full_mesh_metrics()));
@@ -1370,6 +1371,12 @@ void MainWindow::on_actionReset_triggered()
 
 }
 
+void MainWindow::disable_all_tabs()
+{
+    for (int i=1; i < ui->tab_widgets->count()-1; i++)
+        ui->tab_widgets->setTabEnabled(i, false);
+}
+
 
 void MainWindow::on_actionSaveAll_triggered()
 {
@@ -1387,4 +1394,6 @@ void MainWindow::on_actionAbout_triggered()
     LicenceDialog dialog;
     dialog.exec();
 }
+
+
 

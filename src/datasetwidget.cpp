@@ -1673,6 +1673,8 @@ void DatasetWidget::on_mirroring_btn_clicked()
 
     ui->mirroring_btn->setEnabled(true);
     ui->save_btn->setEnabled(true);
+
+    emit (mirrored());
 }
 
 void DatasetWidget::on_show_coords_cb_stateChanged(int checked)

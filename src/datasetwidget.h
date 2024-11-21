@@ -116,6 +116,7 @@ private slots:
 
   void computed_mesh_metrics();
   void computed_parametric_dataset();
+  void mirrored();
 
   void sort_geometric_qualities(const uint id);
 
