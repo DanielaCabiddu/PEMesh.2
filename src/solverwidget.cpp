@@ -94,6 +94,9 @@ void SolverWidget::show_parametric_mesh(int index)
     // ui->canvas->push_obj(p, update_scene);
     // ui->canvas->updateGL();
 
+    ui->canvas->clear();
+    ui->canvas->add_mesh(*p, false);
+
     drawable_polys.push_back(p);
 
     update_scene = false;

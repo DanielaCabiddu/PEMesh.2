@@ -47,7 +47,7 @@
          <bool>true</bool>
         </property>
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <widget class="QFrame" name="frame_2">
          <property name="sizePolicy">
@@ -57,10 +57,10 @@
           </sizepolicy>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::Shape::StyledPanel</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="0">
@@ -80,7 +80,7 @@
            </widget>
           </item>
           <item row="0" column="0" colspan="2">
-           <widget class="cinolib::GLcanvas" name="canvas" native="true">
+           <widget class="cinolib::GLcanvasOld" name="canvas" native="true">
             <property name="minimumSize">
              <size>
               <width>475</width>
@@ -104,7 +104,7 @@
              <number>1</number>
             </property>
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -140,10 +140,10 @@
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::Shape::StyledPanel</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
@@ -383,15 +383,15 @@
     <string>OpenMesh</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::TextHeuristicRole</enum>
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
   </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>cinolib::GLcanvas</class>
+   <class>cinolib::GLcanvasOld</class>
    <extends>QWidget</extends>
-   <header location="global">gui-opengl/glcanvas.h</header>
+   <header location="global">gui-opengl/glcanvas_old.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

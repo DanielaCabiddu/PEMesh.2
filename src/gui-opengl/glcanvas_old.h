@@ -33,8 +33,8 @@
 *     16149 Genoa,                                                              *
 *     Italy                                                                     *
 *********************************************************************************/
-#ifndef CINO_GLCANVAS_H
-#define CINO_GLCANVAS_H
+#ifndef CINO_GLcanvasOld_H
+#define CINO_GLcanvasOld_H
 
 #ifdef CINOLIB_USES_OPENGL
 #ifdef CINOLIB_USES_QT
@@ -90,12 +90,12 @@ struct Trackball
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-class GLcanvas : public QOpenGLWidget 
+class GLcanvasOld : public QOpenGLWidget
 {
     public:
 
-        explicit GLcanvas(QWidget * parent = 0);
-        ~GLcanvas();
+        explicit GLcanvasOld(QWidget * parent = 0);
+        ~GLcanvasOld();
 
         //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -181,13 +181,13 @@ class GLcanvas : public QOpenGLWidget
         // these callbacks can be used to execute external code when mouse and keyboard
         // events occurr (e.g. for picking, drawing). If defined, they will be called
         // **before** the internal event handlers
-        std::function<void(GLcanvas *canvas, QKeyEvent   *event)> callback_key_press;
-        std::function<void(GLcanvas *canvas, QMouseEvent *event)> callback_mouse_double_click;
-        std::function<void(GLcanvas *canvas, QMouseEvent *event)> callback_mouse_press;
-        std::function<void(GLcanvas *canvas, QMouseEvent *event)> callback_mouse_release;
-        std::function<void(GLcanvas *canvas, QMouseEvent *event)> callback_mouse_move;
-        std::function<void(GLcanvas *canvas, QWheelEvent *event)> callback_wheel;
-        std::function<void(GLcanvas *canvas, QTimerEvent *event)> callback_timer;
+        std::function<void(GLcanvasOld *canvas, QKeyEvent   *event)> callback_key_press;
+        std::function<void(GLcanvasOld *canvas, QMouseEvent *event)> callback_mouse_double_click;
+        std::function<void(GLcanvasOld *canvas, QMouseEvent *event)> callback_mouse_press;
+        std::function<void(GLcanvasOld *canvas, QMouseEvent *event)> callback_mouse_release;
+        std::function<void(GLcanvasOld *canvas, QMouseEvent *event)> callback_mouse_move;
+        std::function<void(GLcanvasOld *canvas, QWheelEvent *event)> callback_wheel;
+        std::function<void(GLcanvasOld *canvas, QTimerEvent *event)> callback_timer;
 
         // set any of these to true to disable default event handler and use callbacks only
         bool skip_default_keypress_handler           = false;
@@ -239,11 +239,11 @@ class GLcanvas : public QOpenGLWidget
 
 }
 
-#ifndef  CINO_STATIC_LIB
-#include "glcanvas.cpp"
+#ifndef STATIC_LIB
+#include "glcanvas_old.cpp"
 #endif
 
 #endif // #ifdef CINOLIB_USES_QT
 #endif // #ifdef CINOLIB_USES_OPENGL
 
-#endif // CINO_GLCANVAS_H
+#endif // CINO_GLcanvasOld_H

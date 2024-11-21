@@ -1169,7 +1169,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
     do
     {
         dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
-                                                        "/tmp",
+                                                        QCoreApplication::applicationDirPath(),
                                                         QFileDialog::ShowDirsOnly
                                                         | QFileDialog::DontResolveSymlinks);
         if (dir.isNull())

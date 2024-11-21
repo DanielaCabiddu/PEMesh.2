@@ -17,7 +17,7 @@
    <item row="2" column="1">
     <widget class="QSlider" name="mesh_metrics_slider">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -36,10 +36,10 @@
       </size>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -141,7 +141,7 @@
       <item>
        <widget class="Line" name="line">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -205,7 +205,7 @@
       <item>
        <widget class="Line" name="line_2">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -232,15 +232,15 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
-    <widget class="cinolib::GLcanvas" name="mesh_metrics_canvas" native="true"/>
+    <widget class="cinolib::GLcanvasOld" name="mesh_metrics_canvas" native="true"/>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>cinolib::GLcanvas</class>
+   <class>cinolib::GLcanvasOld</class>
    <extends>QWidget</extends>
-   <header location="global">gui-opengl/glcanvas.h</header>
+   <header location="global">gui-opengl/glcanvas_old.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

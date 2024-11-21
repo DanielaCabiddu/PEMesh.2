@@ -33,7 +33,7 @@
 *     16149 Genoa,                                                              *
 *     Italy                                                                     *
 *********************************************************************************/
-#include "glcanvas.h"
+#include "glcanvas_old.h"
 #include "qpainter.h"
 #include <cinolib/cino_inline.h>
 #include <cinolib/gl/draw_sphere.h>
@@ -52,8 +52,10 @@
 #include <QMimeData>
 
 #ifdef WIN32
-#include <GL/GLU.h>
-#include <GL/GL.h>
+#define NOMINMAX
+#include <windows.h>
+#include <gl\gl.h>
+#include <gl\glu.h>
 #elif __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -68,7 +70,7 @@ namespace cinolib
 {
 
 CINO_INLINE
-GLcanvas::GLcanvas(QWidget *parent) : QOpenGLWidget (parent)
+GLcanvasOld::GLcanvasOld(QWidget *parent) : QOpenGLWidget (parent)
 {
     make_popup_menu();
     setFocusPolicy(Qt::StrongFocus);
@@ -104,7 +106,7 @@ GLcanvas::GLcanvas(QWidget *parent) : QOpenGLWidget (parent)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-GLcanvas::~GLcanvas()
+GLcanvasOld::~GLcanvasOld()
 {
     pop_all_markers();
     delete popup;
@@ -113,7 +115,7 @@ GLcanvas::~GLcanvas()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::initializeGL()
+void GLcanvasOld::initializeGL()
 {
     makeCurrent();
     glEnable(GL_LIGHT0);
@@ -132,7 +134,7 @@ void GLcanvas::initializeGL()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::resizeGL(int w, int h)
+void GLcanvasOld::resizeGL(int w, int h)
 {
     makeCurrent();
     update_projection_matrix();
@@ -143,7 +145,7 @@ void GLcanvas::resizeGL(int w, int h)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::paintGL()
+void GLcanvasOld::paintGL()
 {
     // --------------- NATIVE OPEN GL RENDERING ---------------- //
 
@@ -181,7 +183,7 @@ void GLcanvas::paintGL()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::update_projection_matrix()
+void GLcanvasOld::update_projection_matrix()
 {
     makeCurrent();
     glMatrixMode(GL_PROJECTION);
@@ -207,7 +209,7 @@ void GLcanvas::update_projection_matrix()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::translate(const vec3d & t)
+void GLcanvasOld::translate(const vec3d & t)
 {
     makeCurrent();
     glLoadIdentity();
@@ -219,7 +221,7 @@ void GLcanvas::translate(const vec3d & t)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::scale(const double x, const double y, const double z)
+void GLcanvasOld::scale(const double x, const double y, const double z)
 {
     if(trackball.mode_2d) return; // disable scaling in 2D mode
 
@@ -248,7 +250,7 @@ void GLcanvas::scale(const double x, const double y, const double z)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::zoom(const double angle)
+void GLcanvasOld::zoom(const double angle)
 {   
     trackball.zoom_persp += angle;
     trackball.zoom_ortho += angle*0.01;
@@ -265,7 +267,7 @@ void GLcanvas::zoom(const double angle)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::rotate(const vec3d & axis, const double angle)
+void GLcanvasOld::rotate(const vec3d & axis, const double angle)
 {
     if(trackball.mode_2d) return; // disable rotations in 2D mode
 
@@ -294,7 +296,7 @@ void GLcanvas::rotate(const vec3d & axis, const double angle)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::keyPressEvent(QKeyEvent *event)
+void GLcanvasOld::keyPressEvent(QKeyEvent *event)
 {
     if(callback_key_press) callback_key_press(this, event);
     if(skip_default_keypress_handler) return;
@@ -320,7 +322,7 @@ void GLcanvas::keyPressEvent(QKeyEvent *event)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::mouseDoubleClickEvent(QMouseEvent *event)
+void GLcanvasOld::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if(callback_mouse_double_click) callback_mouse_double_click(this, event);
     if(skip_default_mouse_double_click_handler) return;
@@ -338,7 +340,7 @@ void GLcanvas::mouseDoubleClickEvent(QMouseEvent *event)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::mousePressEvent(QMouseEvent *event)
+void GLcanvasOld::mousePressEvent(QMouseEvent *event)
 {
     if(callback_mouse_press) callback_mouse_press(this, event);
     if(skip_default_mouse_press_handler) return;
@@ -359,7 +361,7 @@ void GLcanvas::mousePressEvent(QMouseEvent *event)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::mouseReleaseEvent(QMouseEvent *event)
+void GLcanvasOld::mouseReleaseEvent(QMouseEvent *event)
 {
     if(callback_mouse_release) callback_mouse_release(this, event);
     if(skip_default_mouse_release_handler) return;
@@ -369,7 +371,7 @@ void GLcanvas::mouseReleaseEvent(QMouseEvent *event)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::mouseMoveEvent(QMouseEvent *event)
+void GLcanvasOld::mouseMoveEvent(QMouseEvent *event)
 {
     if(callback_mouse_move) callback_mouse_move(this, event);
     if(skip_default_mouse_move_handler) return;
@@ -428,7 +430,7 @@ void GLcanvas::mouseMoveEvent(QMouseEvent *event)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::wheelEvent(QWheelEvent *event) // zoom
+void GLcanvasOld::wheelEvent(QWheelEvent *event) // zoom
 {
     if(callback_wheel) callback_wheel(this, event);
     if(skip_default_wheel_handler) return;
@@ -439,7 +441,7 @@ void GLcanvas::wheelEvent(QWheelEvent *event) // zoom
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::timerEvent(QTimerEvent *event) // refresh canvas
+void GLcanvasOld::timerEvent(QTimerEvent *event) // refresh canvas
 {
     if(callback_timer) callback_timer(this, event);
     if(skip_default_timer_handler) return;
@@ -449,7 +451,7 @@ void GLcanvas::timerEvent(QTimerEvent *event) // refresh canvas
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 CINO_INLINE
-std::string GLcanvas::serialize_POV() const
+std::string GLcanvasOld::serialize_POV() const
 {
     std::stringstream ss;
     ss << trackball.modelview[ 0] << " " << trackball.modelview[ 1] << " " << trackball.modelview[ 2] << " " << trackball.modelview[ 3] << " "
@@ -464,7 +466,7 @@ std::string GLcanvas::serialize_POV() const
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::deserialize_POV(const std::string & s)
+void GLcanvasOld::deserialize_POV(const std::string & s)
 {
     std::stringstream ss(s);
     ss >> trackball.modelview[ 0] >> trackball.modelview[ 1] >> trackball.modelview[ 2] >> trackball.modelview[ 3]
@@ -484,7 +486,7 @@ void GLcanvas::deserialize_POV(const std::string & s)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::make_popup_menu()
+void GLcanvasOld::make_popup_menu()
 {
     popup = new QMenu(this);
 
@@ -514,7 +516,7 @@ void GLcanvas::make_popup_menu()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::push_obj(const DrawableObject *obj, bool refit_scene)
+void GLcanvasOld::push_obj(const DrawableObject *obj, bool refit_scene)
 {
     if (obj==NULL) return;
     objects.push_back(obj);
@@ -525,7 +527,7 @@ void GLcanvas::push_obj(const DrawableObject *obj, bool refit_scene)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-bool GLcanvas::pop_all_occurrences_of(int type)
+bool GLcanvasOld::pop_all_occurrences_of(int type)
 {
     bool found = false;
     while (pop_first_occurrence_of(type))
@@ -538,7 +540,7 @@ bool GLcanvas::pop_all_occurrences_of(int type)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-bool GLcanvas::pop_first_occurrence_of(int type)
+bool GLcanvasOld::pop_first_occurrence_of(int type)
 {
     for(std::vector<const DrawableObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
     {
@@ -556,7 +558,7 @@ bool GLcanvas::pop_first_occurrence_of(int type)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-bool GLcanvas::pop(const DrawableObject *obj)
+bool GLcanvasOld::pop(const DrawableObject *obj)
 {
     for(std::vector<const DrawableObject*>::iterator it=objects.begin(); it!=objects.end(); ++it)
     {
@@ -572,7 +574,7 @@ bool GLcanvas::pop(const DrawableObject *obj)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::push_marker(const Marker * m)
+void GLcanvasOld::push_marker(const Marker * m)
 {
     markers.push_back(m);
 }
@@ -580,7 +582,7 @@ void GLcanvas::push_marker(const Marker * m)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::push_marker(const vec2i & p, const std::string & label, const Color & c, const uint font_size, const uint disk_size)
+void GLcanvasOld::push_marker(const vec2i & p, const std::string & label, const Color & c, const uint font_size, const uint disk_size)
 {
     Marker *l     = new Marker;
     l->p2d        = p;
@@ -594,7 +596,7 @@ void GLcanvas::push_marker(const vec2i & p, const std::string & label, const Col
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::push_marker(const vec3d & p, const std::string & label, const Color & c, const uint font_size, const uint disk_size)
+void GLcanvasOld::push_marker(const vec3d & p, const std::string & label, const Color & c, const uint font_size, const uint disk_size)
 {
     Marker *l     = new Marker;
     l->p3d        = p;
@@ -608,7 +610,7 @@ void GLcanvas::push_marker(const vec3d & p, const std::string & label, const Col
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::pop_marker()
+void GLcanvasOld::pop_marker()
 {
     delete markers.back();
     markers.pop_back();
@@ -617,7 +619,7 @@ void GLcanvas::pop_marker()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::pop_all_markers()
+void GLcanvasOld::pop_all_markers()
 {
     for(auto *ptr : markers) delete ptr;
     markers.clear();
@@ -626,7 +628,7 @@ void GLcanvas::pop_all_markers()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::set_rotation_pivot(const vec3d & new_pivot)
+void GLcanvasOld::set_rotation_pivot(const vec3d & new_pivot)
 {
     trackball.pivot = new_pivot;
 }
@@ -634,7 +636,7 @@ void GLcanvas::set_rotation_pivot(const vec3d & new_pivot)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::set_scene_center(const vec3d  & new_center,
+void GLcanvasOld::set_scene_center(const vec3d  & new_center,
                                 const double   dist_from_camera,
                                 const bool     pivot_at_center)
 {
@@ -676,7 +678,7 @@ void GLcanvas::set_scene_center(const vec3d  & new_center,
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::fit_scene()
+void GLcanvasOld::fit_scene()
 {
     vec3d center(0,0,0);
     float size  = 0.0;
@@ -706,7 +708,7 @@ void GLcanvas::fit_scene()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::updateGL()
+void GLcanvasOld::updateGL()
 {
     // schedule rendering
     update();
@@ -715,7 +717,7 @@ void GLcanvas::updateGL()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::updateGL_strict()
+void GLcanvasOld::updateGL_strict()
 {
     // force immediate rendering
     // http://doc.qt.io/qt-5/qwidget.html#repaint
@@ -725,7 +727,7 @@ void GLcanvas::updateGL_strict()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-double GLcanvas::scene_size() const
+double GLcanvasOld::scene_size() const
 {
     return trackball.scene_size;
 }
@@ -733,7 +735,7 @@ double GLcanvas::scene_size() const
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-vec3d GLcanvas::scene_center() const
+vec3d GLcanvasOld::scene_center() const
 {
     return trackball.scene_center;
 }
@@ -741,7 +743,7 @@ vec3d GLcanvas::scene_center() const
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::set_2d_mode(const bool b)
+void GLcanvasOld::set_2d_mode(const bool b)
 {
     trackball.mode_2d = b;
 }
@@ -749,7 +751,7 @@ void GLcanvas::set_2d_mode(const bool b)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::animation_start(const int period_ms)
+void GLcanvasOld::animation_start(const int period_ms)
 {
     // WARNING: for single-threaded applications that run both
     // the GUI and the algorithms in the same thread, refresh
@@ -764,7 +766,7 @@ void GLcanvas::animation_start(const int period_ms)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::animation_stop()
+void GLcanvasOld::animation_stop()
 {
     std::cout << "Stop animation timer " << timer_id << std::endl;
     killTimer(timer_id);
@@ -773,7 +775,7 @@ void GLcanvas::animation_stop()
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::animation_orbit(const vec3d & axis, const uint step)
+void GLcanvasOld::animation_orbit(const vec3d & axis, const uint step)
 {
     for(uint alpha=0; std::fabs(alpha)<360; alpha+=step)
     {
@@ -786,7 +788,7 @@ void GLcanvas::animation_orbit(const vec3d & axis, const uint step)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-int GLcanvas::height_retina() const
+int GLcanvasOld::height_retina() const
 {
     // http://doc.qt.io/qt-5/qwindow.html#devicePixelRatio
     return height() * devicePixelRatio();
@@ -795,7 +797,7 @@ int GLcanvas::height_retina() const
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-int GLcanvas::width_retina() const
+int GLcanvasOld::width_retina() const
 {
     // http://doc.qt.io/qt-5/qwindow.html#devicePixelRatio
     return width() * devicePixelRatio();
@@ -804,7 +806,7 @@ int GLcanvas::width_retina() const
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::set_clear_color(const QColor &c)
+void GLcanvasOld::set_clear_color(const QColor &c)
 {
     clear_color = c;
     updateGL();
@@ -813,7 +815,7 @@ void GLcanvas::set_clear_color(const QColor &c)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::draw_axis()
+void GLcanvasOld::draw_axis()
 {
     vec3d  O = trackball.scene_center;
     vec3d  X = trackball.scene_center + vec3d(1,0,0)*trackball.scene_size;
@@ -839,7 +841,7 @@ void GLcanvas::draw_axis()
 // Graphics Gems IV, 1993
 //
 CINO_INLINE
-void GLcanvas::map_to_sphere(const QPoint & p2d, vec3d & p3d) const
+void GLcanvasOld::map_to_sphere(const QPoint & p2d, vec3d & p3d) const
 {
     double x =  (2.0*p2d.x() - width())  / width();
     double y = -(2.0*p2d.y() - height()) / height();
@@ -855,7 +857,7 @@ void GLcanvas::map_to_sphere(const QPoint & p2d, vec3d & p3d) const
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-bool GLcanvas::read_Z_buffer(const vec2i & p2d, GLfloat & depth)
+bool GLcanvasOld::read_Z_buffer(const vec2i & p2d, GLfloat & depth)
 {
     makeCurrent(); // violates const
 
@@ -864,7 +866,7 @@ bool GLcanvas::read_Z_buffer(const vec2i & p2d, GLfloat & depth)
     //
     GLint x = p2d.x() * devicePixelRatio();
     GLint y = p2d.y() * devicePixelRatio();
-    glReadPixels(x, height_retina()-1-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+    // glReadPixels(x, height_retina()-1-y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
 
     if (depth >= 1 || depth <= 0) return false;
     return true;
@@ -873,7 +875,7 @@ bool GLcanvas::read_Z_buffer(const vec2i & p2d, GLfloat & depth)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-bool GLcanvas::unproject(const vec2i & p2d, vec3d & p3d)
+bool GLcanvasOld::unproject(const vec2i & p2d, vec3d & p3d)
 {
     GLfloat depth;
     if(!read_Z_buffer(p2d, depth))
@@ -897,7 +899,7 @@ bool GLcanvas::unproject(const vec2i & p2d, vec3d & p3d)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-bool GLcanvas::project(const vec3d & p3d, vec2i & p2d, GLdouble & depth)
+bool GLcanvasOld::project(const vec3d & p3d, vec2i & p2d, GLdouble & depth)
 {
     makeCurrent(); // violates const
 
@@ -922,7 +924,7 @@ bool GLcanvas::project(const vec3d & p3d, vec2i & p2d, GLdouble & depth)
 // true if p3d stays in front of what is currently stored in the depth buffer
 //
 CINO_INLINE
-bool GLcanvas::depth_test(const vec3d & p3d)
+bool GLcanvasOld::depth_test(const vec3d & p3d)
 {
     GLdouble depth;
     vec2i    p2d;
@@ -937,7 +939,7 @@ bool GLcanvas::depth_test(const vec3d & p3d)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::draw_helper(QPainter & painter)
+void GLcanvasOld::draw_helper(QPainter & painter)
 {
     vec2i p(10,25);
     uint  step    = 17;  // line   spacing
@@ -974,7 +976,7 @@ void GLcanvas::draw_helper(QPainter & painter)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::draw_marker(QPainter & painter, const Marker & t)
+void GLcanvasOld::draw_marker(QPainter & painter, const Marker & t)
 {
     vec2i p = t.p2d;
     if (p.x()<0) // 2D coordinates point offscreen, use the projection of 3D point instead
@@ -994,7 +996,7 @@ void GLcanvas::draw_marker(QPainter & painter, const Marker & t)
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::draw_text(QPainter & painter, const vec2i & pos, const std::string & text, const uint font_size, const Color & c)
+void GLcanvasOld::draw_text(QPainter & painter, const vec2i & pos, const std::string & text, const uint font_size, const Color & c)
 {
     if (text.empty()) return;
     painter.setPen(QColor(c.r_uchar(), c.g_uchar(), c.b_uchar()));
@@ -1005,7 +1007,7 @@ void GLcanvas::draw_text(QPainter & painter, const vec2i & pos, const std::strin
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::draw_disk(QPainter & painter, const vec2i & center, const uint radius, const Color & c)
+void GLcanvasOld::draw_disk(QPainter & painter, const vec2i & center, const uint radius, const Color & c)
 {
     if (radius<1) return;
     painter.setPen(QColor(c.r_uchar(), c.g_uchar(), c.b_uchar()));
@@ -1016,7 +1018,7 @@ void GLcanvas::draw_disk(QPainter & painter, const vec2i & center, const uint ra
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 CINO_INLINE
-void GLcanvas::reset_trackball()
+void GLcanvasOld::reset_trackball()
 {
     makeCurrent();
     glMatrixMode(GL_MODELVIEW);
@@ -1032,7 +1034,7 @@ void GLcanvas::reset_trackball()
 }
 
 CINO_INLINE
-void GLcanvas::add_mesh (const Polygonmesh<> &m, bool show_poly_color)
+void GLcanvasOld::add_mesh (const Polygonmesh<> &m, bool show_poly_color)
 {
     DrawablePolygonmesh<> *dm = new DrawablePolygonmesh<>  (m.vector_verts(), m.vector_polys());
 
@@ -1054,7 +1056,7 @@ void GLcanvas::add_mesh (const Polygonmesh<> &m, bool show_poly_color)
 }
 
 CINO_INLINE
-void GLcanvas::update_mesh (const Polygonmesh<> &m, const uint i)
+void GLcanvasOld::update_mesh (const Polygonmesh<> &m, const uint i)
 {
     DrawablePolygonmesh<> *dm = new DrawablePolygonmesh<>  (m.vector_verts(), m.vector_polys());
 
@@ -1065,7 +1067,7 @@ void GLcanvas::update_mesh (const Polygonmesh<> &m, const uint i)
 }
 
 CINO_INLINE
-void GLcanvas::clear ()
+void GLcanvasOld::clear ()
 {
     std::cout << "before: " << objects.size() << std::endl;
 
