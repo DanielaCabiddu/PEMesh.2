@@ -105,10 +105,10 @@
                <item>
                 <widget class="QCheckBox" name="cond_number_cb">
                  <property name="text">
-                  <string>Compute Conditional Number</string>
+                  <string>Compute Condition Number</string>
                  </property>
                  <property name="checked">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                 </widget>
                </item>
