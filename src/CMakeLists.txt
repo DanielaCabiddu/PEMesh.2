@@ -26,7 +26,7 @@ file(COPY ${CMAKE_SOURCE_DIR}/../data/ DESTINATION ${CMAKE_BINARY_DIR})
 ## qt
 
 #find_package(Qt5 REQUIRED COMPONENTS Core Widgets OpenGL Network Charts)
-find_package(Qt6 REQUIRED COMPONENTS Core Widgets OpenGLWidgets Gui Charts)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets OpenGLWidgets Gui Charts Core5Compat)
 
 if (MSVC)
     qt_standard_project_setup()
@@ -175,5 +175,5 @@ qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${G
 
 # qt5_use_modules(${PROJECT_NAME} Core Widgets OpenGL Network Charts)
 
-target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts OpenGL::GL OpenGL::GLU ${TRIANGLE_LIB} ${METIS_LIB} ${GKLIB_LIB})
+target_link_libraries (${PROJECT_NAME} PUBLIC Qt6::Core Qt6::OpenGL Qt6::Widgets Qt6::OpenGLWidgets Qt6::Gui Qt6::Charts Qt6::Core5Compat OpenGL::GL OpenGL::GLU ${TRIANGLE_LIB} ${METIS_LIB} ${GKLIB_LIB})
 qt_finalize_executable(${PROJECT_NAME})
