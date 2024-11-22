@@ -90,7 +90,7 @@
        <bool>false</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>false</bool>
@@ -189,9 +189,19 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
+          <widget class="QWidget" name="tab_7">
+           <attribute name="title">
+            <string>Graphical View</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <widget class="SolverResultsGraphicWidget" name="solverResultsGraphicWidget" native="true"/>
+            </item>
+           </layout>
+          </widget>
           <widget class="QWidget" name="tab_4">
            <attribute name="title">
-            <string>Performance</string>
+            <string>Performance Plots</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
@@ -323,7 +333,7 @@
   <customwidget>
    <class>MeshMetricsGraphicWidget</class>
    <extends>QWidget</extends>
-   <header>meshmetricsgraphicwidget.h</header>
+   <header location="global">meshmetricsgraphicwidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -354,6 +364,12 @@
    <class>MeshFullMetricsWidget</class>
    <extends>QWidget</extends>
    <header>meshfullmetricswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SolverResultsGraphicWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">solverresultsgraphicwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
