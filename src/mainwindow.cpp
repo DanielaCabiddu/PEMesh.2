@@ -772,9 +772,10 @@ void MainWindow::show_full_mesh_metrics()
     ui->graphicMeshMetricWidget->clean_canvas();
 
     metrics = ui->datasetWidget->get_parametric_meshes_metrics();
-    rescale_mesh_metrics(metrics);
+    std::vector<MeshMetrics> metrics_local = metrics;
+    rescale_mesh_metrics(metrics_local);
 
-    ui->graphicMeshMetricWidget->set_metrics(&metrics);
+    ui->graphicMeshMetricWidget->set_metrics(&metrics_local);
     ui->graphicMeshMetricWidget->set_slider_max(dataset.get_parametric_meshes().size()-1);
 
     ui->graphicMeshMetricWidget->show_mesh(0);
@@ -791,23 +792,23 @@ void MainWindow::show_full_mesh_metrics()
         series_mesh->setMarkerSize(5.);
         series_mesh->setPointsVisible();
 
-        for (uint m=0; m < metrics.size(); m++)
+        for (uint m=0; m < metrics_local.size(); m++)
         {
             double val_mesh = 0.0;
             switch (i)
             {
-            case 0:  { val_mesh = metrics.at(m).INR_mesh; break; }
-            case 1:  { val_mesh = metrics.at(m).OUR_mesh; break; }
-            case 2:  { val_mesh = metrics.at(m).CIR_mesh; break; }
-            case 3:  { val_mesh = metrics.at(m).KRR_mesh; break; }
-            case 4:  { val_mesh = metrics.at(m).KAR_mesh; break; }
-            case 5:  { val_mesh = metrics.at(m).APR_mesh; break; }
-            case 6:  { val_mesh = metrics.at(m).MIA_mesh; break; }
-            case 7:  { val_mesh = metrics.at(m).MAA_mesh; break; }
-            case 8:  { val_mesh = metrics.at(m).ANR_mesh; break; }
-            case 9:  { val_mesh = metrics.at(m).VEM_mesh; break; }
-            case 10: { val_mesh = metrics.at(m).JAC_mesh; break; }
-            case 11: { val_mesh = metrics.at(m).FRO_mesh; break; }
+            case 0:  { val_mesh = metrics_local.at(m).INR_mesh; break; }
+            case 1:  { val_mesh = metrics_local.at(m).OUR_mesh; break; }
+            case 2:  { val_mesh = metrics_local.at(m).CIR_mesh; break; }
+            case 3:  { val_mesh = metrics_local.at(m).KRR_mesh; break; }
+            case 4:  { val_mesh = metrics_local.at(m).KAR_mesh; break; }
+            case 5:  { val_mesh = metrics_local.at(m).APR_mesh; break; }
+            case 6:  { val_mesh = metrics_local.at(m).MIA_mesh; break; }
+            case 7:  { val_mesh = metrics_local.at(m).MAA_mesh; break; }
+            case 8:  { val_mesh = metrics_local.at(m).ANR_mesh; break; }
+            case 9:  { val_mesh = metrics_local.at(m).VEM_mesh; break; }
+            case 10: { val_mesh = metrics_local.at(m).JAC_mesh; break; }
+            case 11: { val_mesh = metrics_local.at(m).FRO_mesh; break; }
             default: std::cerr << "Invalid metric index" << std::endl;
             }
             series_mesh->append(m, val_mesh);
@@ -849,14 +850,14 @@ void MainWindow::show_full_mesh_metrics()
     chartView->setRenderHint(QPainter::Antialiasing);
     chartView->setChart(chart);
     QValueAxis *axisX = static_cast<QValueAxis *>(chart->axes(Qt::Horizontal).at(0)); // <--
-    axisX->setTickCount(metrics.size());  // <--
+    axisX->setTickCount(metrics_local.size());  // <--
     axisX->setLabelFormat("%d"); // <--
 
     ui->metricsWidget->add_chart(chartView);
 
     ui->meshFullMetricsWidget->add_chart(chartView);
 
-    ui->scatterPlotsGGWidget->create_scatterPlots(dataset, metrics);
+    ui->scatterPlotsGGWidget->create_scatterPlots(dataset, metrics_local);
 }
 
 void MainWindow::show_solver_results(const uint solution_id, const std::string folder, const std::string filename)
@@ -1084,34 +1085,16 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         QChart *chart = new QChart();
         QLineSeries *series = new QLineSeries();
 
-////          TOMMY
-//        std::vector<std::pair<double,double>> pairs;
-//        auto m = dataset.get_parametric_meshes_metrics();
-//        if(m.size()!=0)
-//        {
-//            for (uint v=0; v < errs.at(i).size(); v++)
-//            {
-//                double e = std::min(m.at(v).MAA_min, m.at(v).MAA_poly_min);
-//                pairs.push_back(std::pair<double,double> (e, errs.at(i).at(v)));
-//            }
-//            sort(pairs.begin(), pairs.end());
-
-//            for(uint i=0; i<pairs.size(); i++)
-//                series->append(pairs.at(i).first, pairs.at(i).second);
-//        }
-//        else
+        for (uint v=0; v < errs.at(i).size(); v++)
         {
-            for (uint v=0; v < errs.at(i).size(); v++)
-            {
-    //            if (!range_adapt)
-                    series->append(v, errs.at(i).at(v));
-    //            else
-    //                series->append(v, errs.at(i).at(v)*fact);
-            }
+//            if (!range_adapt)
+                series->append(v, errs.at(i).at(v));
+//            else
+//                series->append(v, errs.at(i).at(v)*fact);
         }
 
         for (uint v=0; v < errs.at(i).size(); v++)
-            std::cout << series->at(static_cast<int>(v)).y() << std::endl;
+            std::cout << series->at(static_cast<int>(v)).x() << ", " << series->at(static_cast<int>(v)).y() << std::endl;
         std::cout << std::endl;
 
         series->setPointsVisible(true);
@@ -1122,11 +1105,11 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 //            y_axis_title = /*QString(labels.at(i).c_str()) + */ "*" + QString(str_fact.c_str());
 
         QValueAxis *axisX = new QValueAxis();
-        axisX->setLabelFormat("%f");
+        axisX->setLabelFormat("%d");
         chart->addAxis(axisX, Qt::AlignBottom);
 
         QValueAxis *axisY = new QValueAxis();
-        axisY->setLabelFormat("%e");
+        axisY->setLabelFormat("%4.3f");
         axisY->setTitleText(y_axis_title);
         chart->addAxis(axisY, Qt::AlignLeft);
 

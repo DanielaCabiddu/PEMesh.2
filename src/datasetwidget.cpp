@@ -1146,19 +1146,24 @@ void DatasetWidget::on_load_polys_btn_clicked()
 
         selected_poly.class_name = class_name;
         selected_poly.filename = fname;
+        selected_poly.class_type = className2classId.find(selected_poly.class_name)->second;
 
         if (fname.compare("NONE") != 0)
         {
             selected_poly.mesh = new cinolib::Polygonmesh<> (fname.c_str());
-            selected_poly.class_type = 8;
+            // selected_poly.class_type = 8;
         }
 
         add_polygon(selected_poly, cinolib::vec2d(x,y), rot, fact);
     }
 
+    ui->canvas->updateGL();
+
     infile.close();
 
     ui->load_meshes_btn->setEnabled(false);
+    ui->load_mesh_btn->setEnabled(false);
+    ui->generate_dataset_btn->setEnabled(true);
 }
 
 void DatasetWidget::on_load_meshes_btn_clicked()
