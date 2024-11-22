@@ -36,6 +36,8 @@
 #include "dataset.h"
 
 #include <QProcess>
+#include <QTextCharFormat>
+
 #include <QWidget>
 
 namespace Ui {
@@ -63,7 +65,7 @@ Q_SIGNALS:
 public slots:
 
     void show_parametric_mesh (int);
-    void update_log ();
+    void update_log (const QString text);
 
 private slots:
     void on_t_slider_valueChanged(int value);
@@ -84,6 +86,9 @@ private:
     std::vector<cinolib::Polygonmesh<> *> drawable_polys;
 
     QProcess *process = nullptr;
+
+    void parseEscapeSequence(int attribute, QListIterator< QString > & i, QTextCharFormat & textCharFormat, QTextCharFormat const & defaultTextCharFormat);
+
 };
 
 #endif // SOLVERWIDGET_H
