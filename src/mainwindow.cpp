@@ -861,12 +861,12 @@ void MainWindow::show_full_mesh_metrics()
 
 void MainWindow::show_solver_results(const uint solution_id, const std::string folder, const std::string filename)
 {
-    ui->solverResultsWidget->set_dataset(&dataset);
+    ui->solverResultsGraphicWidget->set_dataset(&dataset);
     ui->solverResultsWidget->clean_charts();
 
     if (solution_id < UINT_MAX)
     {
-        ui->solverResultsWidget->set_solution_id(solution_id);
+        ui->solverResultsGraphicWidget->set_solution_id(solution_id);
         ui->scatterPlotsGPWidget->set_solution_id(solution_id);
     }
 
@@ -990,8 +990,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             sf_errH1.normalize_in_01();
             sf_errL2.normalize_in_01();
 
-            ui->solverResultsWidget->add_errh1_scalar_field(sf_errH1);
-            ui->solverResultsWidget->add_errl2_scalar_field(sf_errL2);
+            ui->solverResultsGraphicWidget->add_errh1_scalar_field(sf_errH1);
+            ui->solverResultsGraphicWidget->add_errl2_scalar_field(sf_errL2);
 
             // copy the content of "Cell2Ds_VEMPerformance.csv" to Cond_scalar_field
 
@@ -1022,7 +1022,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
             cinolib::ScalarField sf_Cond (PIN_conds);
             sf_Cond.normalize_in_01();
-            ui->solverResultsWidget->add_Cond_scalar_field(sf_Cond);
+            ui->solverResultsGraphicWidget->add_Cond_scalar_field(sf_Cond);
         }
 
         ofile.close();
@@ -1196,15 +1196,15 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             }
         }
 
-        sf_gt.copy_to_mesh(*ui->solverResultsWidget->get_gt_mesh(i));
+        sf_gt.copy_to_mesh(*ui->solverResultsGraphicWidget->get_gt_mesh(i));
         sf_sol.copy_to_mesh(*dataset.get_parametric_mesh(i));
 
-        ui->solverResultsWidget->add_gt_scalar_field(sf_gt);
-        ui->solverResultsWidget->add_solution_scalar_field(sf_sol);
+        ui->solverResultsGraphicWidget->add_gt_scalar_field(sf_gt);
+        ui->solverResultsGraphicWidget->add_solution_scalar_field(sf_sol);
 
-        for (uint vid=0; vid < ui->solverResultsWidget->get_gt_mesh(i)->num_verts(); vid++ )
+        for (uint vid=0; vid < ui->solverResultsGraphicWidget->get_gt_mesh(i)->num_verts(); vid++ )
         {
-            ui->solverResultsWidget->get_gt_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf_gt[vid]);
+            ui->solverResultsGraphicWidget->get_gt_mesh(i)->vert_data(vid).color = cinolib::Color::red_white_blue_ramp_01(sf_gt[vid]);
             // std::cout << ui->solverResultsWidget->get_gt_mesh(i)->vert(vid) <<  " -- " << sf_gt[vid] << std::endl;
         }
         for (uint vid=0; vid < dataset.get_parametric_mesh(i)->num_verts(); vid++ )
@@ -1220,7 +1220,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     ui->tab_widgets->setTabEnabled(3, true);
     ui->tab_widgets->setCurrentIndex(3);
 
-    ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
+    ui->solverResultsGraphicWidget->show_mesh_solution_and_groundtruth();
 
 }
 
@@ -1256,7 +1256,7 @@ void MainWindow::on_tab_widgets_currentChanged(int index)
     else
     if (index == 3) // solver results widget
     {
-        ui->solverResultsWidget->show_mesh_solution_and_groundtruth();
+        ui->solverResultsGraphicWidget->show_mesh_solution_and_groundtruth();
     }
 }
 
@@ -1292,6 +1292,7 @@ void MainWindow::on_actionReset_triggered()
     delete ui->scatterPlotsGGWidget;
     delete ui->solverWidget;
     delete ui->solverResultsWidget;
+    delete ui->solverResultsGraphicWidget;
 
     metrics.clear();
     dataset.clean();
@@ -1318,8 +1319,12 @@ void MainWindow::on_actionReset_triggered()
     ui->solverWidget->set_dataset(&dataset);
     ui->solver_tab->layout()->addWidget(ui->solverWidget);
 
+    ui->solverResultsGraphicWidget = new SolverResultsGraphicWidget(this);
+    ui->solverResultsGraphicWidget->set_dataset(&dataset);
+    ui->solver_results_tab->layout()->addWidget(ui->solverResultsWidget);
+
     ui->solverResultsWidget = new SolverResultsWidget(this);
-    ui->solverResultsWidget->set_dataset(&dataset);
+    // ui->solverResultsWidget->set_dataset(&dataset);
     ui->solver_results_tab->layout()->addWidget(ui->solverResultsWidget);
 
     connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_mesh_metrics()));
