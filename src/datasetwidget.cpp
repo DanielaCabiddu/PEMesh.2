@@ -1199,19 +1199,15 @@ void DatasetWidget::on_load_meshes_btn_clicked()
     QStringList mesh_files = d.entryList(QStringList() << "*.obj" << "*.OBJ" << "*.off" << "*.OFF", QDir::Files);
     QStringList node_ele_files = d.entryList(QStringList() << "*.node" << "*.ele", QDir::Files);
 
-
     if (mesh_files.empty())
     {
-        if (d.isEmpty())
-        {
-            QMessageBox *m = new QMessageBox (this);
+        QMessageBox *m = new QMessageBox (this);
 
-            m->setText("The folder has no .obj file."
-                       "\n\nPlease select another folder.");
+        m->setText(tr("The folder has no .obj/.off file."
+                   "\n\nPlease select another folder."));
 
-            m->exec();
-            return;
-        }
+        m->exec();
+        return;
     }
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
