@@ -79,7 +79,7 @@ private:
 
     const unsigned int n_metrics = static_cast<const uint>( metrics_names.size());
 
-    std::vector<MeshMetrics> metrics;
+    std::vector<MeshMetrics> metrics, metrics_local;
     std::vector<std::vector<double>> errsToScatterPlots;
 
     Dataset dataset;

@@ -771,8 +771,7 @@ void MainWindow::show_full_mesh_metrics()
     ui->meshFullMetricsWidget->set_metrics(&metrics);
     ui->graphicMeshMetricWidget->clean_canvas();
 
-    metrics = ui->datasetWidget->get_parametric_meshes_metrics();
-    std::vector<MeshMetrics> metrics_local = metrics;
+    metrics_local = ui->datasetWidget->get_parametric_meshes_metrics();
     rescale_mesh_metrics(metrics_local);
 
     ui->graphicMeshMetricWidget->set_metrics(&metrics_local);
