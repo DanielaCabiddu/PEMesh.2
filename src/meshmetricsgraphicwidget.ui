@@ -162,7 +162,17 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="highlight_min_max_cb">
+        <property name="text">
+         <string>Highlight Min/Max Elements</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QGroupBox" name="groupBox_2">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="title">
          <string/>
         </property>

@@ -88,6 +88,8 @@ public slots:
 private slots:
     void on_mesh_metrics_slider_valueChanged(int value);
 
+    void on_highlight_min_max_cb_checkStateChanged(const Qt::CheckState &checked);
+
 private:
     Ui::MeshMetricsGraphicWidget *ui;
 
@@ -103,6 +105,9 @@ private:
     void set_min_color (const uint i);
     void set_max_color (const uint i);
     void set_all_color(const double min, const double max, const std::vector<double> all);
+
+    void highlight_min_max_elements (const uint min, const uint max);
+    void highlight_element (const std::vector<uint> ids);
 
 };
 
