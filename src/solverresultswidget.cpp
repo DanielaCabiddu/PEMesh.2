@@ -37,6 +37,8 @@
 #include <QRubberBand>
 
 #include <QtCharts/QLineSeries>
+#include <qcolordialog.h>
+#include <qlogvalueaxis.h>
 
 SolverResultsWidget::SolverResultsWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::SolverResultsWidget)
@@ -214,18 +216,18 @@ void SolverResultsWidget::change_series_color(const uint series_id)
     QPen pen = series->pen();
     QColor prev_color = pen.brush().color();
 
-    // QColorDialog *colorDialog = new QColorDialog(this);
-    // QColor color = colorDialog->getColor(prev_color, this, "Effect Color",
-    //                                      QColorDialog::DontUseNativeDialog);
+    QColorDialog *colorDialog = new QColorDialog(this);
+    QColor color = colorDialog->getColor(prev_color, this, "Effect Color",
+                                         QColorDialog::DontUseNativeDialog);
 
-    // if (color == nullptr)
-    //   return;
+    if (color == nullptr)
+      return;
 
-    // pen.setBrush(QBrush(color)); // or just pen.setColor("red");
+    pen.setBrush(QBrush(color)); // or just pen.setColor("red");
     series->setPen(pen);
 }
 
-void SolverResultsWidget::on_errH1_color_btn_clicked()
+void SolverResultsWidget::on_errS_color_btn_clicked()
 {
     change_series_color(0);
 }
@@ -251,27 +253,23 @@ void SolverResultsWidget::on_condVect_color_btn_clicked()
 
 void SolverResultsWidget::on_all_color_btn_clicked()
 {
-    for (uint i = 0; i < chart_views.size(); i++)
-        change_series_color(i);
-}
+    QPen pen = static_cast<QLineSeries *>(chart_views.at(0)->chart()->series().at(0))->pen();
+    QColor prev_color = pen.brush().color();
 
-void SolverResultsWidget::on_loglog_cb_stateChanged(int checked)
-{
-    for (uint series_id = 0; series_id < 5; series_id++)
+    QColorDialog *colorDialog = new QColorDialog(this);
+    QColor color = colorDialog->getColor(prev_color, this, "Effect Color",
+                                         QColorDialog::DontUseNativeDialog);
+
+    if (color == nullptr)
+        return;
+
+    for (uint i = 0; i < chart_views.size(); i++)
     {
         QLineSeries *series = static_cast<QLineSeries *>(
-            chart_views.at(series_id)->chart()->series().at(0));
+            chart_views.at(i)->chart()->series().at(0));
 
-        for (auto s : series->points())
-        {
-            if (checked) {
-                s.setX(log(s.x()));
-                s.setY(log(s.y()));
-            } else {
-                s.setX(exp(s.x()));
-                s.setY(exp(s.y()));
-          }
-        }
+        pen.setBrush(QBrush(color)); // or just pen.setColor("red");
+        series->setPen(pen);
     }
 }
 
@@ -312,3 +310,70 @@ void SolverResultsWidget::on_meshsize_cb_stateChanged(int checked)
     //    }
     ui->deformation_cb->setChecked(!checked);
 }
+
+void SolverResultsWidget::on_loglog_cb_checkStateChanged(const Qt::CheckState &checked)
+{
+    //////////// to debug..................
+    if (checked)
+    {
+        for (uint c=0; c < chart_views.size(); c++)
+        {
+            QLogValueAxis *axisYlog = new QLogValueAxis();
+            axisYlog->setLabelFormat("%g");
+            axisYlog->setBase(8.0);
+            axisYlog->setMinorTickCount(-1);
+
+            chart_views.at(c)->chart()->removeAxis(chart_views.at(c)->chart()->axes().at(1));
+            chart_views.at(c)->chart()->addAxis(axisYlog, Qt::AlignLeft);
+
+            QLineSeries *series = static_cast<QLineSeries *>(
+                chart_views.at(c)->chart()->series().at(0));
+
+            QVector<QPointF> points;
+
+            for (auto s : series->points())
+            {
+                s.setY(log(s.y()));
+                points.push_back(s);
+            }
+
+            QLineSeries *qls = new QLineSeries();
+            qls->replace(points);
+
+            chart_views.at(c)->chart()->removeAllSeries();
+            chart_views.at(c)->chart()->addSeries(qls);
+            chart_views.at(c)->chart()->series().at(0)->attachAxis(axisYlog);
+        }
+    }
+    else
+    {
+        for (uint c=0; c < chart_views.size(); c++)
+        {
+            QValueAxis *axisY = new QValueAxis();
+            axisY->setLabelFormat("%g");
+            axisY->setMinorTickCount(-1);
+
+            chart_views.at(c)->chart()->removeAxis(chart_views.at(c)->chart()->axes().at(1));
+            chart_views.at(c)->chart()->addAxis(axisY, Qt::AlignLeft);
+
+            QLineSeries *series = static_cast<QLineSeries *>(
+                chart_views.at(c)->chart()->series().at(0));
+
+            QVector<QPointF> points;
+
+            for (auto s : series->points())
+            {
+                s.setY(exp(s.y()));
+                points.push_back(s);
+            }
+
+            QLineSeries *qls = new QLineSeries();
+            qls->replace(points);
+
+            chart_views.at(c)->chart()->removeAllSeries();
+            chart_views.at(c)->chart()->addSeries(qls);
+            chart_views.at(c)->chart()->series().at(0)->attachAxis(axisY);
+        }
+    }
+}
+

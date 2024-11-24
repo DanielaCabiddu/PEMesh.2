@@ -66,6 +66,7 @@ public slots:
 
     void show_parametric_mesh (int);
     void update_log (const QString text);
+    void update_log ();
 
 private slots:
     void on_t_slider_valueChanged(int value);

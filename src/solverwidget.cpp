@@ -46,7 +46,7 @@ SolverWidget::SolverWidget(QWidget *parent) :
     ui->setupUi(this);
 
     process = new QProcess();
-    connect(process, SIGNAL(readyRead()), this, SLOT(update_log()));
+    // connect(process, SIGNAL(readyRead()), this, SLOT(update_log()));
 
     // ui->log_text->hide();
 }
@@ -857,6 +857,11 @@ void SolverWidget::parseEscapeSequence(int attribute, QListIterator< QString > &
         break;
     }
     }
+}
+
+void SolverWidget::update_log()
+{
+    update_log(process->readAll());
 }
 
 // code from https://stackoverflow.com/questions/26500429/qtextedit-and-colored-bash-like-output-emulation

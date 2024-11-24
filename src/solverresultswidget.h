@@ -82,7 +82,7 @@ private slots:
 
     void on_save_plots_btn_clicked();
 
-    void on_errH1_color_btn_clicked();
+    void on_errS_color_btn_clicked();
 
     void on_errInf_color_btn_clicked();
 
@@ -94,11 +94,11 @@ private slots:
 
     void on_all_color_btn_clicked();
 
-    void on_loglog_cb_stateChanged(int arg1);
-
     void on_deformation_cb_stateChanged(int arg1);
 
     void on_meshsize_cb_stateChanged(int arg1);
+
+    void on_loglog_cb_checkStateChanged(const Qt::CheckState &checked);
 
 private:
     Ui::SolverResultsWidget *ui;

@@ -72,17 +72,10 @@
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="QCheckBox" name="track_t_cb">
-              <property name="text">
-               <string>Track T Parameter</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QCheckBox" name="loglog_cb">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="text">
                <string>log-log Scale</string>
               </property>

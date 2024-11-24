@@ -1130,7 +1130,16 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             series->attachAxis(axisYlog);
         }
 
-        chart->axes()[1]->setMax(*std::max_element(errs.at(i).begin(), errs.at(i).end()));
+        double min = *std::min_element(errs.at(i).begin(), errs.at(i).end());
+        double max = *std::max_element(errs.at(i).begin(), errs.at(i).end());
+
+        if (i == errs.size()-2)
+        {
+            min -=0.5;
+            max +=0.5;
+        }
+
+        chart->axes()[1]->setRange(min, max);
 //        chart->createDefaultAxes();
 
         CustomizedChartView *chartView = new CustomizedChartView();
