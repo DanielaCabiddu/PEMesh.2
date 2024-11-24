@@ -1321,7 +1321,7 @@ void MainWindow::on_actionReset_triggered()
 
     ui->solverResultsGraphicWidget = new SolverResultsGraphicWidget(this);
     ui->solverResultsGraphicWidget->set_dataset(&dataset);
-    ui->solver_results_tab->layout()->addWidget(ui->solverResultsWidget);
+    ui->solver_results_tab->layout()->addWidget(ui->solverResultsGraphicWidget);
 
     ui->solverResultsWidget = new SolverResultsWidget(this);
     // ui->solverResultsWidget->set_dataset(&dataset);
