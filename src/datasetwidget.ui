@@ -245,7 +245,7 @@
             </column>
             <column>
              <property name="text">
-              <string>Scale In/Out</string>
+              <string>Scale Factor</string>
              </property>
             </column>
             <column>

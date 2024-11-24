@@ -77,6 +77,7 @@ public slots:
   void polygon_zoom_in();
   void polygon_zoom_out();
   void rotate_polygon(double angle);
+  void polygon_zoom_in_out(double s);
 
   void move_polygon_on_x(double new_pos);
   void move_polygon_on_y(double new_pos);
@@ -140,6 +141,7 @@ private:
     std::vector<QPushButton *> plus_buttons;
     std::vector<QPushButton *> minus_buttons;
     std::vector<QDoubleSpinBox *> rotation_angles;
+    std::vector<QDoubleSpinBox *> scale_factors;
 
     std::vector<QDoubleSpinBox *> x_poses;
     std::vector<QDoubleSpinBox *> y_poses;

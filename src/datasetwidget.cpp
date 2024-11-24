@@ -141,7 +141,7 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly,
                                  const double scale_factor)
 {
 
-    add_polygon(selected_poly, pos, false);
+    add_polygon(selected_poly, pos, true);
 
     cinolib::Polygonmesh<> *m = drawable_polys.at(drawable_polys.size()-1);
 
@@ -150,6 +150,8 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly,
     //scale
     m->scale(scale_factor);
     elems_scale_factors.at(drawable_polys.size()-1) = scale_factor;
+
+    scale_factors.at(drawable_polys.size()-1)->setValue(scale_factor);
 
     std::cout << "BBOX CENTER BEFORE ROTATING : " << m->bbox().center() << std::endl;
 
@@ -286,7 +288,7 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const cin
 
         double scale_factor = 1.0/(2*deformed.bbox().diag());
 
-        elems_scale_factors.at(elems_scale_factors.size()-1) *=  scale_factor;
+        // elems_scale_factors.at(elems_scale_factors.size()-1) *=  scale_factor;
         deformed.scale( scale_factor );
     }
 
@@ -310,24 +312,32 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const cin
 
     ui->canvas->add_mesh(*polymesh);
 
-    QWidget *scale_btn_box = new QWidget(this);
-    QHBoxLayout *l = new QHBoxLayout(scale_btn_box);
-    scale_btn_box->setLayout(l);
+    // QWidget *scale_btn_box = new QWidget(this);
+    // QHBoxLayout *l = new QHBoxLayout(scale_btn_box);
+    // scale_btn_box->setLayout(l);
 
-    QPushButton *plus_btn = new QPushButton(scale_btn_box);
-    QPushButton *minus_btn = new QPushButton(scale_btn_box);
+    // QPushButton *plus_btn = new QPushButton(scale_btn_box);
+    // QPushButton *minus_btn = new QPushButton(scale_btn_box);
 
-    plus_btn->setIcon(QIcon(":/icons/img/plus_icon.png"));
-    minus_btn->setIcon(QIcon(":/icons/img/minus_icon.png"));
+    // plus_btn->setIcon(QIcon(":/icons/img/plus_icon.png"));
+    // minus_btn->setIcon(QIcon(":/icons/img/minus_icon.png"));
 
-    plus_btn->setMinimumSize(QSize(17,17));
-    minus_btn->setMinimumSize(QSize(17,17));
+    // plus_btn->setMinimumSize(QSize(17,17));
+    // minus_btn->setMinimumSize(QSize(17,17));
 
-    connect(plus_btn, SIGNAL(clicked()), this, SLOT (polygon_zoom_in()));
-    connect(minus_btn, SIGNAL(clicked()), this, SLOT (polygon_zoom_out()));
+    // connect(plus_btn, SIGNAL(clicked()), this, SLOT (polygon_zoom_in()));
+    // connect(minus_btn, SIGNAL(clicked()), this, SLOT (polygon_zoom_out()));
 
-    l->addWidget(plus_btn);
-    l->addWidget(minus_btn);
+    // l->addWidget(plus_btn);
+    // l->addWidget(minus_btn);
+
+    QDoubleSpinBox *scale_dsb = new QDoubleSpinBox();
+    scale_dsb->setMinimum(0.01);
+    scale_dsb->setMaximum(10);
+    scale_dsb->setValue(1.0);
+    scale_dsb->setSingleStep(0.05);
+
+    connect(scale_dsb, SIGNAL(valueChanged(double)), this, SLOT (polygon_zoom_in_out(double)));
 
     QDoubleSpinBox *rotation_angle_dsb = new QDoubleSpinBox();
     rotation_angle_dsb->setValue(0.0);
@@ -362,15 +372,16 @@ void DatasetWidget::add_polygon (const SelectedPolyData selected_poly, const cin
     ui->polygon_list->insertRow ( ui->polygon_list->rowCount() );
     ui->polygon_list->setItem   ( ui->polygon_list->rowCount()-1, 0, new QTableWidgetItem(selected_poly.class_name.c_str()));
     ui->polygon_list->setCellWidget( ui->polygon_list->rowCount()-1, 1, pos_widget);
-    ui->polygon_list->setCellWidget( ui->polygon_list->rowCount()-1, 2, scale_btn_box);
+    ui->polygon_list->setCellWidget( ui->polygon_list->rowCount()-1, 2, scale_dsb);
     ui->polygon_list->setCellWidget( ui->polygon_list->rowCount()-1, 3, rotation_angle_dsb);
 
     ui->polygon_list->horizontalHeader()->resizeSections(QHeaderView::Stretch);
     ui->polygon_list->resizeRowsToContents();
 
-    plus_buttons.push_back(plus_btn);
-    minus_buttons.push_back(minus_btn);
+    // plus_buttons.push_back(plus_btn);
+    // minus_buttons.push_back(minus_btn);
     rotation_angles.push_back(rotation_angle_dsb);
+    scale_factors.push_back(scale_dsb);
 
     x_poses.push_back(x_dsb);
     y_poses.push_back(y_dsb);
@@ -440,6 +451,27 @@ void DatasetWidget::polygon_zoom_out()
             ui->canvas->update_mesh(*drawable_polys.at(i), i+1);
 
             elems_scale_factors.at(i) *= minus_scale_factor;
+
+            break;
+        }
+    }
+}
+
+void DatasetWidget::polygon_zoom_in_out(double s)
+{
+    QObject* obj = sender();
+
+    for (uint i=0; i < scale_factors.size(); i++)
+    {
+        if (obj == scale_factors.at(i))
+        {
+            // double diff_scale_factor = s - pre_val;
+            double scale_factor = s / elems_scale_factors.at(i);
+
+            elems_scale_factors.at(i) = s;
+            drawable_polys.at(i)->scale(scale_factor);
+
+            ui->canvas->update_mesh(*drawable_polys.at(i), i+1);
 
             break;
         }
@@ -634,6 +666,9 @@ void DatasetWidget::on_generate_dataset_btn_clicked()
                 AbstractVEMelement *elem = elems.at(e);
 
                 cinolib::Polygonmesh<> deformed = elem->deform(t);
+
+                double scale_factor = 1.0/(2*deformed.bbox().diag());
+                deformed.scale( scale_factor );
 
                 deformed.scale(elems_scale_factors.at(e));
                 deformed.rotate(cinolib::vec3d(0,0,1), elems_rotation_angles.at(e));
