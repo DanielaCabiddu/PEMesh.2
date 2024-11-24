@@ -852,7 +852,7 @@ void MainWindow::show_full_mesh_metrics()
     axisX->setTickCount(metrics_local.size());  // <--
     axisX->setLabelFormat("%d"); // <--
 
-    ui->metricsWidget->add_chart(chartView);
+    // ui->metricsWidget->add_chart(chartView);
 
     ui->meshFullMetricsWidget->add_chart(chartView);
 
