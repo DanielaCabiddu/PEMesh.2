@@ -30,6 +30,10 @@ public:
 
     void clean_canvas ();
 
+    void set_t_slider_value (const uint val);
+    void set_t_slider_min (const uint val);
+    void set_t_slider_max (const uint val);
+
     cinolib::Polygonmesh<> * get_gt_mesh (const uint i);
 
     void add_solution_scalar_field (const cinolib::ScalarField &f) {solutions.push_back(f);}

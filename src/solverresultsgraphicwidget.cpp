@@ -172,7 +172,9 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
 
     ui->canvas1->clear();
 
-    ui->canvas1->add_mesh(*meshes_canvas1.at(ui->t_slider->value()), show_poly_color);
+    uint t_index = ui->t_slider->value();
+
+    ui->canvas1->add_mesh(*meshes_canvas1.at(t_index), show_poly_color);
 
     ui->canvas1->updateGL();
 
@@ -282,4 +284,18 @@ void SolverResultsGraphicWidget::clean_canvas()
 cinolib::Polygonmesh<> *SolverResultsGraphicWidget::get_gt_mesh(const uint i)
 {
     return meshes_canvas2.at(i);
+}
+
+void SolverResultsGraphicWidget::set_t_slider_value (const uint val)
+{
+    ui->t_slider->setValue(val);
+}
+
+void SolverResultsGraphicWidget::set_t_slider_min (const uint val)
+{
+    ui->t_slider->setMinimum(val);
+}
+void SolverResultsGraphicWidget::set_t_slider_max (const uint val)
+{
+    ui->t_slider->setMaximum(val);
 }

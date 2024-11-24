@@ -1217,10 +1217,14 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         in_sol.close();
     }
 
+    ui->solverResultsGraphicWidget->set_t_slider_min(0);
+    ui->solverResultsGraphicWidget->set_t_slider_max(dataset.get_num_parametric_meshes()-1);
+    ui->solverResultsGraphicWidget->set_t_slider_value(0);
+
     ui->tab_widgets->setTabEnabled(3, true);
     ui->tab_widgets->setCurrentIndex(3);
 
-    ui->solverResultsGraphicWidget->show_mesh_solution_and_groundtruth();
+    // ui->solverResultsGraphicWidget->show_mesh_solution_and_groundtruth();
 
 }
 
@@ -1321,11 +1325,11 @@ void MainWindow::on_actionReset_triggered()
 
     ui->solverResultsGraphicWidget = new SolverResultsGraphicWidget(this);
     ui->solverResultsGraphicWidget->set_dataset(&dataset);
-    ui->solver_results_tab->layout()->addWidget(ui->solverResultsGraphicWidget);
+    ui->tab_7->layout()->addWidget(ui->solverResultsGraphicWidget);
 
     ui->solverResultsWidget = new SolverResultsWidget(this);
     // ui->solverResultsWidget->set_dataset(&dataset);
-    ui->solver_results_tab->layout()->addWidget(ui->solverResultsWidget);
+    ui->tab_4->layout()->addWidget(ui->solverResultsWidget);
 
     connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_mesh_metrics()));
     connect(ui->datasetWidget, SIGNAL (computed_mesh_metrics()), this, SLOT(show_full_mesh_metrics()));
@@ -1339,14 +1343,12 @@ void MainWindow::on_actionReset_triggered()
 
     ui->tab_widgets->setCurrentIndex(0);
 
-    for (int i=1; i < ui->tab_widgets->count()-1; i++)
-        ui->tab_widgets->setTabEnabled(i, false);
-
+    disable_all_tabs();
 }
 
 void MainWindow::disable_all_tabs()
 {
-    for (int i=1; i < ui->tab_widgets->count()-1; i++)
+    for (int i=1; i < ui->tab_widgets->count(); i++)
         ui->tab_widgets->setTabEnabled(i, false);
 }
 
