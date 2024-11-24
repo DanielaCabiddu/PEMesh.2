@@ -23,7 +23,30 @@
    <item row="0" column="0">
     <widget class="cinolib::GLcanvasOld" name="canvas" native="true"/>
    </item>
-   <item row="0" column="2">
+   <item row="1" column="0">
+    <widget class="QSlider" name="t_slider">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QTextEdit" name="log_text">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" rowspan="3">
     <widget class="QFrame" name="frame_2">
      <property name="minimumSize">
       <size>
@@ -143,29 +166,6 @@
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QSlider" name="t_slider">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="3">
-    <widget class="QTextEdit" name="log_text">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>200</height>
-      </size>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
   </layout>
