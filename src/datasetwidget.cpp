@@ -1666,6 +1666,18 @@ void DatasetWidget::on_mirroring_btn_clicked()
         ui->log_label->append(message.c_str());
 
         index++;
+
+        #pragma omp parallel for
+        for (int vid=0; vid < mesh->num_verts(); vid++)
+        {
+            mesh->vert_data(vid).color = cinolib::Color::WHITE();
+        }
+
+        #pragma omp parallel for
+        for (int pid=0; pid < mesh->num_polys(); pid++)
+        {
+            mesh->poly_data(pid).color = cinolib::Color::WHITE();
+        }
     }
 
     show_parametric_mesh(ui->param_slider->value());
