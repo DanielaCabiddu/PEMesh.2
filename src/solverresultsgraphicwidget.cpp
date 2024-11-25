@@ -104,6 +104,9 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
     QRectF rect = QRectF (ui->colorbar1->rect());
     QLinearGradient colorGradient = QLinearGradient(rect.topLeft(), rect.topRight());
 
+    uint n_polys = meshes_canvas1.at(0)->num_polys();
+    uint n_colors = n_polys < 100 ? n_polys : 100;
+
     switch (index)
     {
     case 0:
@@ -135,7 +138,8 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
         {
             for (uint pid=0; pid < meshes_canvas1.at(m)->num_polys(); pid++)
             {
-                cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errH1s.at(m).data()[pid]);
+                // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errH1s.at(m).data()[pid]);
+                cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(errH1s.at(m).data()[pid] * (n_colors-1)));
                 meshes_canvas1.at(m)->poly_data(pid).color = c;
                 colorGradient.setColorAt(errH1s.at(m).data()[pid], QColor(c.r * 255, c.g * 255, c.b * 255));
             }
@@ -147,7 +151,8 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
         {
             for (uint pid=0; pid < meshes_canvas1.at(m)->num_polys(); pid++)
             {
-                cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
+                // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
+                cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(errL2s.at(m).data()[pid] * (n_colors-1)));
                 meshes_canvas1.at(m)->poly_data(pid).color = c;
                 colorGradient.setColorAt(errL2s.at(m).data()[pid], QColor(c.r * 255, c.g * 255, c.b * 255));
             }
@@ -159,7 +164,8 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
         {
             for (uint pid=0; pid < meshes_canvas1.at(m)->num_polys(); pid++)
             {
-                cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(Conds.at(m).data()[pid]);
+                // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(Conds.at(m).data()[pid]);
+                cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(Conds.at(m).data()[pid] * (n_colors-1)));
                 meshes_canvas1.at(m)->poly_data(pid).color = c;
                 colorGradient.setColorAt(Conds.at(m).data()[pid], QColor(c.r * 255, c.g * 255, c.b * 255));
             }
@@ -193,6 +199,9 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
     QRectF rect = QRectF (ui->colorbar2->rect());
     QLinearGradient colorGradient = QLinearGradient(rect.topLeft(), rect.topRight());
 
+    uint n_polys = meshes_canvas2.at(0)->num_polys();
+    uint n_colors = n_polys < 100 ? n_polys : 100;
+
     switch (index)
     {
     case 0:
@@ -224,7 +233,8 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
         {
             for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
             {
-                cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errH1s.at(m).data()[pid]);
+                // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errH1s.at(m).data()[pid]);
+                cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(errH1s.at(m).data()[pid] * (n_colors-1)));
                 meshes_canvas2.at(m)->poly_data(pid).color = c;
                 colorGradient.setColorAt(errH1s.at(m).data()[pid], QColor(c.r * 255, c.g * 255, c.b * 255));
             }
@@ -236,7 +246,8 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
         {
             for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
             {
-                cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
+                // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(errL2s.at(m).data()[pid]);
+                cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(errL2s.at(m).data()[pid] * (n_colors-1)));
                 meshes_canvas2.at(m)->poly_data(pid).color = c;
                 colorGradient.setColorAt(errL2s.at(m).data()[pid], QColor(c.r * 255, c.g * 255, c.b * 255));
             }
@@ -248,7 +259,8 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
         {
             for (uint pid=0; pid < meshes_canvas2.at(m)->num_polys(); pid++)
             {
-                cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(Conds.at(m).data()[pid]);
+                // cinolib::Color c = cinolib::Color::red_white_blue_ramp_01(Conds.at(m).data()[pid]);
+                cinolib::Color c = cinolib::Color::parula_ramp(n_colors+1, (int)(Conds.at(m).data()[pid] * (n_colors-1)));
                 meshes_canvas2.at(m)->poly_data(pid).color = c;
                 colorGradient.setColorAt(Conds.at(m).data()[pid], QColor(c.r * 255, c.g * 255, c.b * 255));
             }
