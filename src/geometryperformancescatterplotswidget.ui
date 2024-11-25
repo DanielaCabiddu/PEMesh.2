@@ -88,13 +88,13 @@
          <item row="3" column="0">
           <widget class="QGroupBox" name="groupBox_3">
            <property name="title">
-            <string>Scatter Plots Options</string>
+            <string>Color Options</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0">
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="marker_size_label">
               <property name="text">
-               <string>Marker size</string>
+               <string>Marker Size</string>
               </property>
              </widget>
             </item>

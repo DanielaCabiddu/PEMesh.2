@@ -66,7 +66,7 @@ public:
     const std::vector<std::string>  & get_parametric_meshes_class_names () const { return classNames; }
 
                  uint get_parametric_mesh_class_id   (const uint i) const { return parametric_meshes_class_ids.at(i); }
-    const std::string get_parametric_mesh_class_name (const uint i) const { if (i >= classNames.size()) return "Unknown Class"; return classNames.at(i); }
+    const std::string get_parametric_mesh_class_name (const uint i) const { if (i >= classNames.size()) return "Mesh"; return classNames.at(i); }
 
     const std::string get_parametric_mesh_filename (const uint i) const { return parametric_meshes.at(i)->mesh_data().filename; }
 

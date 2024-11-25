@@ -73,6 +73,10 @@ GeometryPerformanceScatterPlotsWidget::GeometryPerformanceScatterPlotsWidget(QWi
     extra_colors.push_back(QColor(211, 211, 211));
     extra_colors.push_back(QColor(0, 0, 139));
     extra_colors.push_back(QColor(34,139,34));
+
+    ui->marker_size_label->hide();
+    ui->marker_size_dsb->hide();
+    ui->line->hide();
 }
 
 GeometryPerformanceScatterPlotsWidget::~GeometryPerformanceScatterPlotsWidget()
@@ -167,6 +171,8 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
                 }
                 ch->addSeries(s);
             }
+
+            ch->legend()->hide();
             ch->createDefaultAxes();
 
             // ch->axes()[0]->setMax(maxX*1.001);
@@ -177,6 +183,7 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
 
             ch->axes()[0]->setTitleText(metrics_names.at(cbID2metricsID.at(i)).c_str());
             ch->axes()[1]->setTitleText(ui->y_axis_cb->itemText(j).toStdString().c_str());
+            ch->setTitle((metrics_names.at(cbID2metricsID.at(i)) + " vs " + ui->y_axis_cb->itemText(j).toStdString()).c_str());
 
             std::cout << chart_views.size() << " : " << metrics_names.at(cbID2metricsID.at(i)) <<
                                                " - " << ui->y_axis_cb->itemText(j).toStdString() << std::endl;
@@ -219,7 +226,7 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
 
     for (uint cc=0; cc < class_chages.size()-1; cc++)
     {
-        std::string class_name = "CLASS";
+        std::string class_name = "Mesh";
 
         if (d.get_num_parametric_meshes() > 0)
             class_name = d.get_parametric_mesh_class_name(d.get_parametric_mesh_class_id(class_chages.at(cc))).c_str();

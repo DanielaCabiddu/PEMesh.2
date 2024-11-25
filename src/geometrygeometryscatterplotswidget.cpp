@@ -69,6 +69,9 @@ GeometryGeometryScatterPlotsWidget::GeometryGeometryScatterPlotsWidget(QWidget *
     extra_colors.push_back(QColor(0, 0, 139));
     extra_colors.push_back(QColor(34,139,34));
 
+    ui->marker_size_label->hide();
+    ui->marker_size_dsb->hide();
+    ui->line_3->hide();
 }
 
 GeometryGeometryScatterPlotsWidget::~GeometryGeometryScatterPlotsWidget()
@@ -266,6 +269,7 @@ void GeometryGeometryScatterPlotsWidget::create_scatterPlots(const Dataset &d, c
 
             std::cout << chart_views.size() << " : " << metrics_names.at(cbID2metricsID.at(i)) <<
                                                " - " << metrics_names.at(cbID2metricsID.at(j)) << std::endl;
+
             CustomizedChartView *ch_view = new CustomizedChartView();
             ch_view->setChart(ch);
 
@@ -286,12 +290,17 @@ void GeometryGeometryScatterPlotsWidget::create_scatterPlots(const Dataset &d, c
 
     for (uint cc=0; cc < class_chages.size()-1; cc++)
     {
-        std::string class_name = "Unknown";
+        std::string class_name = "Mesh";
 
         if (d.get_num_parametric_meshes() > 0)
             class_name = d.get_parametric_mesh_class_name(d.get_parametric_mesh_class_id(class_chages.at(cc))).c_str();
 
-        ScatterPlotMarkerSettingWidget * msw = new ScatterPlotMarkerSettingWidget();
+        ScatterPlotMarkerSettingWidget * msw;
+        if (update_settings_bar)
+            msw = new ScatterPlotMarkerSettingWidget();
+        else
+            msw = marker_settings_widgets.at(cc);
+
         msw->update_series_name(class_name.c_str());
         msw->set_checked(true);
 
@@ -305,10 +314,17 @@ void GeometryGeometryScatterPlotsWidget::create_scatterPlots(const Dataset &d, c
         connect(msw, SIGNAL(checked_changed(uint, int)), this, SLOT (update_show_series (uint, int)));
         connect(msw, SIGNAL(color_changed(uint, QColor)), this, SLOT (update_color_series (uint, QColor)));
 
-        ui->marker_settings_widget->layout()->addWidget(msw);
-        marker_settings_widgets.push_back(msw);
+        if (ui->marker_settings_widget->layout() == nullptr)
+            ui->marker_settings_widget->setLayout( new QVBoxLayout() );
+
+        if (update_settings_bar) {
+            ui->marker_settings_widget->layout()->addWidget(msw);
+            marker_settings_widgets.push_back(msw);
+        }
     }
     connect(ui->marker_size_dsb, SIGNAL(valueChanged(double)), this, SLOT (update_marker_size (double)));
+
+    update_settings_bar = false;
 }
 
 void GeometryGeometryScatterPlotsWidget::show_scatterplot_x(int xID)

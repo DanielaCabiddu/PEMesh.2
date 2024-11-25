@@ -97,7 +97,7 @@
          <item row="2" column="0">
           <widget class="QGroupBox" name="groupBox_2">
            <property name="title">
-            <string>Scatter Plot Options</string>
+            <string>Color Options</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="2" column="0" colspan="2">
@@ -114,7 +114,7 @@
              <widget class="QDoubleSpinBox" name="marker_size_dsb"/>
             </item>
             <item row="0" column="0">
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="marker_size_label">
               <property name="text">
                <string>Marker Size</string>
               </property>

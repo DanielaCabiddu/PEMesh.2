@@ -72,6 +72,8 @@ private slots:
 private:
     Ui::GeometryGeometryScatterPlotsWidget *ui;
 
+    bool update_settings_bar = true;
+
     std::vector<uint> cbID2metricsID;
 
     std::vector<CustomizedChartView * > chart_views;
