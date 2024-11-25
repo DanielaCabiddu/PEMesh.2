@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1046</width>
-    <height>691</height>
+    <height>733</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -115,7 +115,7 @@
           <item row="3" column="0">
            <widget class="QCheckBox" name="avg_cb">
             <property name="text">
-             <string>Triangle Avg</string>
+             <string>Triangles</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -187,7 +187,7 @@
           <item row="6" column="0">
            <widget class="QCheckBox" name="poly_avg_cb">
             <property name="text">
-             <string>Polygon Avg</string>
+             <string>Polygons</string>
             </property>
             <property name="checked">
              <bool>true</bool>

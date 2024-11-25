@@ -56,7 +56,16 @@ MeshMetricsWidget::MeshMetricsWidget(QWidget *parent) :
     QSizePolicy spRight(QSizePolicy::Preferred, QSizePolicy::Preferred);
     spRight.setHorizontalStretch(3);
     ui->charts->setSizePolicy(spRight);
+
     ui->scale_dependent_cb->hide();
+    ui->min_cb->hide();
+    ui->min_color_btn->hide();
+    ui->max_cb->hide();
+    ui->max_color_btn->hide();
+    ui->poly_min_cb->hide();
+    ui->poly_min_color_btn->hide();
+    ui->poly_max_cb->hide();
+    ui->poly_max_color_btn->hide();
 }
 
 MeshMetricsWidget::~MeshMetricsWidget()

@@ -102,11 +102,11 @@ void MainWindow::show_mesh_metrics()
 
         series_min->setName("Tri Min");
         series_max->setName("Tri Max");
-        series_avg->setName("Tri Avg");
+        series_avg->setName("Tris");
 
         series_poly_min->setName("Poly Min");
         series_poly_max->setName("Poly Max");
-        series_poly_avg->setName("Poly Avg");
+        series_poly_avg->setName("Polys");
 
         series_mesh->setName("Mesh");
 
