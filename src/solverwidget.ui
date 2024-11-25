@@ -30,22 +30,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="QTextEdit" name="log_text">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>200</height>
-      </size>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="2" rowspan="3">
     <widget class="QFrame" name="frame_2">
      <property name="minimumSize">
@@ -106,6 +90,16 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="1">
+             <widget class="QSpinBox" name="solver_order_cb">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
             <item row="4" column="0" colspan="2">
              <widget class="QFrame" name="frame">
               <property name="frameShape">
@@ -115,16 +109,6 @@
                <enum>QFrame::Shadow::Raised</enum>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout">
-               <item>
-                <widget class="QLabel" name="label_3">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="text">
-                  <string>Other parameters...</string>
-                 </property>
-                </widget>
-               </item>
                <item>
                 <widget class="QCheckBox" name="cond_number_cb">
                  <property name="text">
@@ -136,16 +120,6 @@
                 </widget>
                </item>
               </layout>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QSpinBox" name="solver_order_cb">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
              </widget>
             </item>
            </layout>
@@ -166,6 +140,22 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QTextEdit" name="log_text">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>

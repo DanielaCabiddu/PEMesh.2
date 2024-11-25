@@ -113,20 +113,6 @@
           <string>Color Options</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="3">
-           <widget class="QToolButton" name="errL2_color_btn">
-            <property name="text">
-             <string> errL2</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
            <widget class="QToolButton" name="hEmax_color_btn">
             <property name="text">
@@ -144,10 +130,10 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QToolButton" name="errS_color_btn">
+          <item row="1" column="2">
+           <widget class="QToolButton" name="condVect_color_btn">
             <property name="text">
-             <string> errS</string>
+             <string> condVect</string>
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
@@ -172,10 +158,10 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
-           <widget class="QToolButton" name="condVect_color_btn">
+          <item row="1" column="3">
+           <widget class="QToolButton" name="all_color_btn">
             <property name="text">
-             <string> condVect</string>
+             <string> ALL</string>
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
@@ -186,10 +172,24 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="3">
-           <widget class="QToolButton" name="all_color_btn">
+          <item row="0" column="0">
+           <widget class="QToolButton" name="errS_color_btn">
             <property name="text">
-             <string> ALL</string>
+             <string> errH1</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QToolButton" name="errL2_color_btn">
+            <property name="text">
+             <string> errL2</string>
             </property>
             <property name="icon">
              <iconset resource="images.qrc">

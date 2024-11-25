@@ -49,6 +49,7 @@ SolverResultsWidget::SolverResultsWidget(QWidget *parent)
 
     ui->deformation_cb->hide();
     ui->meshsize_cb->hide();
+    ui->groupBox_2->hide();
 
 #endif
 }
