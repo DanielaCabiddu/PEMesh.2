@@ -1045,7 +1045,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     double e0,e1,e2,e3,e4;
 
     std::vector<std::string> labels
-        {"errH1", "errInf", "errL2", "hEmax", "condVect"};
+        {"H1 Error", "Inf Error", "L2 Error", "Max h", "Condition Number"};
 
     while ( in >> e0 >> e1 >> e2 >> e3 >> e4)
     {
@@ -1104,6 +1104,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 //            y_axis_title = /*QString(labels.at(i).c_str()) + */ "*" + QString(str_fact.c_str());
 
         QValueAxis *axisX = new QValueAxis();
+        axisX->setTickCount(dataset.get_num_parametric_meshes());  // <--
         axisX->setLabelFormat("%d");
         chart->addAxis(axisX, Qt::AlignBottom);
 
@@ -1117,18 +1118,18 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         series->attachAxis(axisX);
         series->attachAxis(axisY);
 
-        if (i == errs.size()-1)
-        {
-            QLogValueAxis *axisYlog = new QLogValueAxis();
-    //        axisY->setLabelFormat("%g");
-            axisYlog->setBase(8.0);
-            axisYlog->setMinorTickCount(-1);
+    //     if (i == errs.size()-1)
+    //     {
+    //         QLogValueAxis *axisYlog = new QLogValueAxis();
+    // //        axisY->setLabelFormat("%g");
+    //         axisYlog->setBase(8.0);
+    //         axisYlog->setMinorTickCount(-1);
 
-            chart->removeAxis(chart->axes().at(1));
-            chart->addAxis(axisYlog, Qt::AlignLeft);
+    //         chart->removeAxis(chart->axes().at(1));
+    //         chart->addAxis(axisYlog, Qt::AlignLeft);
 
-            series->attachAxis(axisYlog);
-        }
+    //         series->attachAxis(axisYlog);
+    //     }
 
         double min = *std::min_element(errs.at(i).begin(), errs.at(i).end());
         double max = *std::max_element(errs.at(i).begin(), errs.at(i).end());

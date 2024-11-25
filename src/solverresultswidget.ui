@@ -107,102 +107,6 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QGroupBox" name="groupBox">
-         <property name="title">
-          <string>Color Options</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="1" column="0">
-           <widget class="QToolButton" name="hEmax_color_btn">
-            <property name="text">
-             <string> hEmax</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="autoRepeat">
-             <bool>false</bool>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QToolButton" name="condVect_color_btn">
-            <property name="text">
-             <string> condVect</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QToolButton" name="errInf_color_btn">
-            <property name="text">
-             <string>  errInf</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QToolButton" name="all_color_btn">
-            <property name="text">
-             <string> ALL</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QToolButton" name="errS_color_btn">
-            <property name="text">
-             <string> errH1</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QToolButton" name="errL2_color_btn">
-            <property name="text">
-             <string> errL2</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QGroupBox" name="save_gb">
          <property name="title">
@@ -217,6 +121,102 @@
             <property name="icon">
              <iconset resource="images.qrc">
               <normaloff>:/icons/img/image_icon.png</normaloff>:/icons/img/image_icon.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Color Options</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="5" column="0">
+           <widget class="QToolButton" name="condVect_color_btn">
+            <property name="text">
+             <string>Condition Number</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QToolButton" name="errInf_color_btn">
+            <property name="text">
+             <string> Inf Error</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QToolButton" name="all_color_btn">
+            <property name="text">
+             <string> ALL</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QToolButton" name="errL2_color_btn">
+            <property name="text">
+             <string>L2 Error</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QToolButton" name="hEmax_color_btn">
+            <property name="text">
+             <string>Max h</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="autoRepeat">
+             <bool>false</bool>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QToolButton" name="errS_color_btn">
+            <property name="text">
+             <string> H1 Error</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
             </property>
            </widget>
           </item>
