@@ -2,7 +2,7 @@
 
 A Graphical Framework to Study the Correlation between Geometric Design and Simulation.
 
-<p align="center"><img src="change_gui_2d_rep_image.png" width="750"></p>
+<p align="center"><img src="pemesh_rep_image.png" width="750"></p>
 
 ## Dependencies
 
