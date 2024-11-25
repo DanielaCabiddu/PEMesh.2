@@ -228,7 +228,7 @@ void SolverResultsWidget::change_series_color(const uint series_id)
     series->setPen(pen);
 }
 
-void SolverResultsWidget::on_errS_color_btn_clicked()
+void SolverResultsWidget::on_errH1_color_btn_clicked()
 {
     change_series_color(0);
 }
@@ -243,13 +243,18 @@ void SolverResultsWidget::on_errL2_color_btn_clicked()
     change_series_color(2);
 }
 
-void SolverResultsWidget::on_hEmax_color_btn_clicked() {
+void SolverResultsWidget::on_dofs_color_btn_clicked()
+{
     change_series_color(3);
+}
+
+void SolverResultsWidget::on_hEmax_color_btn_clicked() {
+    change_series_color(4);
 }
 
 void SolverResultsWidget::on_condVect_color_btn_clicked()
 {
-    change_series_color(4);
+    change_series_color(5);
 }
 
 void SolverResultsWidget::on_all_color_btn_clicked()

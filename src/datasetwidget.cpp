@@ -840,7 +840,7 @@ void DatasetWidget::on_save_btn_clicked()
     do
     {
         dir = QFileDialog::getExistingDirectory(this, tr("Select Directory"),
-                                                        "/tmp",
+                                                        QCoreApplication::applicationDirPath(),
                                                         QFileDialog::ShowDirsOnly
                                                         | QFileDialog::DontResolveSymlinks);
         if (dir.isNull())
@@ -1129,7 +1129,7 @@ void DatasetWidget::move_polygon_on_y(double new_pos)
 void DatasetWidget::on_save_polys_btn_clicked()
 {
     QString filters("Polygon Set (*.csv)");
-    QString filename = QFileDialog::getSaveFileName(this, tr("Select CSV File"), "/tmp", filters);
+    QString filename = QFileDialog::getSaveFileName(this, tr("Select CSV File"), QCoreApplication::applicationDirPath(), filters);
     if (filename.isNull() || filename.isEmpty()) return;
 
     if (!filename.endsWith(".csv"))
@@ -1160,7 +1160,7 @@ void DatasetWidget::on_save_polys_btn_clicked()
 void DatasetWidget::on_load_polys_btn_clicked()
 {
     QString filters("Polygon Set (*.csv)");
-    QString filename = QFileDialog::getOpenFileName(this, tr("Select CSV File"), "/tmp", filters);
+    QString filename = QFileDialog::getOpenFileName(this, tr("Select CSV File"), QCoreApplication::applicationDirPath(), filters);
     if (filename.isNull() || filename.isEmpty()) return;
 
     std::ifstream infile;
@@ -1914,7 +1914,7 @@ void DatasetWidget::on_load_mesh_btn_clicked()
 
     do
     {
-        filename = QFileDialog::getOpenFileName(this, tr("Select Mesh File"), "/tmp", filters);
+        filename = QFileDialog::getOpenFileName(this, tr("Select Mesh File"), QCoreApplication::applicationDirPath(), filters);
 
         if (filename.isNull() || filename.isEmpty())
             return;

@@ -82,11 +82,13 @@ private slots:
 
     void on_save_plots_btn_clicked();
 
-    void on_errS_color_btn_clicked();
+    void on_errH1_color_btn_clicked();
 
     void on_errInf_color_btn_clicked();
 
     void on_errL2_color_btn_clicked();
+
+    void on_dofs_color_btn_clicked();
 
     void on_hEmax_color_btn_clicked();
 

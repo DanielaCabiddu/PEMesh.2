@@ -132,11 +132,11 @@
          <property name="title">
           <string>Color Options</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="5" column="0">
-           <widget class="QToolButton" name="condVect_color_btn">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QToolButton" name="errH1_color_btn">
             <property name="text">
-             <string>Condition Number</string>
+             <string> H1 Error</string>
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
@@ -147,7 +147,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item>
            <widget class="QToolButton" name="errInf_color_btn">
             <property name="text">
              <string> Inf Error</string>
@@ -161,21 +161,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
-           <widget class="QToolButton" name="all_color_btn">
-            <property name="text">
-             <string> ALL</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
-            </property>
-            <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
+          <item>
            <widget class="QToolButton" name="errL2_color_btn">
             <property name="text">
              <string>L2 Error</string>
@@ -189,7 +175,21 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item>
+           <widget class="QToolButton" name="dofs_color_btn">
+            <property name="text">
+             <string>DOFs</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QToolButton" name="hEmax_color_btn">
             <property name="text">
              <string>Max h</string>
@@ -206,10 +206,24 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QToolButton" name="errS_color_btn">
+          <item>
+           <widget class="QToolButton" name="condVect_color_btn">
             <property name="text">
-             <string> H1 Error</string>
+             <string>Condition Number</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/color_icon.png</normaloff>:/icons/img/color_icon.png</iconset>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="all_color_btn">
+            <property name="text">
+             <string> ALL</string>
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
