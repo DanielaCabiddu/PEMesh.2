@@ -66,6 +66,8 @@ MeshMetricsWidget::MeshMetricsWidget(QWidget *parent) :
     ui->poly_min_color_btn->hide();
     ui->poly_max_cb->hide();
     ui->poly_max_color_btn->hide();
+    ui->groupBox_4->hide();
+    ui->line_2->hide();
 }
 
 MeshMetricsWidget::~MeshMetricsWidget()
