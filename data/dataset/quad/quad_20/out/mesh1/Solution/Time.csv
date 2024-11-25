@@ -1,2 +1,0 @@
-VemOrder;NumCell0Ds;NumCell1Ds;NumCell2Ds;NumDofs;CreateMesh;ComputeGeometricProperties;AssembleSystem;Factorize;Solve
-1;44;55;12;31;3.6499999999999998e-04;2.6400000000000002e-04;3.8200000000000002e-04;1.2100000000000000e-04;5.0000000000000004e-06

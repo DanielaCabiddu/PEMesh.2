@@ -45,5 +45,4 @@ external/triangle/build
 .DS_Store
 solver/Parameters.ini
 solver/VEM_2D_SOLVER
-solver/VEM_2D_SOLVER
 data/dataset/*/out/
