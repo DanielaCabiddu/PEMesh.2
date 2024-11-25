@@ -11,6 +11,10 @@ The framework depends on:
 - Triangle library, which is included as a submodule;
 - Qt framework, including Qt Charts module, which is assumed to be installed on the local machine (version 5.12.0);
 - Boost library, which is assumed to be installed on the local machine.
+- Docker App, which is assumed to be installed on the local machine, and open when using PEMesh.
+
+Note that, in the settings of the Docker App, a "Resource Saver" mode is activated by default after some inactivity time. 
+This option should be disabled for the correct functioning of PEMesh.
 
 ## How to make it work
 
@@ -51,7 +55,7 @@ Triangle library will be automatically built by CMake.
 
 Then, open Docker App and run the following commands:
 
-`cd solver`\
+`cd ${REPO_ROOT}/solver`\
 `sudo docker build --no-cache -f Dockerfile --target siggraph_2024_solver . -t siggraph_2024_solver:1.0.0`
 
 ## Other Authors
