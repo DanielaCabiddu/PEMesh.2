@@ -878,7 +878,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     {
         std::ofstream ofile;
         ofile.open(filepath);
-        ofile << "errorH1, errInf, errorL2, h, condA" << std::endl;
+        ofile << "errorH1, errInf, errorL2, dofs, h, cond" << std::endl;
 
         QDir oDir(folder.c_str());
         QStringList oDirList = oDir.entryList(QDir::Dirs|QDir::NoDotAndDotDot);
@@ -908,18 +908,24 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                 seglist.push_back(esegment);
             }
 
-            double global_h      = std::stod(seglist.at(3));
-            double global_errL2  = std::stod(seglist.at(4));
-            double global_errH1  = std::stod(seglist.at(5));
-            double global_normL2 = std::stod(seglist.at(6));
-            double global_normH1 = std::stod(seglist.at(7));
-            double global_errInf = std::stod(seglist.at(8));
-            double global_condA  = std::stod(seglist.at(10));
+            // VemOrder; Cell2Ds; Dofs; h; errorL2; errorH1; errorInf; normL2; normH1; normInf; nnzA; condA;
+
+            double global_dofs    = std::stod(seglist.at(2));
+            double global_h       = std::stod(seglist.at(3));
+            double global_errL2   = std::stod(seglist.at(4));
+            double global_errH1   = std::stod(seglist.at(5));
+            double global_errInf  = std::stod(seglist.at(6));
+            double global_normL2  = std::stod(seglist.at(7));
+            double global_normH1  = std::stod(seglist.at(8));
+            double global_normInf = std::stod(seglist.at(9));
+            double global_cond    = std::stod(seglist.at(11));
 
             efile.close();
 
-            ofile << global_errH1 / global_normH1 << " " << global_errInf << " "
-                  << global_errL2 / global_normL2 << " " << global_h << " " << global_condA << std::endl;
+            ofile << global_errH1 / global_normH1 << " "
+                  << global_errInf / global_normInf << " "
+                  << global_errL2 / global_normL2 << " "
+                  << global_dofs << " " << global_h << " " << global_cond << std::endl;
 
             // print the content of "Solution_Cell0Ds.csv" to sol_file and gt_file
 
@@ -949,6 +955,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                     ssseglist.push_back(sssegment);
                 }
 
+                // Id; X; Y; Z; num_solution; ext_solution; error_inf;
+
                 solfile << ssseglist.at(4) << std::endl;
                 gtfile << ssseglist.at(5) << std::endl;
             }
@@ -963,7 +971,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             sfile.open(solution_filename);
             std::getline(sfile, line);
 
-            std::vector<double> errH1_normH1s, errL2_normL2s;
+            std::vector<double> errH1s, errL2s;
             while (std::getline(sfile , line))
             {
                 std::stringstream lline (line);
@@ -974,19 +982,21 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                     ssseglist.push_back(sssegment);
                 }
 
+                // Id; error_L2; error_H1; norm_L2; norm_H1;
+
                 double local_errL2  = std::stod(ssseglist.at(1));
                 double local_errH1  = std::stod(ssseglist.at(2));
                 // double local_normL2 = std::stod(ssseglist.at(3));
                 // double local_normH1 = std::stod(ssseglist.at(4));
 
-                errH1_normH1s.push_back(local_errH1/* / local_normH1*/);
-                errL2_normL2s.push_back(local_errL2/* / local_normL2*/);
+                errH1s.push_back(local_errH1/* / local_normH1*/);
+                errL2s.push_back(local_errL2/* / local_normL2*/);
                 // I do not normalize the errors because I am normalizing the whole field in [0,1] later
             }
 
             sfile.close();
 
-            cinolib::ScalarField sf_errH1 (errH1_normH1s), sf_errL2 (errL2_normL2s);
+            cinolib::ScalarField sf_errH1 (errH1s), sf_errL2 (errL2s);
             sf_errH1.normalize_in_01();
             sf_errL2.normalize_in_01();
 
@@ -999,7 +1009,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             sfile.open(solution_filename);
             std::getline(sfile, line);
 
-            std::vector<double> PIN_conds, PIZ_conds;
+            std::vector<double> Conds;
 
             while (std::getline(sfile , line))
             {
@@ -1011,16 +1021,16 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
                     ssseglist.push_back(sssegment);
                 }
 
-                double local_PiNabla_Cond = std::stod(ssseglist.at(3));
-                double local_Pi0k_Cond    = std::stod(ssseglist.at(4));
+                // Cell2D_Index; NumQuadPoints_Boundary; NumQuadPoints_Internal; PiNabla_Cond; Pi0k_Cond; Pi0km1_Cond; PiNabla_Error; Pi0k_Error; Pi0km1_Error; HCD_Error; GBD_Error; Stab_Error;
 
-                PIN_conds.push_back(local_PiNabla_Cond);
-                PIZ_conds.push_back(local_Pi0k_Cond);
+                double local_cond = std::stod(ssseglist.at(3));
+
+                Conds.push_back(local_cond);
             }
 
             sfile.close();
 
-            cinolib::ScalarField sf_Cond (PIN_conds);
+            cinolib::ScalarField sf_Cond (Conds);
             sf_Cond.normalize_in_01();
             ui->solverResultsGraphicWidget->add_Cond_scalar_field(sf_Cond);
         }
@@ -1041,19 +1051,20 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     std::string name;
     std::getline(in, name); // skip header line
 
-    std::vector<std::vector<double>> errs (5);
-    double e0,e1,e2,e3,e4;
+    std::vector<std::vector<double>> errs (6);
+    double e0,e1,e2,e3,e4,e5;
 
     std::vector<std::string> labels
-        {"H1 Error", "Inf Error", "L2 Error", "Max h", "Condition Number"};
+        {"H1 Error", "Inf Error", "L2 Error", "DOFs", "Max h", "Condition Number"};
 
-    while ( in >> e0 >> e1 >> e2 >> e3 >> e4)
+    while ( in >> e0 >> e1 >> e2 >> e3 >> e4 >> e5)
     {
         errs.at(0).push_back(e0);
         errs.at(1).push_back(e1);
         errs.at(2).push_back(e2);
         errs.at(3).push_back(e3);
         errs.at(4).push_back(e4);
+        errs.at(5).push_back(e5);
     }
 
     in.close();
@@ -1062,34 +1073,34 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     errsToScatterPlots.push_back(errs.at(0));
     errsToScatterPlots.push_back(errs.at(1));
     errsToScatterPlots.push_back(errs.at(2));
-    errsToScatterPlots.push_back(errs.at(4));
+    errsToScatterPlots.push_back(errs.at(5));
 
     if (!metrics.empty())
         ui->scatterPlotsGPWidget->create_scatterPlots(dataset, metrics, errsToScatterPlots);
     else
         ui->scatterPlotsGPWidget->set_empty();
 
-    const double fact = 1e12;
+    const double fact = 1e10;
     std::ostringstream streamObj;
-    //Add double to stream
+    // Add double to stream
     streamObj << fact;
     // Get string from output string stream
     const std::string str_fact = streamObj.str();
 
     for (uint i=0; i < errs.size(); i++)
     {
-//        double min_val = *std::min_element(errs.at(i).begin(), errs.at(i).end());
-//        bool range_adapt = (min_val < 1e-12);
+       // double min_val = *std::min_element(errs.at(i).begin(), errs.at(i).end());
+       // bool range_adapt = (min_val < 1e-12);
 
         QChart *chart = new QChart();
         QLineSeries *series = new QLineSeries();
 
         for (uint v=0; v < errs.at(i).size(); v++)
         {
-//            if (!range_adapt)
-                series->append(v, errs.at(i).at(v));
-//            else
-//                series->append(v, errs.at(i).at(v)*fact);
+           // if (!range_adapt)
+               series->append(v, errs.at(i).at(v));
+           // else
+           //     series->append(v, errs.at(i).at(v)*fact); // if the values are too small
         }
 
         for (uint v=0; v < errs.at(i).size(); v++)
@@ -1100,8 +1111,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         series->setName(labels.at(i).c_str());
 
         QString y_axis_title;
-//        if (range_adapt)
-//            y_axis_title = /*QString(labels.at(i).c_str()) + */ "*" + QString(str_fact.c_str());
+        // if (range_adapt)
+        //    y_axis_title = QString(labels.at(i).c_str()) + " * " + QString(str_fact.c_str());
 
         QValueAxis *axisX = new QValueAxis();
         axisX->setTickCount(dataset.get_num_parametric_meshes());  // <--
@@ -1109,7 +1120,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         chart->addAxis(axisX, Qt::AlignBottom);
 
         QValueAxis *axisY = new QValueAxis();
-        axisY->setLabelFormat("%4.3f");
+        axisY->setLabelFormat("%g");
         axisY->setTitleText(y_axis_title);
         chart->addAxis(axisY, Qt::AlignLeft);
 
@@ -1118,7 +1129,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         series->attachAxis(axisX);
         series->attachAxis(axisY);
 
-    //     if (i == errs.size()-1)
+    // if (i == errs.size()-1)
     //     {
     //         QLogValueAxis *axisYlog = new QLogValueAxis();
     // //        axisY->setLabelFormat("%g");
@@ -1142,6 +1153,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
         chart->axes()[1]->setRange(min, max);
 //        chart->createDefaultAxes();
+        // if (range_adapt)
+        //     chart->axes()[1]->setRange(min*fact, max*fact);
 
         CustomizedChartView *chartView = new CustomizedChartView();
         chartView->setChart(chart);
