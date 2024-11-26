@@ -47,7 +47,7 @@
          <item row="0" column="0">
           <widget class="QComboBox" name="canvas1_cb">
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <item>
             <property name="text">
