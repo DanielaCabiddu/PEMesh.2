@@ -36,11 +36,20 @@ public:
 
     cinolib::Polygonmesh<> * get_gt_mesh (const uint i);
 
-    void add_solution_scalar_field (const cinolib::ScalarField &f) {solutions.push_back(f);}
-    void add_gt_scalar_field (const cinolib::ScalarField &f) {groundtruths.push_back(f);}
-    void add_errh1_scalar_field (const cinolib::ScalarField &f) {errH1s.push_back(f);}
-    void add_errl2_scalar_field (const cinolib::ScalarField &f) {errL2s.push_back(f);}
-    void add_Cond_scalar_field (const cinolib::ScalarField &f) {Conds.push_back(f);}
+    void add_solution_scalar_field (const cinolib::ScalarField &f, const double min, const double max)
+        {solutions.push_back(f); solution_mins.push_back(min); solution_maxs.push_back(max);}
+
+    void add_gt_scalar_field (const cinolib::ScalarField &f, const double min, const double max)
+        {groundtruths.push_back(f); groundtruths_mins.push_back(min); groundtruths_maxs.push_back(max);}
+
+    void add_errh1_scalar_field (const cinolib::ScalarField &f, const double min, const double max)
+        {errH1s.push_back(f); errH1s_mins.push_back(min); errH1s_maxs.push_back(max);}
+
+    void add_errl2_scalar_field (const cinolib::ScalarField &f, const double min, const double max)
+        {errL2s.push_back(f); errL2s_mins.push_back(min); errL2s_maxs.push_back(max);}
+
+    void add_Cond_scalar_field (const cinolib::ScalarField &f, const double min, const double max)
+        {Conds.push_back(f); Conds_mins.push_back(min); Conds_maxs.push_back(max);}
 
 public slots:
 
@@ -70,6 +79,21 @@ private:
     std::vector<cinolib::ScalarField> errH1s;
     std::vector<cinolib::ScalarField> errL2s;
     std::vector<cinolib::ScalarField> Conds;
+
+    std::vector<double> solution_mins;
+    std::vector<double> solution_maxs;
+
+    std::vector<double> groundtruths_mins;
+    std::vector<double> groundtruths_maxs;
+
+    std::vector<double> errH1s_mins;
+    std::vector<double> errH1s_maxs;
+
+    std::vector<double> errL2s_mins;
+    std::vector<double> errL2s_maxs;
+
+    std::vector<double> Conds_mins;
+    std::vector<double> Conds_maxs;
 };
 
 #endif // SOLVERRESULTSGRAPHICWIDGET_H

@@ -69,6 +69,72 @@ void SolverResultsGraphicWidget::show_parametric_mesh(int index)
     ui->canvas1->add_mesh(*p_r, canvas1_show_color_on_polys);
     ui->canvas2->add_mesh(*p_gt, canvas2_show_color_on_polys);
 
+
+    if (solution_mins.size() >0 )
+    {
+        /// update min_max labels
+        ///
+        double min1 = 0.0, min2 = 0.0, max1 = 0.0, max2 = 0.0;
+
+        if (ui->canvas1_cb->currentIndex() == 0)
+        {
+            min1 = solution_mins.at(ui->t_slider->value());
+            max1 = solution_maxs.at(ui->t_slider->value());
+        }
+        else if (ui->canvas1_cb->currentIndex() == 1)
+        {
+            min1 = groundtruths_mins.at(ui->t_slider->value());
+            max1 = groundtruths_maxs.at(ui->t_slider->value());
+        }
+        else if (ui->canvas1_cb->currentIndex() == 2)
+        {
+            min1 = errH1s_mins.at(ui->t_slider->value());
+            max1 = errH1s_maxs.at(ui->t_slider->value());
+        }
+        else if (ui->canvas1_cb->currentIndex() == 3)
+        {
+            min1 = errL2s_mins.at(ui->t_slider->value());
+            max1 = errL2s_maxs.at(ui->t_slider->value());
+        }
+        else //if (ui->canvas1_cb->currentIndex() == 4)
+        {
+            min1 = Conds_mins.at(ui->t_slider->value());
+            max1 = Conds_maxs.at(ui->t_slider->value());
+        }
+
+        if (ui->canvas2_cb->currentIndex() == 0)
+        {
+            min2 = solution_mins.at(ui->t_slider->value());
+            max2 = solution_maxs.at(ui->t_slider->value());
+        }
+        else if (ui->canvas2_cb->currentIndex() == 1)
+        {
+            min2 = groundtruths_mins.at(ui->t_slider->value());
+            max2 = groundtruths_maxs.at(ui->t_slider->value());
+        }
+        else if (ui->canvas2_cb->currentIndex() == 2)
+        {
+            min2 = errH1s_mins.at(ui->t_slider->value());
+            max2 = errH1s_maxs.at(ui->t_slider->value());
+        }
+        else if (ui->canvas2_cb->currentIndex() == 3)
+        {
+            min2 = errL2s_mins.at(ui->t_slider->value());
+            max2 = errL2s_maxs.at(ui->t_slider->value());
+        }
+        else //if (ui->canvas2_cb->currentIndex() == 4)
+        {
+            min2 = Conds_mins.at(ui->t_slider->value());
+            max2 = Conds_maxs.at(ui->t_slider->value());
+        }
+
+        ui->min1_label->setText(QString(std::to_string(min1).c_str()));
+        ui->max1_label->setText(QString(std::to_string(max1).c_str()));
+
+        ui->min2_label->setText(QString(std::to_string(min2).c_str()));
+        ui->max2_label->setText(QString(std::to_string(max2).c_str()));
+    }
+
     update_scene = false;
 
     curr_mesh_id = static_cast<uint>(index);
@@ -120,6 +186,10 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color=false;
+
+        ui->min1_label->setText(QString(std::to_string(solution_mins.at(ui->t_slider->value())).c_str()));
+        ui->max1_label->setText(QString(std::to_string(solution_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 1:
         for (uint m=0; m < meshes_canvas1.size(); m++)
@@ -132,6 +202,10 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color=false;
+
+        ui->min1_label->setText(QString(std::to_string(groundtruths_mins.at(ui->t_slider->value())).c_str()));
+        ui->max1_label->setText(QString(std::to_string(groundtruths_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 2:
         for (uint m=0; m < meshes_canvas1.size(); m++)
@@ -145,6 +219,10 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = true;
+
+        ui->min1_label->setText(QString(std::to_string(errH1s_mins.at(ui->t_slider->value())).c_str()));
+        ui->max1_label->setText(QString(std::to_string(errH1s_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 3:
         for (uint m=0; m < meshes_canvas1.size(); m++)
@@ -158,6 +236,10 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = true;
+
+        ui->min1_label->setText(QString(std::to_string(errL2s_mins.at(ui->t_slider->value())).c_str()));
+        ui->max1_label->setText(QString(std::to_string(errL2s_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 4:
         for (uint m=0; m < meshes_canvas1.size(); m++)
@@ -171,6 +253,10 @@ void SolverResultsGraphicWidget::on_canvas1_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = true;
+
+        ui->min1_label->setText(QString(std::to_string(Conds_mins.at(ui->t_slider->value())).c_str()));
+        ui->max1_label->setText(QString(std::to_string(Conds_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     default:
         break;
@@ -215,6 +301,10 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = false;
+
+        ui->min2_label->setText(QString(std::to_string(solution_mins.at(ui->t_slider->value())).c_str()));
+        ui->max2_label->setText(QString(std::to_string(solution_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 1:
         for (uint m=0; m < meshes_canvas2.size(); m++)
@@ -227,6 +317,10 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = false;
+
+        ui->min2_label->setText(QString(std::to_string(groundtruths_mins.at(ui->t_slider->value())).c_str()));
+        ui->max2_label->setText(QString(std::to_string(groundtruths_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 2:
         for (uint m=0; m < meshes_canvas2.size(); m++)
@@ -240,6 +334,10 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = true;
+
+        ui->min2_label->setText(QString(std::to_string(errH1s_mins.at(ui->t_slider->value())).c_str()));
+        ui->max2_label->setText(QString(std::to_string(errH1s_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 3:
         for (uint m=0; m < meshes_canvas2.size(); m++)
@@ -253,6 +351,10 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = true;
+
+        ui->min2_label->setText(QString(std::to_string(errL2s_mins.at(ui->t_slider->value())).c_str()));
+        ui->max2_label->setText(QString(std::to_string(errL2s_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     case 4:
         for (uint m=0; m < meshes_canvas2.size(); m++)
@@ -266,6 +368,10 @@ void SolverResultsGraphicWidget::on_canvas2_cb_currentIndexChanged(int index)
             }
         }
         show_poly_color = true;
+
+        ui->min2_label->setText(QString(std::to_string(Conds_mins.at(ui->t_slider->value())).c_str()));
+        ui->max2_label->setText(QString(std::to_string(Conds_maxs.at(ui->t_slider->value())).c_str()));
+
         break;
     default:
         break;

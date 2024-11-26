@@ -997,11 +997,18 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             sfile.close();
 
             cinolib::ScalarField sf_errH1 (errH1s), sf_errL2 (errL2s);
+
+            double errH1_min = *std::min_element(errH1s.begin(), errH1s.end());
+            double errH1_max = *std::max_element(errH1s.begin(), errH1s.end());
+
+            double errL2_min = *std::min_element(errL2s.begin(), errL2s.end());
+            double errL2_max = *std::max_element(errL2s.begin(), errL2s.end());
+
             sf_errH1.normalize_in_01();
             sf_errL2.normalize_in_01();
 
-            ui->solverResultsGraphicWidget->add_errh1_scalar_field(sf_errH1);
-            ui->solverResultsGraphicWidget->add_errl2_scalar_field(sf_errL2);
+            ui->solverResultsGraphicWidget->add_errh1_scalar_field(sf_errH1, errH1_min, errH1_max);
+            ui->solverResultsGraphicWidget->add_errl2_scalar_field(sf_errL2, errL2_min, errL2_max);
 
             // copy the content of "Cell2Ds_VEMPerformance.csv" to Cond_scalar_field
 
@@ -1031,8 +1038,12 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             sfile.close();
 
             cinolib::ScalarField sf_Cond (Conds);
+
+            double cond_min = *std::min_element(Conds.begin(), Conds.end());
+            double cond_max = *std::max_element(Conds.begin(), Conds.end());
+
             sf_Cond.normalize_in_01();
-            ui->solverResultsGraphicWidget->add_Cond_scalar_field(sf_Cond);
+            ui->solverResultsGraphicWidget->add_Cond_scalar_field(sf_Cond, cond_min, cond_max);
         }
 
         ofile.close();
@@ -1208,6 +1219,7 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
             if (sf_gt[ii] > max)  max = sf_gt[ii];
             if (sf_sol[ii] > max) max = sf_sol[ii];
         }
+
         if (min != max)
         {
             double delta = max - min;
@@ -1221,8 +1233,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         sf_gt.copy_to_mesh(*ui->solverResultsGraphicWidget->get_gt_mesh(i));
         sf_sol.copy_to_mesh(*dataset.get_parametric_mesh(i));
 
-        ui->solverResultsGraphicWidget->add_gt_scalar_field(sf_gt);
-        ui->solverResultsGraphicWidget->add_solution_scalar_field(sf_sol);
+        ui->solverResultsGraphicWidget->add_gt_scalar_field(sf_gt, min, max);
+        ui->solverResultsGraphicWidget->add_solution_scalar_field(sf_sol, min, max);
 
         for (uint vid=0; vid < ui->solverResultsGraphicWidget->get_gt_mesh(i)->num_verts(); vid++ )
         {

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>410</width>
+    <width>352</width>
     <height>348</height>
    </rect>
   </property>
@@ -38,45 +38,31 @@
          <enum>QFrame::Shadow::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="1" column="1">
-          <widget class="cinolib::GLcanvasOld" name="canvas2" native="true"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="cinolib::GLcanvasOld" name="canvas1" native="true"/>
-         </item>
-         <item row="0" column="0">
-          <widget class="QComboBox" name="canvas1_cb">
-           <property name="currentIndex">
-            <number>1</number>
+         <item row="2" column="0">
+          <widget class="QLabel" name="min1_label">
+           <property name="text">
+            <string/>
            </property>
-           <item>
-            <property name="text">
-             <string>Solver Output (V)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>GroundTruth (V)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>H1 Error (P)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>L2 Error (P)</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Condition Number (P)</string>
-            </property>
-           </item>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="colorbar1">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="4">
+          <widget class="QLineEdit" name="colorbar2">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3" colspan="3">
+          <widget class="cinolib::GLcanvasOld" name="canvas2" native="true"/>
+         </item>
+         <item row="0" column="3" colspan="3">
           <widget class="QComboBox" name="canvas2_cb">
            <property name="currentText">
             <string>Solver Output (V)</string>
@@ -111,24 +97,66 @@
            </item>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="0" column="0" colspan="3">
+          <widget class="QComboBox" name="canvas1_cb">
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Solver Output (V)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>GroundTruth (V)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>H1 Error (P)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>L2 Error (P)</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Condition Number (P)</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <widget class="cinolib::GLcanvasOld" name="canvas1" native="true"/>
+         </item>
+         <item row="2" column="5">
+          <widget class="QLabel" name="max2_label">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="3">
+          <widget class="QLabel" name="min2_label">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="max1_label">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="6">
           <widget class="QSlider" name="t_slider">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLineEdit" name="colorbar1">
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="colorbar2">
-           <property name="readOnly">
-            <bool>true</bool>
            </property>
           </widget>
          </item>
