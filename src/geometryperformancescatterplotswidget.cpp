@@ -108,7 +108,7 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
         {
             QWidget* widget = ui->stackedWidget->widget(i);
             ui->stackedWidget->removeWidget(widget);
-            widget->deleteLater();
+            //widget->deleteLater();
         }
     }
 
