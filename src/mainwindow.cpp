@@ -1142,18 +1142,18 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     //         series->attachAxis(axisYlog);
     //     }
 
-        double min = *std::min_element(errs.at(i).begin(), errs.at(i).end());
-        double max = *std::max_element(errs.at(i).begin(), errs.at(i).end());
+        double minY = *std::min_element(errs.at(i).begin(), errs.at(i).end());
+        double maxY = *std::max_element(errs.at(i).begin(), errs.at(i).end());
 
         if (i == errs.size()-2)
         {
-            min -=0.5;
-            max +=0.5;
+            minY -=0.5;
+            maxY +=0.5;
         }
 
-        chart->axes()[1]->setRange(min, max);
+        chart->axes()[1]->setRange(minY, maxY);
         if (range_adapt)
-            chart->axes()[1]->setRange(min*fact, max*fact);
+            chart->axes()[1]->setRange(minY*fact, maxY*fact);
 
         CustomizedChartView *chartView = new CustomizedChartView();
         chartView->setChart(chart);
