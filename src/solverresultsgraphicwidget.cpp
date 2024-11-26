@@ -14,6 +14,18 @@ SolverResultsGraphicWidget::~SolverResultsGraphicWidget()
     delete ui;
 }
 
+void SolverResultsGraphicWidget::set_residuals_on()
+{
+    ui->canvas1_cb->setItemText(4 ,"Residuals (P)");
+    ui->canvas2_cb->setItemText(4, "Residuals (P)");
+}
+
+void SolverResultsGraphicWidget::set_condition_number_on()
+{
+    ui->canvas1_cb->setItemText(4, "Condition Number (P)");
+    ui->canvas2_cb->setItemText(4, "Condition Number (P)");
+}
+
 void SolverResultsGraphicWidget::set_dataset(Dataset *d)
 {
     for (uint i = 0; i < d->get_parametric_meshes().size(); i++)

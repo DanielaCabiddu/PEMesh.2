@@ -70,6 +70,9 @@ public:
 
     void clean_canvas ();
 
+    void set_residuals_on();
+    void set_condition_number_on();
+
     // cinolib::Polygonmesh<> * get_gt_mesh (const uint i);
 
 public slots:

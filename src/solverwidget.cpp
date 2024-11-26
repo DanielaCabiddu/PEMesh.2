@@ -169,6 +169,8 @@ void SolverWidget::on_run_btn_clicked()
     dialog->set_output_folder(output_folder);
     dialog->disable_input_folder_selection();
 
+    condition_number_selected = ui->cond_number_cb->isChecked();
+
     if (dialog->exec() == 1)
     {
         //ui->log_label->append("Running solver ... ");

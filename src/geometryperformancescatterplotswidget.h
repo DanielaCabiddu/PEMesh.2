@@ -59,6 +59,9 @@ public:
     void set_empty ();
     void set_solution_id (const uint id) { solution_id = id; }
 
+    void set_residuals_on();
+    void set_condition_number_on();
+
 Q_SIGNALS:
 
     void compute_GP_scatterplots ();

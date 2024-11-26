@@ -84,6 +84,16 @@ GeometryPerformanceScatterPlotsWidget::~GeometryPerformanceScatterPlotsWidget()
     delete ui;
 }
 
+void GeometryPerformanceScatterPlotsWidget::set_residuals_on()
+{
+    ui->y_axis_cb->setItemText(3, "Residuals");
+}
+
+void GeometryPerformanceScatterPlotsWidget::set_condition_number_on()
+{
+    ui->y_axis_cb->setItemText(3, "Condition Number");
+}
+
 void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d, const std::vector<MeshMetrics> &metrics,
                                                                 const std::vector<std::vector<double> > &performances)
 {

@@ -55,6 +55,8 @@ public:
     void set_dataset (Dataset *d);
     void set_input_folder (const std::string folder);
 
+    bool get_last_condition_number_state () const { return condition_number_selected; }
+
     void update ();
     void clean_canvas ();
 
@@ -85,6 +87,7 @@ private:
     std::string output_folder;
 
     bool update_scene = true;
+    bool condition_number_selected = false;
 
     std::vector<cinolib::Polygonmesh<> *> drawable_polys;
 

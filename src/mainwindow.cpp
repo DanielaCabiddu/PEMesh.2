@@ -1068,6 +1068,20 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
     std::vector<std::string> labels
         {"H1 Error", "Inf Error", "L2 Error", "DOFs", "Max h", "Condition Number"};
 
+    if (!ui->solverWidget->get_last_condition_number_state())
+    {
+        labels.at(5) = "Residuals";
+        ui->solverResultsGraphicWidget->set_residuals_on();
+        ui->solverResultsWidget->set_residuals_on();
+        ui->scatterPlotsGPWidget->set_residuals_on();
+    }
+    else
+    {
+        ui->solverResultsGraphicWidget->set_condition_number_on();
+        ui->solverResultsWidget->set_condition_number_on();
+        ui->scatterPlotsGPWidget->set_condition_number_on();
+    }
+
     while ( in >> e0 >> e1 >> e2 >> e3 >> e4 >> e5)
     {
         errs.at(0).push_back(e0);

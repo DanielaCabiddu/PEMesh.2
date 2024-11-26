@@ -34,6 +34,9 @@ public:
     void set_t_slider_min (const uint val);
     void set_t_slider_max (const uint val);
 
+    void set_residuals_on();
+    void set_condition_number_on();
+
     cinolib::Polygonmesh<> * get_gt_mesh (const uint i);
 
     void add_solution_scalar_field (const cinolib::ScalarField &f, const double min, const double max)

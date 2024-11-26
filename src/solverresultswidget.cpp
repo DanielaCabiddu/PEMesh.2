@@ -56,6 +56,16 @@ SolverResultsWidget::SolverResultsWidget(QWidget *parent)
 
 SolverResultsWidget::~SolverResultsWidget() { delete ui; }
 
+void SolverResultsWidget::set_residuals_on()
+{
+    ui->condVect_color_btn->setText("Residuals");
+}
+
+void SolverResultsWidget::set_condition_number_on()
+{
+    ui->condVect_color_btn->setText("Condition Number");
+}
+
 // void SolverResultsWidget::set_dataset(Dataset *d)
 // {
 //     for (uint i = 0; i < d->get_parametric_meshes().size(); i++)
