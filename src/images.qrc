@@ -34,4 +34,9 @@
         <file>img/points-poisson.png</file>
         <file>img/points-random.png</file>
     </qresource>
+    <qresource prefix="/equations">
+        <file>img/eq_linear.png</file>
+        <file>img/eq_polynomial.png</file>
+        <file>img/eq_trigonom.png</file>
+    </qresource>
 </RCC>

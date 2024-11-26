@@ -73,6 +73,8 @@ private slots:
 
     void on_run_btn_clicked();
 
+    void on_solver_cb_currentIndexChanged(int index);
+
 private:
     Ui::SolverWidget *ui;
 
@@ -87,6 +89,8 @@ private:
     std::vector<cinolib::Polygonmesh<> *> drawable_polys;
 
     QProcess *process = nullptr;
+
+    void update_equation_preview(int id);
 
     void parseEscapeSequence(int attribute, QListIterator< QString > & i, QTextCharFormat & textCharFormat, QTextCharFormat const & defaultTextCharFormat);
 

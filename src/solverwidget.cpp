@@ -36,6 +36,7 @@
 #include "solversettingsdialog.h"
 
 #include <QDir>
+#include <QImageReader>
 #include <QRegExp>
 #include <QFontDatabase>
 
@@ -48,12 +49,37 @@ SolverWidget::SolverWidget(QWidget *parent) :
     process = new QProcess();
     // connect(process, SIGNAL(readyRead()), this, SLOT(update_log()));
 
-    // ui->log_text->hide();
+    update_equation_preview(0);
 }
 
 SolverWidget::~SolverWidget()
 {
     delete ui;
+}
+
+void SolverWidget::update_equation_preview(int id)
+{
+    QPixmap pic;
+
+    if (id == 0)
+    {
+        pic.load (":/equations/img/eq_polynomial.png");
+    }
+    else
+    if (id == 1)
+    {
+        pic.load (":/equations/img/eq_linear.png");
+    }
+    else
+    {
+        pic.load (":/equations/img/eq_trigonom.png");
+    }
+
+    pic = pic.scaledToHeight(ui->equation_preview->height());
+
+    ui->equation_preview->setMargin(0);
+    ui->equation_preview->setAlignment(Qt::AlignCenter);
+    ui->equation_preview->setPixmap(pic);
 }
 
 void SolverWidget::set_dataset(Dataset *d)
@@ -902,3 +928,9 @@ void SolverWidget::update_log(const QString text)
     //cursor.movePosition(QTextCursor::Start);
     ui->log_text->setTextCursor(cursor);
 }
+
+void SolverWidget::on_solver_cb_currentIndexChanged(int index)
+{
+    update_equation_preview(index);
+}
+
