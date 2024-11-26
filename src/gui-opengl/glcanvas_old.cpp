@@ -1028,7 +1028,7 @@ void GLcanvasOld::reset_trackball()
     trackball.mode_2d     = false;
     trackball.perspective = true;
     trackball.zoom_ortho  = 1.0;
-    trackball.zoom_persp  = 45.0;
+    trackball.zoom_persp  = 30.0;
     update_projection_matrix();
     fit_scene();
 }
