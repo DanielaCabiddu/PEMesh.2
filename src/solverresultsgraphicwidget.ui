@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>410</width>
     <height>348</height>
    </rect>
   </property>
@@ -79,10 +79,10 @@
          <item row="0" column="1">
           <widget class="QComboBox" name="canvas2_cb">
            <property name="currentText">
-            <string>ErrH1 (P)</string>
+            <string>Solver Output (V)</string>
            </property>
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <item>
             <property name="text">
@@ -96,17 +96,17 @@
            </item>
            <item>
             <property name="text">
-             <string>ErrH1 (P)</string>
+             <string>H1 Error (P)</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>ErrL2 (P)</string>
+             <string>L2 Error (P)</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>Cond (P)</string>
+             <string>Condition Number (P)</string>
             </property>
            </item>
           </widget>
