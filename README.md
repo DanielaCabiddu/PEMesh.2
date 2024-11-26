@@ -109,6 +109,46 @@ doi={10.1007/978-3-030-95319-5},
 affiliation={IMATI-CNR, Genova, Pavia, Italy},
 language={eng}
 }
+
+@inproceedings{sorgente2023survey,
+  title={A survey of indicators for mesh quality assessment},
+  author={Sorgente, Tommaso and Biasotti, Silvia and Manzini, Gianmarco and Spagnuolo, Michela},
+  booktitle={Computer graphics forum},
+  volume={42},
+  number={2},
+  pages={461--483},
+  year={2023},
+  organization={Wiley Online Library}
+}
+```
+
+If you use the VEM quality indicator, please cite:
+
+```bibtex
+@article{sorgente2022role,
+  title={The role of mesh quality and mesh quality indicators in the virtual element method},
+  author={Sorgente, Tommaso and Biasotti, Silvia and Manzini, Gianmarco and Spagnuolo, Michela},
+  journal={Advances in Computational Mathematics},
+  volume={48},
+  number={1},
+  pages={3},
+  year={2022},
+  publisher={Springer}
+}
+```
+
+If you use the Mesh Optimization algorithm, please cite:
+
+```bibtex
+@article{sorgente2024mesh,
+  title={Mesh Optimization for the Virtual Element Method: How Small Can an Agglomerated Mesh Become?},
+  author={Sorgente, Tommaso and Vicini, Fabio and Berrone, Stefano and Biasotti, Silvia and Manzini, Gianmarco and Spagnuolo, Michela},
+  journal={Journal of Computational Physics},
+  pages={113552},
+  year={2024},
+  publisher={Elsevier}
+}
+}
 ```
 
 ## Acknowledgements
