@@ -53,7 +53,9 @@ Run the following commands:
 
 Triangle library will be automatically built by CMake.
 
-Then, open Docker App and run the following commands:
+### Docker
+
+In both cases, after the installation open Docker App and run the following commands:
 
 `cd ${REPO_ROOT}/solver`\
 `sudo docker build --no-cache -f Dockerfile --target siggraph_2024_solver . -t siggraph_2024_solver:1.0.0`
