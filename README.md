@@ -48,7 +48,7 @@ Run the following commands:
 
 `mkdir -p ${REPO_ROOT}/build`\
 `cd build`\
-`cmake ../src`
+`cmake ../src`\
 `make`
 
 Triangle library will be automatically built by CMake.
