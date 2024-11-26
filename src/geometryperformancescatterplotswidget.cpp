@@ -118,14 +118,23 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
 
     class_chages.push_back(d.get_num_parametric_meshes());
 
+    const double fact = 1e10;
+    std::ostringstream streamObj;
+    // Add double to stream
+    streamObj << fact;
+    // Get string from output string stream
+    const std::string str_fact = streamObj.str();
+
     for (int i=0; i < ui->x_axis_cb->count(); i++)
     {
         for (int j=0; j < ui->y_axis_cb->count(); j++)
         {
             QChart *ch = new QChart();
 
-            double maxX = -DBL_MAX, maxY = -DBL_MAX;
-            double minX =  DBL_MAX, minY =  DBL_MAX;
+            double minX = DBL_MAX, maxX = -DBL_MAX;
+            double minY = *std::min_element(performances.at(j).begin(), performances.at(j).end());
+            double maxY = *std::max_element(performances.at(j).begin(), performances.at(j).end());
+            bool range_adapt = (minY < 1e-12);
 
             for (uint cc=0; cc < class_chages.size()-1; cc++)
             {
@@ -160,14 +169,13 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
                     }
 
                     double y = performances.at(j).at(m);
-                    // y = log(y);
+                    if (range_adapt)
+                        y *= fact;
 
                     s->append(x,y);
 
                     minX = std::min(minX, x);
                     maxX = std::max(maxX, x);
-                    minY = std::min(minY, y);
-                    maxY = std::max(maxY, y);
                 }
                 ch->addSeries(s);
             }
@@ -175,14 +183,16 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
             ch->legend()->hide();
             ch->createDefaultAxes();
 
-            // ch->axes()[0]->setMax(maxX*1.001);
-            // ch->axes()[0]->setMin(minX*0.999);
-            // ch->axes()[1]->setMax(maxY*1.001);
-            // ch->axes()[1]->setMin(minY*0.999);
-            // ch->axes()[1]->setMax(*std::max_element(performances.at(j).begin(), performances.at(j).end()));
+            ch->axes()[0]->setRange(minX, maxX);
+            ch->axes()[1]->setRange(minY, maxY);
+            if (range_adapt)
+                ch->axes()[1]->setRange(minY*fact, maxY*fact);
 
             ch->axes()[0]->setTitleText(metrics_names.at(cbID2metricsID.at(i)).c_str());
-            ch->axes()[1]->setTitleText(ui->y_axis_cb->itemText(j).toStdString().c_str());
+            QString y_axis_title = ui->y_axis_cb->itemText(j).toStdString().c_str();
+            if (range_adapt)
+                y_axis_title += " * " + QString(str_fact.c_str());
+            ch->axes()[1]->setTitleText(y_axis_title);
             ch->setTitle((metrics_names.at(cbID2metricsID.at(i)) + " vs " + ui->y_axis_cb->itemText(j).toStdString()).c_str());
 
             std::cout << chart_views.size() << " : " << metrics_names.at(cbID2metricsID.at(i)) <<
@@ -206,7 +216,6 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
 //                     s->attachAxis(axisYlog);
 //             }
 
-
             CustomizedChartView *ch_view = new CustomizedChartView();
             ch_view->setChart(ch);
 
@@ -215,7 +224,6 @@ void GeometryPerformanceScatterPlotsWidget::create_scatterPlots(const Dataset d,
 
             chart_views.push_back(ch_view);
             ui->stackedWidget->addWidget(ch_view);
-
         }
     }
 

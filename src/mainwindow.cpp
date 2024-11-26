@@ -1089,18 +1089,18 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
 
     for (uint i=0; i < errs.size(); i++)
     {
-       // double min_val = *std::min_element(errs.at(i).begin(), errs.at(i).end());
-       // bool range_adapt = (min_val < 1e-12);
+       double min_val = *std::min_element(errs.at(i).begin(), errs.at(i).end());
+       bool range_adapt = (min_val < 1e-12);
 
         QChart *chart = new QChart();
         QLineSeries *series = new QLineSeries();
 
         for (uint v=0; v < errs.at(i).size(); v++)
         {
-           // if (!range_adapt)
+           if (!range_adapt)
                series->append(v, errs.at(i).at(v));
-           // else
-           //     series->append(v, errs.at(i).at(v)*fact); // if the values are too small
+           else
+               series->append(v, errs.at(i).at(v)*fact); // if the values are too small
         }
 
         for (uint v=0; v < errs.at(i).size(); v++)
@@ -1111,8 +1111,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         series->setName(labels.at(i).c_str());
 
         QString y_axis_title;
-        // if (range_adapt)
-        //    y_axis_title = QString(labels.at(i).c_str()) + " * " + QString(str_fact.c_str());
+        if (range_adapt)
+           y_axis_title = QString(labels.at(i).c_str()) + " * " + QString(str_fact.c_str());
 
         QValueAxis *axisX = new QValueAxis();
         axisX->setTickCount(dataset.get_num_parametric_meshes());  // <--
@@ -1152,9 +1152,8 @@ void MainWindow::show_solver_results(const uint solution_id, const std::string f
         }
 
         chart->axes()[1]->setRange(min, max);
-//        chart->createDefaultAxes();
-        // if (range_adapt)
-        //     chart->axes()[1]->setRange(min*fact, max*fact);
+        if (range_adapt)
+            chart->axes()[1]->setRange(min*fact, max*fact);
 
         CustomizedChartView *chartView = new CustomizedChartView();
         chartView->setChart(chart);
