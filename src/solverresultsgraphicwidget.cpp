@@ -145,6 +145,8 @@ void SolverResultsGraphicWidget::on_t_slider_valueChanged(int value)
     if (value >= 0)
         show_parametric_mesh(value);
 
+    ui->mesh_id_label->setText(QString(std::to_string(value).c_str()));
+
     // for (uint c = 0; c < chart_views.size(); c++) {
     //     QGraphicsLineItem *line = track_lines.at(c);
 
