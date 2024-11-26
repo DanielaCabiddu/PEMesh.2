@@ -255,10 +255,9 @@ void SolverWidget::on_run_btn_clicked()
 
                 std::cout << cmd << std::endl;
 
-                std::string running_log = "\n\n\033[1;30mRunning : \033[0m" + cmd + "\n";
-
+                // std::string running_log = "\n\n\033[1;30mRunning : \033[0m" + cmd + "\n";
+                std::string running_log = "Solving equation on mesh: " + filename.toStdString() + "...\n";
                 update_log(running_log.c_str());
-
 
                 // QStringList args
                 // {
@@ -289,16 +288,18 @@ void SolverWidget::on_run_btn_clicked()
                 std::cout << error.toStdString() << std::endl;
                 std::cout << output.toStdString() << std::endl << std::flush;
 
-                if (error.length()>0)
+                if (output.length()>0)
+                    update_log(output);
+
+                if (error.length()>0) {
+                    update_log("\033[1;30mDone!\033[0m\n");
                     update_log(error);
-                else {
+                } else {
                     std::cerr << "Error: solver crashed!" << std::endl;
                     exit(0);
                 }
 
-                if (output.length()>0)
-                    update_log(output);
-
+                update_log("\n");
                 QApplication::processEvents();
             }
 
@@ -307,21 +308,19 @@ void SolverWidget::on_run_btn_clicked()
 
         QApplication::restoreOverrideCursor();
 
-
         // std::string file_finished = out_filepath + "_DONE";
-
         // while (!QFile::exists(file_finished.c_str()))
         // {
         // QCoreApplication::processEvents();
         // }
-
         // remove(file_finished.c_str());
 
         // std::cout << process->exitStatus() << std::endl;
         // std::cout << process->readAllStandardError().toStdString() << std::endl;
         // std::cout << process->readAllStandardOutput().toStdString() << std::endl;
 
-        std::cout << "DONE" << std::endl;
+        update_log("Solving completed.\n");
+        std::cout << "Solving completed!" << std::endl;
     }
 
     delete dialog;

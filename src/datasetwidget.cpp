@@ -571,14 +571,14 @@ void DatasetWidget::compute_geometric_metrics ()
         QApplication::setOverrideCursor(Qt::WaitCursor);
 
         std::string message = "\nMesh " + std::to_string(i);
-        message += " : Computing polygon geometry metrics ... Please wait ...";
+        message += " : Computing quality indicators...";
 
         ui->log_label->append(message.c_str());
 
         MeshMetrics m_metrics;
         compute_mesh_metrics(m, m_metrics);
 
-        std::string message2 = " ... DONE";
+        std::string message2 = " ... Done!";
 
         QCoreApplication::processEvents();
 
@@ -865,7 +865,7 @@ void DatasetWidget::on_save_btn_clicked()
 
     dataset_folder = dir.toStdString();
 
-    std::string message = "Saved in " + dir.toStdString();
+    std::string message = "Dataset saved in: " + dir.toStdString();
     ui->log_label->append(message.c_str());
 
     ui->add_btn->setEnabled(false);
@@ -1287,7 +1287,7 @@ void DatasetWidget::on_load_meshes_btn_clicked()
 
         m->mesh_data().filename = f.toStdString();
 
-        message = std::to_string(m->num_verts()) + "V / " + std::to_string(m->num_polys()) + "P ";
+        message = "Mesh loaded: " + std::to_string(m->num_verts()) + "V / " + std::to_string(m->num_polys()) + "P\n";
         ui->log_label->append(message.c_str());
 
         for (uint pid=0; pid < m->num_polys(); pid++)
@@ -1299,30 +1299,25 @@ void DatasetWidget::on_load_meshes_btn_clicked()
 
                 m->poly_data(pid).flags.set(1, true);
             }
-
-            // m->show_marked_edge(true);
         }
 
         // save node/ele if not present - to enable pde solver
-        QFileInfo fileInfo(QString(filename.c_str()));
-        QString basename = fileInfo.completeBaseName();
+        // QFileInfo fileInfo(QString(filename.c_str()));
+        // QString basename = fileInfo.completeBaseName();
 
-        QString node_filename = dir + QString(QDir::separator()) + basename + ".node";
-        QString ele_filename = dir + QString(QDir::separator()) + basename + ".ele";
+        // QString node_filename = dir + QString(QDir::separator()) + basename + ".node";
+        // QString ele_filename = dir + QString(QDir::separator()) + basename + ".ele";
 
-        if (!QFile(node_filename).exists() || !QFile(ele_filename).exists())
-        {
-            const std::string node_ele_filename = dir.toStdString() + QString(QDir::separator()).toStdString() + basename.toStdString();
+        // if (!QFile(node_filename).exists() || !QFile(ele_filename).exists())
+        // {
+            // const std::string node_ele_filename = dir.toStdString() + QString(QDir::separator()).toStdString() + basename.toStdString();
 
             // write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
-            message = "Saved NODE/ELE " + node_ele_filename;
-            ui->log_label->append(message.c_str());
-        }
+            // message = "Saved NODE/ELE " + node_ele_filename;
+            // ui->log_label->append(message.c_str());
+        // }
 
         dataset->add_parametric_mesh(m, DBL_MAX, class_id);
-
-        ui->log_label->append("\n");
-
         id++;
 
         QCoreApplication::processEvents();
@@ -1332,7 +1327,8 @@ void DatasetWidget::on_load_meshes_btn_clicked()
 
     ui->param_slider->setMaximum(static_cast<int>(mesh_files.size()-1));
 
-    ui->log_label->append("Dataset completed.");
+    ui->log_label->append("Dataset loaded.\n");
+
     ui->param_slider->show();
     ui->mesh_number_label->show();
 
@@ -1357,6 +1353,131 @@ void DatasetWidget::on_load_meshes_btn_clicked()
     ui->mirroring_btn->setEnabled(true);
 
     emit (saved_in (dir.toStdString()));
+}
+
+
+
+void DatasetWidget::on_load_mesh_btn_clicked()
+{
+    QString filters("Meshes (*.off *.obj *.stl)");
+    QString filename;
+
+    do
+    {
+        filename = QFileDialog::getOpenFileName(this, tr("Select Mesh File"), QCoreApplication::applicationDirPath(), filters);
+
+        if (filename.isNull() || filename.isEmpty())
+            return;
+    }
+    while (filename.isNull() || filename.isEmpty());
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
+    std::string message = "Loading " + filename.toStdString() + " ... ";
+    ui->log_label->append(message.c_str());
+
+    // check class
+    QString subString = filename;
+
+    if (filename.length() > 0 && filename.at(0).isDigit())
+    {
+        // subString = QStringRef(&f, f.indexOf("_")+1, f.length() - f.indexOf("_") - 1);
+    }
+
+    std:: cout << subString.toStdString() << std::endl;
+
+    uint class_id = UINT_MAX;
+
+    for (uint i=0; i < classPrefix.size(); i++)
+        if (subString.startsWith(classPrefix.at(i).c_str()) )
+        {
+            bool contains_other = false;
+
+            for (uint j=i+1; j < classPrefix.size(); j++)
+                if (subString.contains(classPrefix.at(j).c_str()))
+                    contains_other = true;
+
+            if (contains_other) continue;
+
+            class_id = i;
+            break;
+        }
+
+    cinolib::Polygonmesh<> *m = new cinolib::Polygonmesh<> (filename.toStdString().c_str());
+
+    m->mesh_data().filename = filename.toStdString();
+
+    message = "Mesh loaded: " + std::to_string(m->num_verts()) + "V / " + std::to_string(m->num_polys()) + "P\n";
+    ui->log_label->append(message.c_str());
+
+    for (uint pid=0; pid < m->num_polys(); pid++)
+    {
+        if (m->poly_verts(pid).size() > 3)
+        {
+            for (uint eid : m->adj_p2e(pid))
+                m->edge_data(eid).flags.set(0, true);
+
+            m->poly_data(pid).flags.set(1, true);
+        }
+    }
+
+    // save node/ele if not present - to enable pde solver
+    // QFileInfo fileInfo(QString(filename.toStdString().c_str()));
+    // QString basename = fileInfo.completeBaseName();
+
+    // QString node_filename = fileInfo.absoluteDir().absolutePath() + QString(QDir::separator()) + basename + ".node";
+    // QString ele_filename = fileInfo.absoluteDir().absolutePath() + QString(QDir::separator()) + basename + ".ele";
+
+    // if (!QFile(node_filename).exists() || !QFile(ele_filename).exists())
+    // {
+    //     const std::string node_ele_filename = fileInfo.absoluteDir().absolutePath().toStdString() + QString(QDir::separator()).toStdString() + basename.toStdString();
+
+    // write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
+    //     message = "Saved NODE/ELE " + node_ele_filename;
+    //     ui->log_label->append(message.c_str());
+    // }
+
+    dataset->add_parametric_mesh(m, DBL_MAX, class_id);
+
+    QCoreApplication::processEvents();
+
+    QApplication::restoreOverrideCursor();
+
+    if (dataset->get_num_parametric_meshes() > 1)
+    {
+        ui->param_slider->setMaximum(static_cast<int>(dataset->get_num_parametric_meshes()-1));
+        ui->param_slider->setVisible(true);
+    }
+    else
+    {
+        ui->param_slider->setVisible(false);
+    }
+
+    ui->log_label->append("Mesh loaded.\n");
+    ui->param_slider->show();
+    ui->mesh_number_label->show();
+
+    ui->highlight_polys_cb->setEnabled(true);
+
+    show_parametric_mesh(0);
+
+    //// Disable/enable buttons
+    ui->load_polys_btn->setEnabled(false);
+    ui->load_meshes_btn->setEnabled(false);
+    ui->add_btn->setEnabled(false);
+    ui->generate_dataset_btn->setEnabled(false);
+
+    ui->geom_qualities_btn->setEnabled(true);
+    ui->optimize_btn->setEnabled(true);
+
+    // ui->canvas->callback_mouse_press =
+    //         [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
+
+    ui->aggregate_btn->setEnabled(true);
+
+    ui->load_mesh_btn->setEnabled(false);
+
+    // emit (saved_in (dir.toStdString()));
 }
 
 void DatasetWidget::on_aggregate_btn_clicked()
@@ -1441,7 +1562,7 @@ void DatasetWidget::on_aggregate_btn_clicked()
 
         // std::cout << "saved " << filename << std::endl;
 
-        ui->log_label->append("DONE");
+        ui->log_label->append("Done!");
 
         // m->updateGL();
 
@@ -1684,7 +1805,7 @@ void DatasetWidget::on_mirroring_btn_clicked()
     {
         std::string message = "Mirroring mesh " + std::to_string(index) + ": " +
                                                   std::to_string(mesh->num_verts()) + "V|" +
-                                                  std::to_string(mesh->num_polys()) + "P" ;
+                                                  std::to_string(mesh->num_polys()) + "P..." ;
         ui->log_label->append(message.c_str());
 
         apply_mirroring(*mesh);
@@ -1694,7 +1815,7 @@ void DatasetWidget::on_mirroring_btn_clicked()
 
         // mesh->updateGL();
 
-        message = "--> Mirrired mesh " + std::to_string(index) + ": " +
+        message = "--> Mirrored mesh " + std::to_string(index) + ": " +
                                          std::to_string(mesh->num_verts()) + "V|" +
                                          std::to_string(mesh->num_polys()) + "P \n";
 
@@ -1714,6 +1835,8 @@ void DatasetWidget::on_mirroring_btn_clicked()
             mesh->poly_data(pid).color = cinolib::Color::WHITE();
         }
     }
+
+    ui->log_label->append("Dataset mirrored.\n");
 
     show_parametric_mesh(ui->param_slider->value());
 
@@ -1898,6 +2021,7 @@ void DatasetWidget::on_optimize_btn_clicked()
     }
 
     ui->canvas->updateGL();
+    ui->log_label->append("Quality indicators computed.\n");
 
     QApplication::restoreOverrideCursor();
 
@@ -1906,132 +2030,4 @@ void DatasetWidget::on_optimize_btn_clicked()
     ui->save_btn->setEnabled(true);
 }
 
-
-void DatasetWidget::on_load_mesh_btn_clicked()
-{
-    QString filters("Meshes (*.off *.obj *.stl)");
-    QString filename;
-
-    do
-    {
-        filename = QFileDialog::getOpenFileName(this, tr("Select Mesh File"), QCoreApplication::applicationDirPath(), filters);
-
-        if (filename.isNull() || filename.isEmpty())
-            return;
-    }
-    while (filename.isNull() || filename.isEmpty());
-
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-
-    std::string message = "Loading " + filename.toStdString() + " ... ";
-    ui->log_label->append(message.c_str());
-
-    // check class
-    QString subString = filename;
-
-    if (filename.length() > 0 && filename.at(0).isDigit())
-    {
-        // subString = QStringRef(&f, f.indexOf("_")+1, f.length() - f.indexOf("_") - 1);
-    }
-
-    std:: cout << subString.toStdString() << std::endl;
-
-    uint class_id = UINT_MAX;
-
-    for (uint i=0; i < classPrefix.size(); i++)
-        if (subString.startsWith(classPrefix.at(i).c_str()) )
-        {
-            bool contains_other = false;
-
-            for (uint j=i+1; j < classPrefix.size(); j++)
-                if (subString.contains(classPrefix.at(j).c_str()))
-                    contains_other = true;
-
-            if (contains_other) continue;
-
-            class_id = i;
-            break;
-        }
-
-    cinolib::Polygonmesh<> *m = new cinolib::Polygonmesh<> (filename.toStdString().c_str());
-
-    m->mesh_data().filename = filename.toStdString();
-
-    message = std::to_string(m->num_verts()) + "V / " + std::to_string(m->num_polys()) + "P ";
-    ui->log_label->append(message.c_str());
-
-    for (uint pid=0; pid < m->num_polys(); pid++)
-    {
-        if (m->poly_verts(pid).size() > 3)
-        {
-            for (uint eid : m->adj_p2e(pid))
-                m->edge_data(eid).flags.set(0, true);
-
-            m->poly_data(pid).flags.set(1, true);
-        }
-
-        // m->show_marked_edge(true);
-    }
-
-    // save node/ele if not present - to enable pde solver
-    QFileInfo fileInfo(QString(filename.toStdString().c_str()));
-    QString basename = fileInfo.completeBaseName();
-
-    QString node_filename = fileInfo.absoluteDir().absolutePath() + QString(QDir::separator()) + basename + ".node";
-    QString ele_filename = fileInfo.absoluteDir().absolutePath() + QString(QDir::separator()) + basename + ".ele";
-
-    if (!QFile(node_filename).exists() || !QFile(ele_filename).exists())
-    {
-        const std::string node_ele_filename = fileInfo.absoluteDir().absolutePath().toStdString() + QString(QDir::separator()).toStdString() + basename.toStdString();
-
-        // write_NODE_ELE_2D(node_ele_filename.c_str(), m->vector_verts(), m->vector_polys());
-        message = "Saved NODE/ELE " + node_ele_filename;
-        ui->log_label->append(message.c_str());
-    }
-
-    dataset->add_parametric_mesh(m, DBL_MAX, class_id);
-
-    ui->log_label->append("\n");
-
-    QCoreApplication::processEvents();
-
-
-    QApplication::restoreOverrideCursor();
-
-    if (dataset->get_num_parametric_meshes() > 1)
-    {
-        ui->param_slider->setMaximum(static_cast<int>(dataset->get_num_parametric_meshes()-1));
-        ui->param_slider->setVisible(true);
-    }
-    else
-    {
-        ui->param_slider->setVisible(false);
-    }
-
-    ui->log_label->append("Dataset completed.");
-    ui->param_slider->show();
-    ui->mesh_number_label->show();
-
-    ui->highlight_polys_cb->setEnabled(true);
-
-    show_parametric_mesh(0);
-
-    //// Disable/enable buttons
-    ui->load_polys_btn->setEnabled(false);
-    ui->load_meshes_btn->setEnabled(false);
-    ui->add_btn->setEnabled(false);
-    ui->generate_dataset_btn->setEnabled(false);
-
-    ui->geom_qualities_btn->setEnabled(true);
-    ui->optimize_btn->setEnabled(true);
-
-    // ui->canvas->callback_mouse_press =
-    //         [](cinolib::GLcanvas* canvas, QMouseEvent* event){ };
-
-    ui->aggregate_btn->setEnabled(true);
-
-    ui->load_mesh_btn->setEnabled(false);
-
-    // emit (saved_in (dir.toStdString()));
-}
 
