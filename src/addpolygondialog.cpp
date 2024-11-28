@@ -38,23 +38,24 @@
 #include <QFileDialog>
 
 AddPolygonDialog::AddPolygonDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::AddPolygonDialog) {
-  ui->setupUi(this);
+    : QDialog(parent), ui(new Ui::AddPolygonDialog)
+{
+    ui->setupUi(this);
 
-  setWindowTitle(tr("Select Polygon Class"));
+    setWindowTitle(tr("Select Polygon Class"));
 
-  update_img(getClassIndex());
+    update_img(getClassIndex());
 
-  connect(ui->class_list, SIGNAL(currentIndexChanged(int)), this,
+    connect(ui->class_list, SIGNAL(currentIndexChanged(int)), this,
           SLOT(load_mesh_and_update_image(int)));
 
-  // ui->preview_canvas->hide();
-  // ui->preview_filename->hide();
+    // ui->preview_canvas->hide();
+    // ui->preview_filename->hide();
 
-  // ui->change_poly_btn->hide();
+    // ui->change_poly_btn->hide();
 
-  // ui->deformation_label->hide();
-  // ui->deformation_param->hide();
+    ui->deformation_label->hide();
+    ui->deformation_param->hide();
 }
 
 AddPolygonDialog::~AddPolygonDialog() { delete ui; }
