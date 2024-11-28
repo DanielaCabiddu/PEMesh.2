@@ -574,6 +574,33 @@ double compute_metric_JAC(const std::vector<cinolib::vec3d> &points) {
     double value = jac >= 0. ? jac : 0.;
     assert(0. <= value && value <= 1. + METRICS_TOLL);
     return value;
+
+    // Alternative formulation for scaled jacobian:
+    // double jac = DBL_MAX;
+    // std::vector<cinolib::vec2d> points_2d = cinolib::vec2d_from_vec3d(points);
+    // for (uint i = 0; i < points_2d.size(); ++i) {
+    //     cinolib::vec2d p0 = points_2d.at(i);
+    //     cinolib::vec2d p1 = points_2d.at((i + 1) % points_2d.size());
+    //     cinolib::vec2d p2 = points_2d.at((points_2d.size() + i - 1) % points_2d.size());
+
+    //     cinolib::vec2d L0 = p1 - p0;
+    //     cinolib::vec2d L1 = p2 - p0;
+
+    //     cinolib::mat<2,2,double> A;
+    //     A.set_col(0, L0);
+    //     A.set_col(1, L1);
+    //     if (A.det() < METRICS_TOLL) {
+    //         jac=0.;
+    //         break;
+    //     }
+    //     double K = A.norm() * A.inverse().norm();
+    //     assert (K > METRICS_TOLL);
+    //     jac = std::min(jac, 2. / K);
+    // }
+
+    // double value = jac;
+    // assert(0. <= value && value <= 1. + METRICS_TOLL);
+    // return value;
 }
 
 double compute_metric_FRO(const std::vector<cinolib::vec3d> &points) {
