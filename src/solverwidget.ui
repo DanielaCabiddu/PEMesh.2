@@ -65,12 +65,12 @@
              <widget class="QComboBox" name="solver_cb">
               <item>
                <property name="text">
-                <string>0 - Polynomial ground-truth solution</string>
+                <string>0 - Linear ground-truth solution</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>1 - Linear ground-truth solution</string>
+                <string>1 - Polynomial ground-truth solution</string>
                </property>
               </item>
               <item>
