@@ -90,6 +90,8 @@ private slots:
 
     void on_highlight_min_max_cb_checkStateChanged(const Qt::CheckState &checked);
 
+    void on_indicator_info_btn_clicked();
+
 private:
     Ui::MeshMetricsGraphicWidget *ui;
 

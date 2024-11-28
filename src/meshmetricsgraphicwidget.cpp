@@ -34,6 +34,8 @@
 #include "ui_meshmetricsgraphicwidget.h"
 
 #include "quality_metrics.h"
+#include <qdir.h>
+#include <QDesktopServices>
 
 MeshMetricsGraphicWidget::MeshMetricsGraphicWidget(QWidget *parent) :
     QWidget(parent),
@@ -81,7 +83,6 @@ MeshMetricsGraphicWidget::MeshMetricsGraphicWidget(QWidget *parent) :
 
     ui->groupBox_2->hide();
     ui->info_text->hide();
-
 }
 
 MeshMetricsGraphicWidget::~MeshMetricsGraphicWidget()
@@ -2387,5 +2388,17 @@ void MeshMetricsGraphicWidget::on_highlight_min_max_cb_checkStateChanged(const Q
     ui->mesh_metrics_canvas->add_mesh(*mesh_with_metrics.at(0), true);
 
     ui->info_text->setHtml(message.c_str());
+}
+
+
+void MeshMetricsGraphicWidget::on_indicator_info_btn_clicked()
+{
+    std::string tmp_file = QApplication::applicationDirPath().append("/indicators.pdf").toStdString();
+
+    QFile HelpFile(":/docs/docs/quality_indicators.pdf");
+    HelpFile.copy(tmp_file.c_str());
+
+    QDesktopServices::openUrl(QUrl::fromLocalFile(tmp_file.c_str()));
+
 }
 

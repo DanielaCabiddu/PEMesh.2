@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/docs">
+        <file>docs/quality_indicators.pdf</file>
+    </qresource>
+</RCC>
