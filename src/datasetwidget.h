@@ -113,6 +113,8 @@ private slots:
 
   void on_load_mesh_btn_clicked();
 
+  void on_parametric_info_btn_clicked();
+
   Q_SIGNALS:
 
   void computed_mesh_metrics();

@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/docs">
         <file>docs/quality_indicators.pdf</file>
+        <file>docs/parametric_polygons.pdf</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

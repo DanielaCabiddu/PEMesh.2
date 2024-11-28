@@ -146,7 +146,65 @@
           <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
+          <item row="5" column="0">
+           <widget class="QPushButton" name="add_btn">
+            <property name="text">
+             <string> Add a new Polygon</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/add_icon.png</normaloff>:/icons/img/add_icon.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>16</width>
+              <height>16</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QToolButton" name="parametric_info_btn">
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/info-circle-icon.png</normaloff>:/icons/img/info-circle-icon.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <widget class="QTableWidget" name="polygon_list">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <column>
+             <property name="text">
+              <string>Polygon Class</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Position</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Scale Factor</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Rotation Angle</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
              <string>Open Options</string>
@@ -188,7 +246,105 @@
             </layout>
            </widget>
           </item>
-          <item row="13" column="0">
+          <item row="6" column="0" colspan="2">
+           <widget class="QPushButton" name="generate_dataset_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Generate Dataset</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/slider.png</normaloff>:/icons/img/slider.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="2">
+           <widget class="QPushButton" name="aggregate_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Aggregate Triangles</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/aggregate.png</normaloff>:/icons/img/aggregate.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0" colspan="2">
+           <widget class="QPushButton" name="mirroring_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string> Mirroring</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/mirroring.png</normaloff>:/icons/img/mirroring.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0" colspan="2">
+           <widget class="QPushButton" name="geom_qualities_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Quality Indicators</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/icons/img/geometry_icon.png</normaloff>:/icons/img/geometry_icon.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0" colspan="2">
+           <widget class="QPushButton" name="optimize_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Optimize Mesh</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0" colspan="2">
+           <widget class="QGroupBox" name="groupBox_3">
+            <property name="title">
+             <string>Visualization Options</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="show_coords_cb">
+               <property name="text">
+                <string>Show Coordinate Markers</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="highlight_polys_cb">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Highlight Non-Triangle Polygons</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="13" column="0" colspan="2">
            <widget class="QGroupBox" name="groupBox">
             <property name="title">
              <string>Save Options</string>
@@ -223,151 +379,6 @@
               </widget>
              </item>
             </layout>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QTableWidget" name="polygon_list">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <column>
-             <property name="text">
-              <string>Polygon Class</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Position</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Scale Factor</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Rotation Angle</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QPushButton" name="aggregate_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string> Aggregate Triangles</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/aggregate.png</normaloff>:/icons/img/aggregate.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QPushButton" name="mirroring_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string> Mirroring</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/mirroring.png</normaloff>:/icons/img/mirroring.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QPushButton" name="generate_dataset_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string> Generate Dataset</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/slider.png</normaloff>:/icons/img/slider.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QPushButton" name="add_btn">
-            <property name="text">
-             <string> Add a new Polygon</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/add_icon.png</normaloff>:/icons/img/add_icon.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>16</width>
-              <height>16</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QGroupBox" name="groupBox_3">
-            <property name="title">
-             <string>Visualization Options</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_3">
-             <item row="1" column="0">
-              <widget class="QCheckBox" name="show_coords_cb">
-               <property name="text">
-                <string>Show Coordinate Markers</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QCheckBox" name="highlight_polys_cb">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Highlight Non-Triangle Polygons</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QPushButton" name="optimize_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Optimize Mesh</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QPushButton" name="geom_qualities_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Quality Indicators</string>
-            </property>
-            <property name="icon">
-             <iconset resource="images.qrc">
-              <normaloff>:/icons/img/geometry_icon.png</normaloff>:/icons/img/geometry_icon.png</iconset>
-            </property>
            </widget>
           </item>
          </layout>

@@ -50,6 +50,7 @@
 #include "solversettingsdialog.h"
 #include "sortgeometricqualitiesdialog.h"
 
+#include <QDesktopServices>
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QHBoxLayout>
@@ -2030,4 +2031,15 @@ void DatasetWidget::on_optimize_btn_clicked()
     ui->save_btn->setEnabled(true);
 }
 
+
+
+void DatasetWidget::on_parametric_info_btn_clicked()
+{
+    std::string tmp_file = QApplication::applicationDirPath().append("/polygons.pdf").toStdString();
+
+    QFile HelpFile(":/docs/docs/parametric_polygons.pdf");
+    HelpFile.copy(tmp_file.c_str());
+
+    QDesktopServices::openUrl(QUrl::fromLocalFile(tmp_file.c_str()));
+}
 
