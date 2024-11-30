@@ -31,10 +31,11 @@ jobs:
           cd external/GKLib
           make config prefix=./install-Darwin
           make install
-          ls ./install-Darwin
+          ls ./Darwin-arm64/install-Darwin
           cd ../METIS
-          make config shared=1 prefix=./install-Darwin gklib_path=../GKLib/install-Darwin i64=1 r64=1 VERBOSE=1 
+          make config shared=1 prefix=./install-Darwin gklib_path=../GKLib/Darwin-arm64/install-Darwin i64=1 r64=1 VERBOSE=1 
           make install
+          ls
           ls ./install-Darwin
           # mkdir build
           # cd build
