@@ -142,16 +142,33 @@ include_directories(${TRIANGLE_DIR})
 
 if (USE_METIS)
     add_definitions(-DCINOLIB_USES_METIS)
-    if(LINUX)
-        set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
-        set(METIS_LIB /home/tommaso/local/lib/libmetis.so)
-        set(GKLIB_DIR /home/tommaso/local/include)
-        set(GKLIB_LIB /home/tommaso/local/lib/libGKlib.a)
-    elseif(APPLE)
-        set(METIS_DIR ${PROJECT_SOURCE_DIR}/METIS/include)
-        set(METIS_LIB /Users/tommy/local/lib/libmetis.a)
-        set(GKLIB_DIR /Users/tommy/local/include)
-        set(GKLIB_LIB /Users/tommy/local/lib/libGKlib.a)
+
+    set (METIS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../external/METIS)
+    set (GKLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../external/GKlib)
+    set (METIS_INSTALL ${METIS_DIR}/install-${CMAKE_SYSTEM_NAME})
+    set (GKLIB_INSTALL ${GKLIB_DIR}/install-${CMAKE_SYSTEM_NAME})
+
+    if(LINUX OR APPLE)
+        if(LINUX)
+
+            set (METIS_LIB ${METIS_INSTALL}/lib/libMETIS.so)
+            set (GKLIB_LIB ${GKLIB_INSTALL}/lib/libGKlib.a)
+
+        elseif(APPLE)
+            set (METIS_LIB ${METIS_INSTALL}/lib/libMETIS.a)
+            set (GKLIB_LIB ${GKLIB_INSTALL}/lib/libGKlib.a)
+        endif()
+
+        add_custom_command(
+            OUTPUT ${METIS_LIB}
+            COMMAND cd ${GKLIB_DIR} && make config prefix=${GKLIB_INSTALL} && make && make install &&
+                    cd ${METIS_DIR} && make config shared=1 cc=gcc prefix=${METIS_INSTALL} gklib_path=${GKLIB_INSTALL} i64=1 r64=1 && make install
+            WORKING_DIRECTORY ${METIS_DIR}
+        )
+
+        set(METIS_DIR ${METIS_DIR}/include)
+        set(GKLIB_DIR ${GKLIB_DIR}/include)
+
     else() ## MSVC
         set(METIS_DIR ${Metis_INCLUDE_DIRS})
         set(METIS_LIB ${Metis_INCLUDE_DIRS}/../lib/metis.lib)
@@ -171,7 +188,11 @@ FILE (GLOB HEADERS *.h meshes/*.h #[[gui-opengl/*.h]])
 FILE (GLOB SOURCES *.cpp meshes/*.cpp #[[gui-opengl/*.cpp]])
 FILE (GLOB GUI *.ui *.qrc)
 
-qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB})
+if(LINUX OR APPLE)
+    qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB} ${METIS_LIB} )
+else()
+    qt_add_executable (${PROJECT_NAME} MANUAL_FINALIZATION ${HEADERS} ${SOURCES} ${GUI} ${TRIANGLE_LIB})
+endif()
 
 # qt5_use_modules(${PROJECT_NAME} Core Widgets OpenGL Network Charts)
 
