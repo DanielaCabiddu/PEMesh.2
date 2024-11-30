@@ -1,0 +1,34 @@
+name: ubuntu-build
+
+on:
+  push:
+    paths:
+    - examples/**
+    - phreesqlib/**
+    - phreesqlexe/**
+    - external/**
+    - .github/workflows/ubuntu.yml
+    - build.sh
+    - test.sh
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install -y qt6-base-dev qt6-charts-dev qt6-5compat-dev 
+      - name: build
+        env:
+          CC: gcc-9
+          CXX: g++-9
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ../src
+          cmake --build .
