@@ -2,6 +2,9 @@
 
 A Graphical Framework to Study the Correlation between Geometric Design and Simulation.
 
+[![Linux-Ubuntu build status](https://github.com/DanielaCabiddu/PEMesh.2/actions/workflows/build-ubuntu.yml/badge.svg)](https://github.com/DanielaCabiddu/PEMesh/actions/workflows/build-ubuntu.yml)
+[![Windows build status](https://github.com/DanielaCabiddu/PEMesh.2/actions/workflows/windows-build.yml/badge.svg)](https://github.com/DanielaCabiddu/PEMesh/actions/workflows/windows-build.yml)
+
 <p align="center"><img src="src/img/logo.png" width="750"></p>
 
 ## Dependencies
