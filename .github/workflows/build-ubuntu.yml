@@ -1,15 +1,7 @@
 name: ubuntu-build
 
 on:
-  push:
-    paths:
-    - examples/**
-    - phreesqlib/**
-    - phreesqlexe/**
-    - external/**
-    - .github/workflows/ubuntu.yml
-    - build.sh
-    - test.sh
+  workflow_dispatch:
 
 jobs:
   build:
