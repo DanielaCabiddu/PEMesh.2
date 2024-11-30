@@ -20,7 +20,7 @@ This option should be disabled for the correct functioning of PEMesh.
 
 Please, use --recursive when cloning this repository.
 
-`git clone --recursive https://github.com/DanielaCabiddu/PEMesh`
+`git clone --recursive https://github.com/DanielaCabiddu/PEMesh.2.git`
 
 In the following, please consider `${REPO_ROOT}` variable as the folder where this README.md lies.
 PMesh can be built by running either QMake or CMake. 
