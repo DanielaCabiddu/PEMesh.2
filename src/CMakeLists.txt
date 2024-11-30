@@ -151,7 +151,7 @@ if (USE_METIS)
     if(LINUX OR APPLE)
         if(LINUX)
 
-            set (METIS_LIB ${METIS_INSTALL}/lib/libMETIS.so)
+            set (METIS_LIB ${METIS_INSTALL}/lib/libmetis.so)
             set (GKLIB_LIB ${GKLIB_INSTALL}/lib/libGKlib.a)
 
         elseif(APPLE)
