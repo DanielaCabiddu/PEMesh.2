@@ -2,14 +2,15 @@
 
 A Graphical Framework to Study the Correlation between Geometric Design and Simulation.
 
-<p align="center"><img src="pemesh_rep_image.png" width="750"></p>
+<p align="center"><img src="src/img/logo.png" width="750"></p>
 
 ## Dependencies
 
 The framework depends on:
-- the cinolib library (commit 00b270d), which is included as a submodule ;
+- the cinolib library, which is included as a submodule ;
 - Triangle library, which is included as a submodule;
-- Qt framework, including Qt Charts module, which is assumed to be installed on the local machine (version 5.12.0);
+- Metis, which is included as a submodule;
+- Qt framework, including Qt Charts module, which is assumed to be installed on the local machine (version 6.8.0 or later);
 - Boost library, which is assumed to be installed on the local machine.
 - Docker App, which is assumed to be installed on the local machine, and open when using PEMesh.
 
@@ -60,8 +61,10 @@ In both cases, after the installation open Docker App and run the following comm
 `cd ${REPO_ROOT}/solver`\
 `sudo docker build --no-cache -f Dockerfile --target siggraph_2024_solver . -t siggraph_2024_solver:1.0.0`
 
-## Other Authors
-* Giuseppe Patanè (CNR IMATI), Michela Spagnuolo (CNR IMATI)
+## Developers
+* Daniela Cabiddu (CNR IMATI), Tommaso Sorgente (CNR IMATI)
+
+The VEM solver is courtesy of Fabio Vicini (Politecnico di Torino)
 
 ## Citing us
 PEMesh has been published as a Software Paper (https://diglib.eg.org/bitstream/handle/10.2312/stag20221251/011-019.pdf?sequence=1&isAllowed=y).
@@ -80,7 +83,11 @@ ISSN = {2617-4855},
 ISBN = {978-3-03868-191-5},
 DOI = {10.2312/stag.20221251}
 }
+```
 
+If you use the quality indicators, please cite:
+
+```bibtex
 @article{benchmark-mcs,
 title = {Benchmarking the geometrical robustness of a Virtual Element Poisson solver},
 journal = {Mathematics and Computers in Simulation},
@@ -152,8 +159,3 @@ If you use the Mesh Optimization algorithm, please cite:
 }
 }
 ```
-
-## Acknowledgements
-This paper has been realized in the framework of ERC Project CHANGE (https://cordis.europa.eu/project/id/694515), which has received funding from the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement No 694515).
-
-Special thanks to Marco Livesu for sharing with us the source code to generate parametric polygons and compute geometric metrics.
