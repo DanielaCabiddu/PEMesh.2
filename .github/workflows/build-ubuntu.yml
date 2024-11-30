@@ -20,6 +20,10 @@ jobs:
           target: 'desktop'
           arch: 'linux_gcc_64'
           modules: 'qt5compat qtcharts'
+      - name: dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install -y libboost-all-dev
       - name: build
         env:
           CC: gcc-9
