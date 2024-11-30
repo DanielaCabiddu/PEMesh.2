@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Checkout repository and submodules
         uses: actions/checkout@v2
@@ -28,16 +28,7 @@ jobs:
           brew install glew
       - name: build
         run: |
-          cd external/GKLib
-          make config prefix=./install-Darwin
-          make install
-          ls ./build/Darwin-arm64/install-Darwin
-          cd ../METIS
-          make config shared=1 prefix=./install-Darwin gklib_path=../GKLib/build/Darwin-arm64/install-Darwin i64=1 r64=1 VERBOSE=1 
-          make install
-          ls
-          ls ./install-Darwin
-          # mkdir build
-          # cd build
-          # cmake -DCMAKE_BUILD_TYPE=Release ../src
-          # cmake --build .
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release ../src
+          cmake --build .
