@@ -16,3 +16,6 @@
 [submodule "solver"]
 	path = solver
 	url = https://github.com/fvicini/SIGGRAPH_2024_SOLVER
+[submodule "external/GKlib"]
+	path = external/GKlib
+	url = https://github.com/KarypisLab/GKlib
