@@ -28,7 +28,5 @@ jobs:
           brew install glew
       - name: build
         run: |
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release ../src
-          cmake --build .
+          cd external/GKlib && make config prefix=./external/GKlib/install-Linux && make && make install 
+          cd ../METIS && make config shared=1 prefix=./install-Linux gklib_path=../GKlib/install-Linux i64=1 r64=1 VERBOSE=1 && make install
