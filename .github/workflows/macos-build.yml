@@ -28,5 +28,5 @@ jobs:
           brew install glew
       - name: build
         run: |
-          cd external/GKlib && make config prefix=/Users/runner/work/PEMesh.2/PEMesh.2/external/GKlib/install-Linux && make && make install 
-          cd ../METIS && make config shared=1 prefix=/Users/runner/work/PEMesh.2/PEMesh.2/external/METIS/install-Linux gklib_path=/Users/runner/work/PEMesh.2/PEMesh.2/external/GKlib/install-Linux i64=1 r64=1 VERBOSE=1 && make install
+          cd external/GKlib && make config prefix=/Users/runner/work/PEMesh.2/PEMesh.2/external/METIS/install-Linux && make && make install 
+          cd ../METIS && make config shared=1 prefix=/Users/runner/work/PEMesh.2/PEMesh.2/external/METIS/install-Linux i64=1 r64=1 VERBOSE=1 && make install
