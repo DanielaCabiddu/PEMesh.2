@@ -166,7 +166,7 @@ if (USE_METIS)
             WORKING_DIRECTORY ${METIS_DIR}
         )
 
-        set(METIS_DIR ${METIS_DIR}/include)
+        set(METIS_DIR ${METIS_INSTALL}/include)
         set(GKLIB_DIR ${GKLIB_DIR}/include)
 
     else() ## MSVC
