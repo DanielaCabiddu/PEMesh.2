@@ -154,15 +154,22 @@ if (USE_METIS)
             set (METIS_LIB ${METIS_INSTALL}/lib/libmetis.so)
             set (GKLIB_LIB ${GKLIB_INSTALL}/lib/libGKlib.a)
 
+            set (CC gcc)
+
         elseif(APPLE)
-            set (METIS_LIB ${METIS_INSTALL}/lib/libMETIS.a)
+
+            set (METIS_LIB ${METIS_INSTALL}/lib/libmetis.dylib)
             set (GKLIB_LIB ${GKLIB_INSTALL}/lib/libGKlib.a)
+
         endif()
+
+        set (CC ${CMAKE_C_COMPILER})
+        message(${CC})
 
         add_custom_command(
             OUTPUT ${METIS_LIB}
             COMMAND unset MFLAGS && unset MAKEFLAGS && unset MAKELEVEL && cd ${GKLIB_DIR} && make config prefix=${GKLIB_INSTALL} && make && make install &&
-                    cd ${METIS_DIR} && make config shared=1 prefix=${METIS_INSTALL} gklib_path=${GKLIB_INSTALL} i64=1 r64=1 VERBOSE=1 && make install
+                    cd ${METIS_DIR} && make config shared=1 cc=${CC} prefix=${METIS_INSTALL} gklib_path=${GKLIB_INSTALL} i64=1 r64=1 VERBOSE=1 && make install
             WORKING_DIRECTORY ${METIS_DIR}
         )
 
