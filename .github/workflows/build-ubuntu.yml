@@ -24,6 +24,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install -y libboost-all-dev
+          sudo apt-get install -y mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
       - name: build
         env:
           CC: gcc-9
