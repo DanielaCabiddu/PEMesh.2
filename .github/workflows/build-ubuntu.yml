@@ -15,7 +15,7 @@ jobs:
         run: |
           sudo add-apt-repository universe
           sudo apt update
-          sudo apt-get install -y qt6-base qt6-base-dev qt6-tools-dev
+          sudo apt-get install -y qt6-base-dev qt6-tools-dev
       - name: build
         env:
           CC: gcc-9
