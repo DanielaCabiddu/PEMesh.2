@@ -13,6 +13,7 @@ jobs:
           submodules: recursive
       - name: dependencies
         run: |
+          sudo add-apt-repository ppa:okirby/qt6-backports
           sudo apt update
           sudo apt-get install -y qt6-base-dev qt6-charts-dev qt6-5compat-dev 
       - name: build
