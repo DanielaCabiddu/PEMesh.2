@@ -202,7 +202,13 @@ void SolverWidget::on_run_btn_clicked()
 
         std::cout << solver_script_name.find('.') << std::endl;
 
-        const unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
+        unsigned int solution_id = static_cast<uint>(ui->solver_cb->currentIndex());
+
+        if (solution_id == 0)
+            solution_id = 1;
+        else if (solution_id == 1)
+            solution_id = 0;
+
         const unsigned int solution_order = static_cast<uint>(ui->solver_order_cb->value());
         const bool compute_cond_number =ui->cond_number_cb->isChecked();
 
