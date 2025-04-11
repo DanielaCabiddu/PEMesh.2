@@ -167,7 +167,7 @@ if (USE_METIS)
         message(${CC})
 
         add_custom_command(
-            OUTPUT ${METIS_LIB}
+            OUTPUT ${METIS_LIB} ${GKLIB_DIR}
             COMMAND unset MFLAGS && unset MAKEFLAGS && unset MAKELEVEL && cd ${GKLIB_DIR} && make config prefix=${GKLIB_INSTALL} && make && make install &&
                     cd ${METIS_DIR} && make config shared=1 cc=${CC} prefix=${METIS_INSTALL} gklib_path=${GKLIB_INSTALL} i64=1 r64=1 VERBOSE=1 && make install
             WORKING_DIRECTORY ${METIS_DIR}
